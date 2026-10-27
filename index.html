@@ -234,10 +234,6 @@ body.theme-cib{--accent:#c2185b; --accent-soft:#fce4ec}
 .cancer-sec h2{margin:0 0 4px; font-size:17px; flex-wrap:wrap}
 .cancer-note{margin:0 0 8px; font-size:12.5px; color:var(--muted); line-height:1.35}
 .cancer-grid{display:grid; gap:12px; grid-template-columns:1fr}
-/* TEMP: hide body chart until corrected GPT art arrives */
-.body-fig{display:none !important}
-.cancer-grid{grid-template-columns:1fr !important}
-.cancer-side{width:100%; max-width:none}
 
 @media (min-width:900px){
   .cancer-grid{grid-template-columns:minmax(0,1.15fr) minmax(240px,0.9fr); align-items:stretch}
@@ -516,13 +512,13 @@ const SPECIFIC_CANCERS = {
       {id:'c18', short:'結腸癌', callout:'colo',
         intro:'大腸常見惡性腫瘤，早期常無明顯症狀。',
         cost:'自費標靶約 每月10～30萬', costSrc:'公開藥價整理（癌思停／爾必得舒等）'},
-      {id:'c19', short:'直腸乙狀結腸癌', callout:'colo',
+      {id:'c19', short:'直腸乙狀結腸癌', callout:'rect',
         intro:'直腸與乙狀結腸交接處的惡性腫瘤。',
         cost:'自費標靶約 每月10～30萬', costSrc:'公開藥價整理（癌思停／爾必得舒等）'},
-      {id:'c20', short:'直腸癌', callout:'colo',
+      {id:'c20', short:'直腸癌', callout:'rect',
         intro:'靠近肛門的大腸惡性腫瘤，可影響排便。',
         cost:'自費標靶約 每月10～30萬', costSrc:'公開藥價整理（癌思停／爾必得舒等）'},
-      {id:'c21', short:'肛門癌', callout:'anus',
+      {id:'c21', short:'肛門癌', callout:'rect',
         intro:'肛門及肛管的惡性腫瘤，相對少見。',
         cost:'自費標靶／免疫約 每月10～30萬', costSrc:'亞東醫院：免疫每次約5～15萬'},
       {id:'c60', short:'陰莖癌', callout:'penile',
@@ -541,7 +537,7 @@ const SPECIFIC_CANCERS = {
         intro:'泌尿系統常見惡性腫瘤，血尿為重要警訊。',
         cost:'自費免疫約 每次5～15萬', costSrc:'亞東醫院腫瘤科說明'}
     ],
-    callouts: [{"id": "colo", "organ": "大腸直腸癌", "box": {"left": 4.328, "top": 23.895, "width": 25.414, "height": 11.395}, "items": ["c18", "c19", "c20"]}, {"id": "bladder", "organ": "膀胱癌", "box": {"left": 4.42, "top": 42.541, "width": 25.322, "height": 11.464}, "items": ["c67"]}, {"id": "testis", "organ": "睪丸癌", "box": {"left": 4.328, "top": 61.188, "width": 25.506, "height": 11.395}, "items": ["c62"]}, {"id": "anus", "organ": "肛門癌", "box": {"left": 70.166, "top": 24.724, "width": 25.506, "height": 11.326}, "items": ["c21"]}, {"id": "prostate", "organ": "攝護腺癌", "box": {"left": 70.166, "top": 43.301, "width": 25.414, "height": 11.326}, "items": ["c61"]}, {"id": "penile", "organ": "陰莖癌・其他", "box": {"left": 70.166, "top": 61.878, "width": 25.506, "height": 11.326}, "items": ["c60", "c63"]}]
+    callouts: [{"id": "colo", "organ": "結腸癌", "box": {"left": 1.855, "top": 30.339, "width": 24.902, "height": 6.836}, "items": ["c18"]}, {"id": "bladder", "organ": "膀胱癌", "box": {"left": 1.66, "top": 48.763, "width": 25.098, "height": 6.901}, "items": ["c67"]}, {"id": "testis", "organ": "睪丸癌", "box": {"left": 1.562, "top": 63.672, "width": 25.195, "height": 6.836}, "items": ["c62"]}, {"id": "rect", "organ": "直腸乙狀結腸癌", "box": {"left": 73.242, "top": 37.044, "width": 25.195, "height": 6.836}, "items": ["c19", "c20", "c21"]}, {"id": "prostate", "organ": "攝護腺癌", "box": {"left": 73.242, "top": 50.781, "width": 25.195, "height": 6.771}, "items": ["c61"]}, {"id": "penile", "organ": "陰莖癌・其他", "box": {"left": 73.34, "top": 63.607, "width": 25.098, "height": 6.901}, "items": ["c60", "c63"]}]
   },
   CIB: {
     product: '真馨守護',
@@ -585,7 +581,7 @@ const SPECIFIC_CANCERS = {
         intro:'與妊娠相關的罕見惡性腫瘤。',
         cost:'自費標靶／免疫約 每月10～30萬', costSrc:'亞東醫院：免疫每次約5～15萬'}
     ],
-    callouts: [{"id": "breast", "organ": "乳癌", "box": {"left": 4.492, "top": 14.258, "width": 25.488, "height": 10.938}, "items": ["c50"]}, {"id": "ovary", "organ": "卵巢癌", "box": {"left": 4.004, "top": 34.505, "width": 24.023, "height": 10.938}, "items": ["c56"]}, {"id": "pelvic", "organ": "外陰癌・陰道癌・胎盤癌", "box": {"left": 4.004, "top": 55.469, "width": 23.438, "height": 10.938}, "items": ["c51", "c52", "c57", "c58"]}, {"id": "skin", "organ": "皮膚癌", "box": {"left": 69.531, "top": 14.193, "width": 26.465, "height": 10.938}, "items": ["c43", "c44"]}, {"id": "uterus", "organ": "子宮體癌", "box": {"left": 72.754, "top": 32.031, "width": 23.047, "height": 10.872}, "items": ["c54", "c55"]}, {"id": "cervix", "organ": "子宮頸癌", "box": {"left": 72.07, "top": 56.25, "width": 23.926, "height": 11.003}, "items": ["c53"]}]
+    callouts: [{"id": "breast", "organ": "乳癌", "box": {"left": 4.688, "top": 12.109, "width": 25.0, "height": 11.328}, "items": ["c50"]}, {"id": "ovary", "organ": "卵巢癌", "box": {"left": 4.492, "top": 47.917, "width": 23.73, "height": 9.701}, "items": ["c56"]}, {"id": "pelvic", "organ": "外陰・陰道・胎盤癌", "box": {"left": 4.395, "top": 66.146, "width": 25.098, "height": 10.938}, "items": ["c51", "c52", "c57", "c58"]}, {"id": "skin", "organ": "皮膚癌", "box": {"left": 70.508, "top": 20.378, "width": 25.098, "height": 11.328}, "items": ["c43", "c44"]}, {"id": "uterus", "organ": "子宮體癌", "box": {"left": 71.973, "top": 44.336, "width": 23.828, "height": 10.091}, "items": ["c54", "c55"]}, {"id": "cervix", "organ": "子宮頸癌", "box": {"left": 70.312, "top": 61.458, "width": 25.488, "height": 10.938}, "items": ["c53"]}]
   }
 };
 const SPECIFIC_BONUS = [

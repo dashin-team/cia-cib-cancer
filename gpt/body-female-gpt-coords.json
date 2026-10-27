@@ -2,59 +2,59 @@
   "w": 1024,
   "h": 1536,
   "title": {
-    "left": 16.016,
+    "left": 15.527,
     "top": 1.693,
-    "width": 67.871,
-    "height": 6.576
+    "width": 68.848,
+    "height": 6.836
   },
   "cards": [
     {
       "id": "breast",
       "organ": "乳癌",
-      "left": 4.492,
-      "top": 14.258,
-      "width": 25.488,
-      "height": 10.938
+      "left": 4.688,
+      "top": 12.109,
+      "width": 25.0,
+      "height": 11.328
     },
     {
       "id": "ovary",
       "organ": "卵巢癌",
-      "left": 4.004,
-      "top": 34.505,
-      "width": 24.023,
-      "height": 10.938
+      "left": 4.492,
+      "top": 47.917,
+      "width": 23.73,
+      "height": 9.701
     },
     {
       "id": "pelvic",
-      "organ": "外陰癌・陰道癌・胎盤癌",
-      "left": 4.004,
-      "top": 55.469,
-      "width": 23.438,
+      "organ": "外陰・陰道・胎盤癌",
+      "left": 4.395,
+      "top": 66.146,
+      "width": 25.098,
       "height": 10.938
     },
     {
       "id": "skin",
       "organ": "皮膚癌",
-      "left": 69.531,
-      "top": 14.193,
-      "width": 26.465,
-      "height": 10.938
+      "left": 70.508,
+      "top": 20.378,
+      "width": 25.098,
+      "height": 11.328
     },
     {
       "id": "uterus",
       "organ": "子宮體癌",
-      "left": 72.754,
-      "top": 32.031,
-      "width": 23.047,
-      "height": 10.872
+      "left": 71.973,
+      "top": 44.336,
+      "width": 23.828,
+      "height": 10.091
     },
     {
       "id": "cervix",
       "organ": "子宮頸癌",
-      "left": 72.07,
-      "top": 56.25,
-      "width": 23.926,
-      "height": 11.003
+      "left": 70.312,
+      "top": 61.458,
+      "width": 25.488,
+      "height": 10.938
     }
   ]
 }
