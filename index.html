@@ -2,334 +2,383 @@
 <html lang="zh-Hant">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#1a5f9e">
-<title>CIA／CIB 癌症險試算｜富邦業務用</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0f2a4a">
+<title>CIA／CIB 癌症險試算｜大心</title>
+<link rel="icon" type="image/png" href="favicon.png">
 <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js" defer></script>
 <style>
 :root{
-  --cia:#1a5f9e; --cia-soft:#e8f2fa; --cia-mid:#4a8fc4;
-  --cib:#c2185b; --cib-soft:#fce4ec; --cib-mid:#e91e63;
-  --bg:#f4f6f8; --card:#fff; --text:#1a1a1a; --muted:#667085;
-  --line:#e4e7ec; --warn:#b54708; --radius:14px;
-  --shadow:0 2px 10px rgba(16,24,40,.06);
-  --accent:var(--cia); --accent-soft:var(--cia-soft); --accent-mid:var(--cia-mid);
+  --ink:#142a37; --muted:#627680; --paper:#fffdf7; --cream:#f4efe3;
+  --blue:#05679a; --navy:#0f2a4a; --gold:#c9a45c; --red:#c83632; --line:#d6ddd9;
+  --accent:var(--blue); --accent-soft:#e8f3f9; --accent-mid:#3a8bb8;
+  --radius:12px; --shadow:0 8px 22px #1f373e14;
+  --gap:16px; --max:1200px; --ctrl:320px;
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html{scroll-behavior:auto}
+html{background:#e8ebe7; scroll-behavior:auto}
 body{
-  margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;
-  background:var(--bg); color:var(--text); line-height:1.5; font-size:15px; padding:0 0 56px;
-  overflow-anchor:none;
+  margin:0; color:var(--ink);
+  background:radial-gradient(circle at 70% 10%,#f7f2e8 0,#e8ebe7 48%,#dce4e2 100%);
+  font-family:"PingFang TC","Noto Sans TC","Microsoft JhengHei",system-ui,sans-serif;
+  font-size:15px; line-height:1.5;
+  overflow-x:hidden;
 }
+img{max-width:100%; height:auto; display:block}
+button,input{font:inherit}
+button{cursor:pointer}
+a{color:inherit; text-decoration:none}
+
+/* ===== Brand header (accident-insurance look) ===== */
 .topbar{
-  background:linear-gradient(135deg,var(--accent),var(--accent-mid));
-  color:#fff; padding:10px 14px 12px; position:relative; z-index:1;
-  box-shadow:0 2px 12px rgba(0,0,0,.15);
+  background:var(--navy); color:#fff; border-bottom:3px solid var(--gold);
+  padding:10px 16px; box-shadow:0 8px 22px #0f2a4a2e;
 }
-.topbar h1{margin:0; font-size:1.05rem; font-weight:700}
-.topbar .sub{margin:3px 0 0; opacity:.92; font-size:.72rem; line-height:1.35}
-.wrap{max-width:640px; margin:0 auto; padding:12px 12px 0}
+.brand{display:flex; align-items:center; gap:12px; max-width:var(--max); margin:0 auto}
+.brand-logo{width:34px; height:48px; flex:none}
+.brand-text{display:flex; flex-direction:column; min-width:0; line-height:1.3}
+.brand-slogan{opacity:.92; font-size:13px; font-weight:700; letter-spacing:.08em}
+.topbar h1{margin:0; font-size:20px; font-weight:800; letter-spacing:.02em}
+
+/* ===== Shell ===== */
+.app{max-width:var(--max); margin:0 auto; padding:12px 12px 40px}
+.quicknav{
+  display:flex; gap:8px; flex-wrap:wrap; margin:0 0 12px;
+}
+.quicknav a{
+  display:inline-flex; align-items:center; justify-content:center;
+  min-height:40px; padding:0 14px; border-radius:999px;
+  background:var(--paper); border:1px solid #142a371f; color:var(--navy);
+  font-size:13px; font-weight:700; box-shadow:var(--shadow);
+}
+
+.layout{
+  display:grid; gap:var(--gap);
+  grid-template-columns:1fr;
+}
+@media (min-width:1024px){
+  .layout{grid-template-columns:var(--ctrl) minmax(0,1fr); align-items:start}
+  .controls{
+    position:sticky; top:12px;
+  }
+}
+
 .card{
-  background:var(--card); border-radius:var(--radius); box-shadow:var(--shadow);
-  padding:14px; margin-bottom:12px; border:1px solid var(--line);
+  background:var(--paper); border:1px solid #142a371f;
+  border-radius:var(--radius); box-shadow:var(--shadow);
+  padding:14px;
 }
-.card h2{margin:0 0 10px; font-size:.9rem; color:var(--accent); display:flex; align-items:center; gap:8px}
-.card h2 .num{
-  background:var(--accent); color:#fff; width:22px; height:22px; border-radius:50%;
-  font-size:.7rem; display:inline-flex; align-items:center; justify-content:center; font-weight:700; flex-shrink:0;
+.card h2{
+  margin:0 0 12px; font-size:16px; font-weight:800; color:var(--navy);
+  display:flex; align-items:center; gap:8px;
+}
+.card h2 .tag{
+  margin-left:auto; background:var(--accent-soft); color:var(--accent);
+  font-size:12px; font-weight:800; padding:4px 10px; border-radius:999px;
 }
 
-.compact-sticky{
-  position:static;
-  display:flex; align-items:center; justify-content:space-between; gap:8px;
-  background:#fff;
-  border:1px solid var(--line); border-radius:12px;
-  padding:8px 10px; margin-bottom:10px;
-  box-shadow:none;
-  min-height:44px;
+/* ===== Controls ===== */
+.seg{
+  display:grid; grid-template-columns:1fr 1fr; gap:8px;
+  background:var(--cream); padding:4px; border-radius:10px;
 }
-.compact-sticky .cs-age{display:flex; align-items:center; gap:4px; flex-shrink:0}
-.compact-sticky .cs-age button{
-  width:30px; height:30px; border-radius:8px; border:1px solid var(--line);
-  background:#fff; font-weight:800; color:var(--accent); cursor:pointer; font-size:1rem;
-}
-.compact-sticky .cs-age input{
-  width:44px; height:30px; text-align:center; font-weight:800; font-size:.95rem;
-  border:1.5px solid var(--line); border-radius:8px; padding:0;
-}
-.compact-sticky .cs-lab{font-size:.75rem; font-weight:700; color:var(--muted); margin-left:2px; white-space:nowrap}
-.compact-sticky .cs-term{display:flex; gap:4px}
-.compact-sticky .cs-term button{
-  border:0; background:var(--bg); padding:6px 8px; border-radius:8px;
-  font-size:.72rem; font-weight:700; color:var(--muted); cursor:pointer;
-}
-.compact-sticky .cs-term button.active{background:var(--accent); color:#fff}
-.compact-sticky .cs-term button:disabled{opacity:.35}
-.wrap{padding-top:10px}
-
-.seg{display:grid; grid-template-columns:1fr 1fr; gap:8px; background:var(--bg); padding:4px; border-radius:12px}
-.seg.term{grid-template-columns:1fr 1fr 1fr}
+.seg.term{grid-template-columns:repeat(3,1fr)}
 .seg button{
-  border:0; background:transparent; padding:11px 6px; border-radius:10px;
-  font-size:.88rem; font-weight:600; color:var(--muted); cursor:pointer;
+  border:0; background:transparent; min-height:44px; border-radius:8px;
+  font-weight:800; color:var(--muted); font-size:14px;
 }
-.seg button.active{background:var(--accent); color:#fff; box-shadow:0 2px 8px rgba(0,0,0,.15)}
+.seg button.active{background:var(--accent); color:#fff; box-shadow:0 2px 8px #0002}
 .seg button:disabled{opacity:.35; cursor:not-allowed}
-label.field{display:block; margin-bottom:8px}
-label.field > span{display:block; font-size:.72rem; color:var(--muted); margin-bottom:4px; font-weight:600}
-input[type=text], input[type=number]{
-  width:100%; padding:11px 12px; border:1.5px solid var(--line); border-radius:10px;
-  font-size:1rem; background:#fff; color:var(--text); outline:none; appearance:none; -webkit-appearance:none;
-}
-input:focus{border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-soft)}
-.hint{font-size:.7rem; color:var(--muted); margin:4px 0 0; line-height:1.4}
-.age-box{
-  background:var(--accent-soft); border-radius:12px; padding:10px 12px; margin-top:6px;
-  display:grid; grid-template-columns:1fr 1fr; gap:6px; min-height:78px;
-}
-.age-box .k{font-size:.68rem; color:var(--muted)}
-.age-box .v{font-size:1.15rem; font-weight:800; color:var(--accent); line-height:1.2}
-.age-box .explain{grid-column:1/-1; font-size:.68rem; color:var(--muted); line-height:1.35; min-height:2.6em}
-.age-ctrl{margin-top:8px; display:flex; align-items:center; gap:8px}
-.age-ctrl .stepper{display:flex; gap:4px}
-.age-ctrl .stepper button{
-  width:34px; height:34px; border-radius:10px; border:1.5px solid var(--line);
-  background:#fff; font-size:1.05rem; font-weight:700; color:var(--accent); cursor:pointer;
-}
-.age-ctrl .age-num{width:56px; text-align:center; font-weight:800; padding:7px; flex-shrink:0}
-.age-ctrl input[type=range]{flex:1; accent-color:var(--accent)}
-.premium-grid{display:grid; grid-template-columns:1fr 1fr; gap:8px; min-height:150px}
-.p-item{background:var(--bg); border-radius:12px; padding:11px; text-align:center; border:1px solid var(--line)}
-.p-item.main{grid-column:1/-1; background:var(--accent-soft); border-color:transparent}
-.p-item .lab{font-size:.68rem; color:var(--muted); font-weight:600}
-.p-item .amt{font-size:1.15rem; font-weight:800; color:var(--accent); margin-top:2px; min-height:1.3em}
-.p-item.main .amt{font-size:1.4rem}
-.p-item .unit{font-size:.65rem; color:var(--muted)}
-.total-line{margin-top:10px; padding:11px; background:#fff8e6; border-radius:10px; border:1px solid #f5d78e; font-size:.84rem; min-height:4.5em}
-.total-line strong{color:var(--warn)}
-.benefit{border-left:4px solid var(--accent); padding:9px 11px; margin-bottom:7px; background:var(--accent-soft); border-radius:0 10px 10px 0}
-.benefit .title{font-weight:700; font-size:.85rem}
-.benefit .desc{font-size:.72rem; color:var(--muted)}
-.benefit .pay{font-size:.86rem; font-weight:700; color:var(--accent)}
-.benefit .note{font-size:.66rem; color:var(--muted); margin-top:2px}
-.rules{font-size:.78rem; line-height:1.5}
-.rules dt{font-weight:700; color:var(--accent); margin-top:7px}
-.rules dd{margin:2px 0 0}
+body.theme-cib .seg button.active{background:#c2185b}
 
+label.field{display:grid; gap:6px; font-size:13px; font-weight:800; color:#334b57; margin-top:12px}
+label.field:first-of-type{margin-top:0}
+input[type=text], input[type=number], input[type=date]{
+  width:100%; min-height:44px; padding:0 12px;
+  border:1px solid #b9c8c7; border-radius:0; background:#fff; color:var(--ink);
+  font-size:16px; font-weight:700; outline:none;
+}
+input:focus{border-color:var(--blue); box-shadow:0 0 0 3px #05679a1c}
+.age-line{
+  margin-top:8px; padding:10px 12px; background:var(--accent-soft);
+  border-radius:8px; font-size:14px; font-weight:700; color:var(--accent);
+  min-height:44px; display:flex; align-items:center; justify-content:space-between; gap:8px;
+}
+.age-line .err{color:var(--red); font-weight:700}
+.hint{font-size:12px; color:var(--muted); margin:6px 0 0; font-weight:600}
+.secondary-age{margin-top:8px}
+.secondary-age summary{
+  list-style:none; cursor:pointer; color:var(--muted); font-size:13px; font-weight:700;
+  min-height:36px; display:flex; align-items:center;
+}
+.secondary-age summary::-webkit-details-marker{display:none}
+.amt-grid{
+  display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin-top:8px;
+}
+.amt-grid button{
+  min-height:44px; border:1.5px solid var(--line); background:#fff;
+  border-radius:8px; font-weight:800; font-size:13px; color:var(--ink);
+}
+.amt-grid button.active{border-color:var(--accent); background:var(--accent-soft); color:var(--accent)}
+body.theme-cib .amt-grid button.active{border-color:#c2185b; background:#fce4ec; color:#c2185b}
+.custom-amt{display:flex; gap:8px; margin-top:8px; align-items:center}
+.custom-amt input{flex:1}
+.custom-amt span{font-size:13px; font-weight:700; color:var(--muted); white-space:nowrap}
 
-.export-actions{display:flex; gap:8px; margin:10px 0 4px; flex-wrap:wrap}
 .btn{
-  border:0; border-radius:10px; padding:10px 14px; font-weight:700; font-size:.85rem; cursor:pointer;
+  display:inline-flex; align-items:center; justify-content:center; gap:8px;
+  min-height:48px; width:100%; border:0; border-radius:10px;
+  font-weight:800; font-size:15px; margin-top:14px;
 }
-.btn-primary{background:var(--accent); color:#fff}
-.btn-ghost{background:var(--bg); color:var(--accent); border:1.5px solid var(--line)}
-.btn:disabled{opacity:.5; cursor:wait}
-.err{color:#b42318; font-size:.82rem; padding:6px 0; min-height:1.2em}
-.chart-img{width:100%; display:block; border-radius:8px; border:1px solid var(--line); background:#fafafa; object-fit:contain;}
-.pill{display:inline-block; background:rgba(255,255,255,.22); padding:2px 8px; border-radius:999px; font-size:.66rem; margin-left:4px}
-.tag{display:inline-block; background:var(--accent-soft); color:var(--accent); font-size:.66rem; font-weight:700; padding:2px 8px; border-radius:999px}
-.disclaimer{font-size:.66rem; color:var(--muted); padding:8px 4px 20px; line-height:1.5; text-align:center}
-body.theme-cib{--accent:var(--cib); --accent-soft:var(--cib-soft); --accent-mid:var(--cib-mid)}
-body.theme-cib .topbar{background:linear-gradient(135deg,#c2185b,#ec407a)}
+.btn-primary{background:var(--navy); color:#fff}
+.btn-primary:disabled{opacity:.5; cursor:wait}
+body.theme-cib .btn-primary{background:#880e4f}
+.dl-hint{font-size:12px; color:var(--muted); margin:8px 0 0; text-align:center}
 
-/* ===== Image-like unit table (fits 390px + html2canvas) ===== */
-.unit-section{margin-top:8px}
-.unit-section h3{margin:0 0 8px; font-size:.92rem; font-weight:800; color:#1a1a1a}
-.unit-frame{
-  border:2px solid #222; border-radius:2px; overflow:hidden; background:#fff;
-  font-family:"Microsoft JhengHei","Noto Sans TC","PingFang TC",sans-serif;
-  width:100%; max-width:100%;
+/* Tablet top controls row */
+@media (min-width:768px) and (max-width:1023px){
+  .controls .seg[data-prod]{max-width:360px}
+  .ctrl-row{
+    display:grid; grid-template-columns:1.2fr 1fr 1fr; gap:12px; align-items:end;
+  }
+  .ctrl-row .field{margin-top:0}
+  .amt-grid{grid-template-columns:repeat(4,1fr)}
 }
+
+/* ===== Dynamic benefit chart ===== */
+#chartAnchor{scroll-margin-top:12px}
+.chart-wrap{padding:0; overflow:hidden}
+.chart-head{
+  background:var(--accent); color:#fff; padding:12px 16px;
+  display:flex; align-items:center; gap:10px; font-weight:800; font-size:17px;
+}
+body.theme-cib .chart-head{background:#c2185b}
+.chart-head .avatar{
+  width:36px; height:36px; border-radius:50%; background:#fff3;
+  display:grid; place-items:center; font-size:18px; flex:none;
+}
+.bgrid{
+  display:grid; grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:10px; padding:12px;
+}
+@media (max-width:767px){
+  .bgrid{grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; padding:10px}
+}
+.bcard{
+  border:1.5px solid #c5d5e4; border-radius:12px; background:#fff;
+  padding:10px; position:relative; min-width:0;
+  display:flex; flex-direction:column; gap:6px;
+}
+body.theme-cib .bcard{border-color:#f0b6cb}
+.bcard .num{
+  position:absolute; top:8px; left:8px; width:24px; height:24px; border-radius:50%;
+  background:var(--accent); color:#fff; font-size:12px; font-weight:900;
+  display:grid; place-items:center;
+}
+body.theme-cib .bcard .num{background:#c2185b}
+.bcard .title{font-weight:900; font-size:14px; color:var(--navy); padding-left:28px; line-height:1.2}
+.bcard .sub{font-size:11px; color:var(--muted); line-height:1.35}
+.bcard .illu{width:100%; max-height:72px; object-fit:contain; margin:2px auto}
+.bcard .pay{font-size:13px; font-weight:900; color:var(--red); line-height:1.35}
+.bcard .pay .pct{font-size:11px; color:var(--muted); font-weight:700}
+.bcard .note{font-size:10px; color:var(--muted); margin-top:auto}
+.bcard.waiver{border-color:#f0a060; background:#fffaf5}
+.death-bar{
+  margin:0 12px 12px; padding:12px; border-radius:12px;
+  background:var(--accent-soft); border:1.5px solid #c5d5e4;
+  display:flex; gap:10px; align-items:flex-start;
+}
+body.theme-cib .death-bar{background:#fce4ec; border-color:#f0b6cb}
+.death-bar .dicon{
+  width:36px; height:36px; flex:none; border-radius:8px; background:#fff;
+  display:grid; place-items:center; font-size:18px;
+}
+.death-bar strong{display:block; font-size:14px; color:var(--navy); margin-bottom:2px}
+.death-bar p{margin:0; font-size:12px; color:var(--muted); line-height:1.4}
+
+/* ===== Unit table ===== */
+#unitAnchor{scroll-margin-top:12px}
+.unit-section h3{margin:0 0 10px; font-size:16px; font-weight:800}
+.unit-frame{border:2px solid #222; background:#fff; width:100%; overflow:hidden}
 table.unitpic{
-  width:100%; max-width:100%; border-collapse:collapse; table-layout:fixed;
-  font-size:clamp(8px, 2.3vw, 12.5px);
+  width:100%; border-collapse:collapse; table-layout:fixed;
+  font-size:clamp(10px, 1.1vw, 13px);
+  font-family:"Microsoft JhengHei","Noto Sans TC","PingFang TC",sans-serif;
 }
 table.unitpic col.c-lab{width:18%}
 table.unitpic col.c-u{width:20.5%}
 table.unitpic th, table.unitpic td{
-  border:1px solid #222;
-  padding:clamp(3px, 1vw, 7px) 1px;
-  text-align:center; vertical-align:middle;
-  line-height:1.15;
-  overflow:hidden;
-  word-break:break-word;
-  overflow-wrap:anywhere;
-  box-sizing:border-box;
+  border:1px solid #222; padding:7px 3px; text-align:center; vertical-align:middle;
+  line-height:1.2; overflow:hidden; word-break:break-word;
 }
-table.unitpic thead th{font-weight:800; font-size:clamp(8px, 2.3vw, 12px)}
-table.unitpic th.agehd{background:#f5c518; color:#111; font-weight:900; font-size:clamp(9px, 2.5vw, 13px)}
-table.unitpic th.u05{background:#b8d4ef; color:#111}
-table.unitpic th.u1{background:#f7e7a0; color:#111}
-table.unitpic th.u2{background:#7ec8e8; color:#111}
-table.unitpic th.u3{background:#f5b8c8; color:#111}
-table.unitpic td.lab{
-  text-align:left; padding-left:3px; padding-right:1px;
-  font-weight:700; background:#fafafa;
-  font-size:clamp(7px, 2.0vw, 11px);
-  white-space:normal;
-}
+table.unitpic th.agehd{background:#f5c518; font-weight:900; font-size:clamp(11px,1.3vw,15px)}
+table.unitpic th.u05{background:#b8d4ef}
+table.unitpic th.u1{background:#f7e7a0}
+table.unitpic th.u2{background:#7ec8e8}
+table.unitpic th.u3{background:#f5b8c8}
+table.unitpic th.hl{outline:3px solid var(--accent); outline-offset:-3px}
+table.unitpic td.lab{text-align:left; padding-left:6px; font-weight:700; background:#fafafa; font-size:clamp(9px,1vw,12px)}
 table.unitpic td.c05{background:#d6e8f7}
 table.unitpic td.c1{background:#fbf3c8}
 table.unitpic td.c2{background:#b7e0f2}
 table.unitpic td.c3{background:#f8d0db}
-table.unitpic td.num{
-  font-variant-numeric:tabular-nums;
-  letter-spacing:-0.045em;
-  white-space:nowrap;
-  font-size:clamp(7px, 2.1vw, 12px);
-  overflow:hidden;
-}
+table.unitpic td.num{font-variant-numeric:tabular-nums; white-space:nowrap; letter-spacing:-.02em}
+table.unitpic td.hl{box-shadow:inset 0 0 0 2px var(--accent)}
 table.unitpic tr.mat td{color:#c62828; font-weight:900}
-table.unitpic tr.mat td.lab{color:#c62828; background:#fff5f5; letter-spacing:0; white-space:normal}
-table.unitpic tr.mat td.num{font-size:clamp(6.5px, 2.0vw, 11.5px); letter-spacing:-0.055em}
-#exportRoot{background:#fff; padding:0; overflow:hidden; width:100%; max-width:100%}
-.chart-img{aspect-ratio:1026/845}
-body.theme-cib .chart-img{aspect-ratio:1029/846}
-@media (max-width:400px){
-  .wrap{padding-left:8px; padding-right:8px}
-  .card{padding:12px 8px}
-  table.unitpic td.num{font-size:7px; letter-spacing:-0.05em}
-  table.unitpic tr.mat td.num{font-size:6.5px; letter-spacing:-0.06em}
-  table.unitpic td.lab{font-size:7px}
-  table.unitpic thead th{font-size:8px}
-  table.unitpic th.agehd{font-size:9.5px}
+table.unitpic tr.mat td.lab{background:#fff5f5}
+
+/* ===== Collapsible extras ===== */
+#infoAnchor{scroll-margin-top:12px}
+details.info{
+  background:var(--paper); border:1px solid #142a371f; border-radius:var(--radius);
+  box-shadow:var(--shadow); margin-top:var(--gap); padding:0 14px;
 }
-@media (min-width:600px){
-  .premium-grid{grid-template-columns:repeat(4,1fr)}
-  .p-item.main{grid-column:auto}
-  table.unitpic{font-size:13px}
-  table.unitpic th.agehd{font-size:15px}
-  table.unitpic thead th{font-size:13px}
-  table.unitpic td.lab{font-size:12px}
-  table.unitpic td.num{font-size:13px; letter-spacing:0}
-  table.unitpic tr.mat td.num{font-size:13px; letter-spacing:0}
-  table.unitpic th, table.unitpic td{padding:8px 4px}
+details.info summary{
+  min-height:48px; display:flex; align-items:center; cursor:pointer;
+  font-weight:800; color:var(--navy); list-style:none;
+}
+details.info summary::-webkit-details-marker{display:none}
+details.info summary::after{content:"▾"; margin-left:auto; color:var(--muted)}
+details.info[open] summary::after{content:"▴"}
+.benefit{border-left:4px solid var(--accent); padding:8px 10px; margin:8px 0; background:var(--accent-soft); border-radius:0 8px 8px 0}
+.benefit .title{font-weight:800; font-size:14px}
+.benefit .desc{font-size:12px; color:var(--muted)}
+.benefit .pay{font-size:13px; font-weight:800; color:var(--accent)}
+.rules{font-size:13px; line-height:1.55; padding-bottom:12px}
+.rules dt{font-weight:800; color:var(--accent); margin-top:8px}
+.rules dd{margin:2px 0 0}
+.disclaimer{font-size:12px; color:var(--muted); text-align:center; padding:16px 8px 8px; line-height:1.5}
+
+body.theme-cib{--accent:#c2185b; --accent-soft:#fce4ec; --accent-mid:#e91e63}
+
+/* Export offscreen root */
+#exportMount{
+  position:fixed; left:-10000px; top:0; width:1024px; background:#fff; z-index:-1;
+  pointer-events:none;
 }
 </style>
 </head>
 <body class="theme-cia">
 <header class="topbar">
-  <h1>CIA／CIB 癌症險試算 <span class="pill" id="prodPill">男性 CIA</span></h1>
-  <p class="sub" id="prodFull">富邦人壽豪愛守護防癌終身健康保險（CIA）｜男性專屬｜115/10/23 起銷售</p>
+  <div class="brand">
+    <img class="brand-logo" src="logo.png" alt="大心" width="34" height="48">
+    <div class="brand-text">
+      <span class="brand-slogan">台南最大心，服務最用心</span>
+      <h1>CIA／CIB 癌症險試算</h1>
+    </div>
+  </div>
 </header>
 
-<div class="wrap">
-  <div class="cs-term" id="csTerm">
-    <button type="button" data-term="10">10年</button>
-    <button type="button" data-term="20" class="active">20年</button>
-    <button type="button" data-term="30">30年</button>
-  </div>
-</div>
+<main class="app">
+  <nav class="quicknav" aria-label="快速導覽">
+    <a href="#chartAnchor">保障圖</a>
+    <a href="#unitAnchor">單位表</a>
+    <a href="#infoAnchor">說明</a>
+  </nav>
 
-  <div class="card">
-    <h2><span class="num">1</span>選擇商品</h2>
-    <div class="seg" id="prodSeg">
-      <button type="button" class="active" data-prod="CIA">CIA 男性</button>
-      <button type="button" data-prod="CIB">CIB 女性</button>
-    </div>
-    <p class="hint" id="prodHint">男性專屬｜豪愛守護防癌終身健康保險</p>
-  </div>
+  <div class="layout">
+    <!-- LEFT: controls -->
+    <aside class="controls card" id="controls">
+      <h2>投保條件</h2>
 
-  <div class="card" id="ageCard">
-    <h2><span class="num">2</span>保險年齡／年期／保額</h2>
-
-<div class="compact-sticky" id="compactSticky">
-  <div class="cs-age">
-    <button type="button" id="csMinus" aria-label="減一歲">−</button>
-    <input type="number" id="csAge" min="0" max="65" value="49" inputmode="numeric">
-    <button type="button" id="csPlus" aria-label="加一歲">＋</button>
-    <span class="cs-lab" id="csSex">歲／男</span>
-  </div>
-    <label class="field"><span>輸入年齡或生日（二擇一）</span>
-      <input type="text" id="ageOrBirth" placeholder="例：29　或　1998/03/27　或　87/03/27" value="49" autocomplete="off">
-    </label>
-    <p class="hint">數字＝保險年齡；生日可用 1998/03/27、1998-03-27 或民國 87/03/27。基準日＝今天。</p>
-    <div class="age-box">
-      <div><div class="k">辨識結果</div><div class="v" id="parseKind" style="font-size:.95rem">—</div></div>
-      <div><div class="k">保險年齡</div><div class="v" id="insAge">—</div></div>
-      <div class="explain" id="ageExplain">保險年齡＝足歲；距上次生日超過半年則加 1 歲。</div>
-    </div>
-    <div class="age-ctrl">
-      <div class="stepper">
-        <button type="button" id="ageMinus">−</button>
-        <button type="button" id="agePlus">＋</button>
+      <div class="seg" id="prodSeg" data-prod>
+        <button type="button" class="active" data-prod="CIA">男性 CIA</button>
+        <button type="button" data-prod="CIB">女性 CIB</button>
       </div>
-      <input type="number" class="age-num" id="ageInput" min="0" max="65" step="1" value="49">
-      <input type="range" id="ageSlider" min="0" max="65" value="49">
-    </div>
-    <label class="field" style="margin-top:10px"><span>繳費年期</span></label>
-    <div class="seg term" id="termSeg">
-      <button type="button" data-term="10">10 年期</button>
-      <button type="button" data-term="20" class="active">20 年期</button>
-      <button type="button" data-term="30">30 年期</button>
-    </div>
-    <label class="field" style="margin-top:10px"><span>保額（萬）｜50～500</span>
-      <input type="number" id="amount" min="50" max="500" step="1" value="100" inputmode="numeric">
-    </label>
-  </div>
+      <p class="hint" id="prodHint">男性專屬｜豪愛守護防癌終身健康保險</p>
 
-  <div class="card">
-    <h2><span class="num">3</span>保費試算</h2>
-    <div id="premErr" class="err"></div>
-    <div class="premium-grid">
-      <div class="p-item main"><div class="lab">年繳保費</div><div class="amt" id="pAnnual">—</div><div class="unit">元／年</div></div>
-      <div class="p-item"><div class="lab">半年繳 ×0.52</div><div class="amt" id="pSemi">—</div><div class="unit">元／期</div></div>
-      <div class="p-item"><div class="lab">季繳 ×0.262</div><div class="amt" id="pQtr">—</div><div class="unit">元／期</div></div>
-      <div class="p-item"><div class="lab">月繳 ×0.088</div><div class="amt" id="pMon">—</div><div class="unit">元／月</div></div>
-    </div>
-    <div class="total-line">
-      全程應繳合計（年繳 × 年期）：<strong id="pTotal">—</strong>
-      <div class="hint" id="rateDetail"></div>
-      <div class="hint">健康管理保險費折扣：18 歲起繳交健檢報告，次一年度主約續期可折 1％。試算為標準體、未含折扣。</div>
-    </div>
-  </div>
+      <div class="ctrl-row">
+        <label class="field">生日
+          <input type="date" id="birthDate" max="">
+        </label>
+        <label class="field">繳費年期
+          <div class="seg term" id="termSeg">
+            <button type="button" data-term="10">10年</button>
+            <button type="button" data-term="20" class="active">20年</button>
+            <button type="button" data-term="30">30年</button>
+          </div>
+        </label>
+        <div class="field" style="display:none"></div>
+      </div>
 
-  <!-- Exportable block: chart + unit table -->
-  <div class="card" id="visualCard">
-    <h2><span class="num">4</span>保障圖＋單位試算表 <span class="tag" id="unitTag">20 年期</span></h2>
-    <div class="export-actions">
-      <button type="button" class="btn btn-primary" id="btnDownload">下載圖片</button>
-      <button type="button" class="btn btn-ghost" id="btnScrollUnit">看單位表</button>
-    </div>
-    <p class="hint" id="dlHint">下載＝目前保障圖＋下方單位試算表合成一張 PNG，方便傳給客戶。</p>
+      <div class="age-line">
+        <span>保險年齡</span>
+        <strong id="insAgeLabel">—</strong>
+      </div>
+      <p class="hint" id="ageExplain">選生日後自動換算（足歲；距上次生日超過半年加 1 歲）。基準日＝今天。</p>
+      <p class="hint err" id="ageErr" hidden></p>
 
-    <div id="exportRoot">
-      <img class="chart-img" id="chartImg" src="cia-chart.jpg" alt="保障內容圖" width="1026" height="845">
-      <div class="unit-section" id="unitSection">
-        <h3>單位試算表</h3>
-        <div class="unit-frame">
-          <table class="unitpic" id="unitTable">
-            <colgroup>
-              <col class="c-lab">
-              <col class="c-u"><col class="c-u"><col class="c-u"><col class="c-u">
-            </colgroup>
-            <thead>
-              <tr>
-                <th class="agehd" id="unitAgeHd">49歲/男</th>
-                <th class="u05">半單位</th>
-                <th class="u1">1單位</th>
-                <th class="u2">2單位</th>
-                <th class="u3">3單位</th>
-              </tr>
-            </thead>
-            <tbody id="unitBody">
-              <!-- filled by JS; fixed 7 rows to avoid layout jump -->
-            </tbody>
-          </table>
+      <details class="secondary-age">
+        <summary>或直接輸入保險年齡</summary>
+        <label class="field">保險年齡（0–65）
+          <input type="number" id="ageDirect" min="0" max="65" step="1" inputmode="numeric" placeholder="例：49">
+        </label>
+      </details>
+
+      <label class="field">保額（萬）
+        <div class="amt-grid" id="amtGrid">
+          <button type="button" data-amt="50">半單位<br>50萬</button>
+          <button type="button" data-amt="100" class="active">1單位<br>100萬</button>
+          <button type="button" data-amt="200">2單位<br>200萬</button>
+          <button type="button" data-amt="300">3單位<br>300萬</button>
         </div>
-      </div>
+        <div class="custom-amt">
+          <input type="number" id="amtCustom" min="50" max="500" step="1" placeholder="自訂 50–500" inputmode="numeric">
+          <span>萬</span>
+        </div>
+      </label>
+
+      <button type="button" class="btn btn-primary" id="btnDownload">下載圖片</button>
+      <p class="dl-hint" id="dlHint">下載＝保障圖＋單位試算表（桌面版寬度）</p>
+    </aside>
+
+    <!-- RIGHT: chart + unit table -->
+    <div class="maincol">
+      <section class="card chart-wrap" id="chartAnchor">
+        <div id="liveChart">
+          <div class="chart-head">
+            <span class="avatar" id="chartAvatar">♂</span>
+            <span id="chartTitle">專屬男性癌症險</span>
+          </div>
+          <div class="bgrid" id="bgrid"></div>
+          <div class="death-bar" id="deathBar"></div>
+        </div>
+      </section>
+
+      <section class="card" id="unitAnchor" style="margin-top:var(--gap)">
+        <h2>單位試算表 <span class="tag" id="unitTag">20 年期</span></h2>
+        <div class="unit-section">
+          <div class="unit-frame">
+            <table class="unitpic" id="unitTable">
+              <colgroup>
+                <col class="c-lab"><col class="c-u"><col class="c-u"><col class="c-u"><col class="c-u">
+              </colgroup>
+              <thead>
+                <tr>
+                  <th class="agehd" id="unitAgeHd">—歲/男</th>
+                  <th class="u05" data-u="50">半單位</th>
+                  <th class="u1" data-u="100">1單位</th>
+                  <th class="u2" data-u="200">2單位</th>
+                  <th class="u3" data-u="300">3單位</th>
+                </tr>
+              </thead>
+              <tbody id="unitBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
     </div>
   </div>
 
-  <div class="card">
-    <h2><span class="num">5</span>保障內容（依保額換算）</h2>
-    <div id="benefits"></div>
-  </div>
-
-  <div class="card">
-    <h2><span class="num">6</span>投保規則摘要</h2>
-    <dl class="rules" id="rulesBox"></dl>
+  <div id="infoAnchor">
+    <details class="info">
+      <summary>保障內容說明（依目前保額）</summary>
+      <div id="benefits"></div>
+    </details>
+    <details class="info">
+      <summary>投保規則摘要</summary>
+      <dl class="rules" id="rulesBox"></dl>
+    </details>
   </div>
 
   <p class="disclaimer">
@@ -337,15 +386,11 @@ body.theme-cib .chart-img{aspect-ratio:1029/846}
     本保險無解約金。等待期間：一般 30 日／癌症 90 日。祝壽保險金：保險年齡 95 歲仍生存。<br>
     繳別係數：半年繳 ×0.52、季繳 ×0.262、月繳 ×0.088。
   </p>
-</div>
+</main>
+
+<div id="exportMount" aria-hidden="true"></div>
 
 <script>
-/* Chart paths: prefer gpt cropped charts if present (hook for later swap) */
-const CHART = {
-  CIA: { src: 'cia-chart.jpg', w:1026, h:845 },
-  CIB: { src: 'cib-chart.jpg', w:1029, h:846 }
-};
-
 const RATES = {
   CIA: {
     10: [320,325,335,340,350,355,365,370,375,385,390,395,400,405,410,415,420,425,430,435,445,455,465,475,485,500,510,520,530,545,555,570,585,600,610,625,640,655,665,680,695,715,730,745,765,780,795,815,830,845,865,900,935,965,998,1032,1065,1100,1135,1165,1200,1225,1250,1280,1305,1330],
@@ -358,7 +403,6 @@ const RATES = {
     30: [105,109,112,116,119,123,125,126,128,130,133,137,140,144,147,150,154,158,163,167,172,175,180,183,185,190,195,200,205,210,215,225,235,245,255,265,280,290,300,310,320,325,336,345,355,365,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null]
   }
 };
-const MODAL = { semi:0.52, qtr:0.262, mon:0.088 };
 const META = {
   CIA: {
     full:'富邦人壽豪愛守護防癌終身健康保險（CIA）｜男性專屬｜115/10/23 起銷售',
@@ -383,82 +427,56 @@ const META = {
     illLab:'頭部創傷/三度燒燙傷'
   }
 };
+const MODAL = { semi:0.52, qtr:0.262, mon:0.088 };
+const CHART_ICON = {
+  CIA: {
+    1:'icons/cia-1-cancer.png', 2:'icons/cia-2-specific.png', 3:'icons/cia-3-surgery.png',
+    4:'icons/cia-4-illness.png', 5:'icons/cia-5-waiver.png', 6:'icons/cia-6-maturity.png'
+  },
+  CIB: {
+    1:'icons/cib-1-cancer.png', 2:'icons/cib-2-specific.png', 3:'icons/cib-3-surgery.png',
+    4:'icons/cib-4-illness.png', 5:'icons/cib-5-waiver.png', 6:'icons/cib-6-maturity.png'
+  }
+};
 
-const state = { prod:'CIA', term:20, age:49 };
+const state = { prod:'CIA', term:20, age:49, amount:100 };
 
-function todayStr(){
-  const t=new Date();
-  return `${t.getFullYear()}-${String(t.getMonth()+1).padStart(2,'0')}-${String(t.getDate()).padStart(2,'0')}`;
-}
 function todayDate(){ const t=new Date(); return new Date(t.getFullYear(), t.getMonth(), t.getDate()); }
-function calcInsuranceAge(birthdayISO, asOfISO){
+function todayStr(){ const t=todayDate(); return `${t.getFullYear()}-${String(t.getMonth()+1).padStart(2,'0')}-${String(t.getDate()).padStart(2,'0')}`; }
+function calcInsuranceAge(birthdayISO){
   const b=new Date(birthdayISO+'T00:00:00');
-  const d=asOfISO ? new Date(asOfISO+'T00:00:00') : todayDate();
-  if(isNaN(b)||isNaN(d)||d<b) return null;
+  const d=todayDate();
+  if(isNaN(b)||d<b) return null;
   let years=d.getFullYear()-b.getFullYear();
   let lastBD=new Date(d.getFullYear(), b.getMonth(), b.getDate());
   if(lastBD>d){ years-=1; lastBD=new Date(d.getFullYear()-1, b.getMonth(), b.getDate()); }
   const actual=years;
   const six=new Date(lastBD); six.setMonth(six.getMonth()+6);
-  return {actual, ins: d>six ? actual+1 : actual, lastBD, six, asOf:d};
+  return {actual, ins: d>six ? actual+1 : actual, lastBD, asOf:d};
 }
 function fmt(n){ if(n==null||isNaN(n)) return '—'; return Math.round(n).toLocaleString('zh-TW'); }
 function moneyWan(wan,pct){ return Math.round(wan*10000*(pct/100)); }
-
-function fmtWan(n){
-  if(n==null||isNaN(n)) return '—';
-  const v=Math.round(n);
-  // mobile-friendly: show as 萬 with up to 2 decimals when >= 1萬
-  if(v >= 10000){
-    const wan=v/10000;
-    const s = (Math.round(wan*100)/100).toLocaleString('zh-TW',{maximumFractionDigits:2});
-    return s+'萬';
-  }
-  return v.toLocaleString('zh-TW');
-}
-
-
-function parseAgeOrBirth(raw){
-  const s=(raw||'').trim();
-  if(!s) return {ok:false, err:'請輸入年齡或生日'};
-  if(/^\d{1,2}$/.test(s)){
-    const age=+s;
-    if(age<0||age>65) return {ok:false, err:'保險年齡須為 0～65'};
-    return {ok:true, kind:'age', age};
-  }
-  let m=s.match(/^(\d{4})[\/\-\.年](\d{1,2})[\/\-\.月](\d{1,2})日?$/);
-  let y,mo,da,roc=false;
-  if(m){ y=+m[1]; mo=+m[2]; da=+m[3]; }
-  else {
-    m=s.match(/^(\d{2,3})[\/\-\.年](\d{1,2})[\/\-\.月](\d{1,2})日?$/);
-    if(m){ roc=true; y=+m[1]+1911; mo=+m[2]; da=+m[3]; }
-  }
-  if(!m) return {ok:false, err:'格式無法辨識。例：29　或　1998/03/27　或　87/03/27'};
-  if(mo<1||mo>12||da<1||da>31) return {ok:false, err:'生日日期無效'};
-  const iso=`${y}-${String(mo).padStart(2,'0')}-${String(da).padStart(2,'0')}`;
-  const info=calcInsuranceAge(iso);
-  if(!info) return {ok:false, err:'生日無效或晚於今天'};
-  if(info.ins<0||info.ins>65) return {ok:false, err:`換算保險年齡 ${info.ins} 超出 0～65`};
-  return {ok:true, kind:'birth', age:info.ins, info, iso, roc, display:`${y}/${String(mo).padStart(2,'0')}/${String(da).padStart(2,'0')}`};
+function rateOf(age, term){
+  if(age==null||age<0||age>65) return null;
+  return RATES[state.prod][term][age];
 }
 
 function setTheme(){
   const m=META[state.prod];
   document.body.className = state.prod==='CIB' ? 'theme-cib' : 'theme-cia';
-  document.getElementById('prodPill').textContent = m.pill;
-  document.getElementById('prodFull').textContent = m.full;
   document.getElementById('prodHint').textContent = m.short;
-  const c=CHART[state.prod];
-  const img=document.getElementById('chartImg');
-  img.src=c.src; img.width=c.w; img.height=c.h;
+  document.getElementById('chartTitle').textContent = state.prod==='CIA' ? '專屬男性癌症險' : '專屬女性癌症險';
+  document.getElementById('chartAvatar').textContent = state.prod==='CIA' ? '♂' : '♀';
   document.querySelectorAll('#prodSeg button').forEach(b=>b.classList.toggle('active', b.dataset.prod===state.prod));
 }
+
 function updateTermButtons(){
   const max={10:65,20:55,30:45};
   const age=state.age;
   document.querySelectorAll('#termSeg button').forEach(b=>{
     const t=+b.dataset.term;
     b.disabled=!(age!=null && age>=0 && age<=max[t]);
+    b.classList.toggle('active', +b.dataset.term===state.term && !b.disabled);
   });
   if(age!=null && age>max[state.term]){
     const fb=[10,20,30].find(x=>age<=max[x]);
@@ -468,17 +486,59 @@ function updateTermButtons(){
     b.classList.toggle('active', +b.dataset.term===state.term && !b.disabled);
   });
 }
-function setAgeUI(age){
-  state.age=age;
-  document.getElementById('ageInput').value=age;
-  document.getElementById('ageSlider').value=age;
-  document.getElementById('insAge').textContent=age+' 歲';
-  const cs=document.getElementById('csAge');
-  if(cs && document.activeElement!==cs) cs.value=age;
+
+function updateAmtButtons(){
+  document.querySelectorAll('#amtGrid button').forEach(b=>{
+    b.classList.toggle('active', +b.dataset.amt===state.amount);
+  });
+  const c=document.getElementById('amtCustom');
+  if(document.activeElement!==c){
+    c.value = [50,100,200,300].includes(state.amount) ? '' : state.amount;
+  }
 }
-function rateOf(age, term){
-  if(age==null||age<0||age>65) return null;
-  return RATES[state.prod][term][age];
+
+function renderChart(){
+  const wan=state.amount||100;
+  const m=META[state.prod];
+  const icons=CHART_ICON[state.prod];
+  const g10=fmt(moneyWan(wan,10)), g100=fmt(moneyWan(wan,100));
+  const s110=fmt(moneyWan(wan,110)), s150=fmt(moneyWan(wan,150));
+  const surg=fmt(moneyWan(wan,2)), ill=fmt(moneyWan(wan,10));
+  const cards=[
+    {n:1, title:'一般癌症', sub:'確診癌症（初期／輕度／重度）',
+      pay:`初期/輕度 <b>${g10}</b>元 <span class="pct">（10％）</span><br>重度 <b>${g100}</b>元 <span class="pct">（100％）</span>`,
+      note:'※第2保單年度起', cls:''},
+    {n:2, title:'特定癌症', sub:`${m.cancerN} 項特定癌症（加成）`,
+      pay:`<b>${s110}</b>元～<b>${s150}</b>元<br><span class="pct">（110％～150％）</span>`,
+      note:'※第2保單年度起', cls:''},
+    {n:3, title:'特定手術', sub:`${m.surgeryN} 項特定手術（限一次）`,
+      pay:`<b>${surg}</b>元 <span class="pct">（2％）</span>`,
+      note:'※不論幾項合計給付一次', cls:''},
+    {n:4, title:'特定傷病', sub:'嚴重頭部創傷、嚴重第三度燒燙傷',
+      pay:`<b>${ill}</b>元 <span class="pct">（10％）</span>`,
+      note:'※限給付一次', cls:''},
+    {n:5, title:'豁免保費', sub:'符合其一即豁免續期保費',
+      pay:`重度癌症　或<br>意外 1～6 級失能`,
+      note:'※契約繼續有效', cls:'waiver'},
+    {n:6, title:'祝壽保險金', sub:'保險年齡屆滿 95 歲仍生存',
+      pay:`所繳保費 × <b>1.06</b>`,
+      note:'※扣除已領累計', cls:''},
+  ];
+  document.getElementById('bgrid').innerHTML = cards.map(c=>`
+    <article class="bcard ${c.cls}">
+      <span class="num">${c.n}</span>
+      <div class="title">${c.title}</div>
+      <div class="sub">${c.sub}</div>
+      <img class="illu" src="${icons[c.n]}" alt="" width="160" height="90" loading="lazy">
+      <div class="pay">${c.pay}</div>
+      <div class="note">${c.note}</div>
+    </article>`).join('');
+  document.getElementById('deathBar').innerHTML = `
+    <div class="dicon">📄</div>
+    <div>
+      <strong>身故保障</strong>
+      <p>保險期間身故：給付當年度保險金額（扣除已領累計）後契約終止｜無解約金</p>
+    </div>`;
 }
 
 function renderUnitTable(){
@@ -486,82 +546,72 @@ function renderUnitTable(){
   const rate=rateOf(age, term);
   document.getElementById('unitAgeHd').textContent = (age!=null?age:'—')+'歲/'+m.sex;
   document.getElementById('unitTag').textContent = term+' 年期';
-  const csSex=document.getElementById('csSex');
-  if(csSex) csSex.textContent='歲／'+m.sex;
-  const csAge=document.getElementById('csAge');
-  if(csAge && document.activeElement!==csAge) csAge.value = age;
-  document.querySelectorAll('#csTerm button').forEach(b=>{
-    const t=+b.dataset.term;
-    const max={10:65,20:55,30:45};
-    b.disabled=!(age!=null && age<=max[t]);
-    b.classList.toggle('active', t===term && !b.disabled);
-  });
-
   const units=[50,100,200,300];
   const cls=['c05','c1','c2','c3'];
-  const cell = (vals, isNum) => vals.map((v,i)=>`<td class="${cls[i]}${isNum?' num':''}">${v}</td>`).join('');
-  // compact first-col labels for mobile
+  const hlIdx = units.indexOf(state.amount);
+  document.querySelectorAll('#unitTable thead th[data-u]').forEach(th=>{
+    th.classList.toggle('hl', +th.dataset.u===state.amount);
+  });
+  const cell=(vals,isNum)=>vals.map((v,i)=>{
+    const hl = i===hlIdx ? ' hl' : '';
+    return `<td class="${cls[i]}${isNum?' num':''}${hl}">${v}</td>`;
+  }).join('');
   const bonusShort = state.prod==='CIA' ? '男性癌症加成(第6年)' : '婦科癌症加成(第6年)';
   const illShort = '頭部創傷/燒燙傷';
   let rows;
   if(rate==null){
-    rows = [
+    rows=[
       ['保額', units.map(u=>u+'萬'), false],
       ['重度癌症', ['—','—','—','—'], true],
       [bonusShort, ['—','—','—','—'], true],
       [illShort, ['—','—','—','—'], true],
       ['滿期金', ['—','—','—','—'], true, true],
       ['年存', ['—','—','—','—'], true],
-      ['平均一個月', ['—','—','—','—'], true]
+      ['平均一個月', ['—','—','—','—'], true],
     ];
   } else {
     const annuals=units.map(u=>rate*u);
     const mats=annuals.map(a=>Math.round(a*term*1.06));
     const months=annuals.map(a=>Math.round(a/12));
-    rows = [
+    rows=[
       ['保額', units.map(u=>u+'萬'), false],
       ['重度癌症', units.map(u=>u+'萬'), false],
       [bonusShort, units.map(u=>(u*1.5)+'萬'), false],
       [illShort, units.map(u=>(u*0.1)+'萬'), false],
       ['滿期金', mats.map(fmt), true, true],
       ['年存', annuals.map(a=>fmt(a)), true],
-      ['平均一個月', months.map(fmt), true]
+      ['平均一個月', months.map(fmt), true],
     ];
   }
   document.getElementById('unitBody').innerHTML = rows.map(([lab,vals,isNum,isMat])=>{
-    return `<tr${isMat?' class="mat"':''}><td class="lab">${lab}</td>${cell(vals, !!isNum || lab==='保額' || lab.includes('加成') || lab.includes('創傷') || lab==='重度癌症')}</tr>`;
+    return `<tr${isMat?' class="mat"':''}><td class="lab">${lab}</td>${cell(vals,!!isNum)}</tr>`;
   }).join('');
 }
 
 function renderBenefits(){
-  const wan=+document.getElementById('amount').value||100;
+  const wan=state.amount||100;
   const m=META[state.prod];
-  const g10=moneyWan(wan,10), g100=moneyWan(wan,100);
-  const add10=moneyWan(wan,10), add50=moneyWan(wan,50);
-  const total110=moneyWan(wan,110), total150=moneyWan(wan,150);
-  const surg=moneyWan(wan,2), ill=moneyWan(wan,10);
   const rate=rateOf(state.age, state.term);
   const annual=rate!=null?rate*wan:null;
   const maturity=annual!=null?Math.round(annual*state.term*1.06):null;
   document.getElementById('benefits').innerHTML=`
     <div class="benefit"><div class="title">① 一般癌症</div>
-      <div class="pay">初期/輕度 ${fmt(g10)} 元（10％）｜重度 ${fmt(g100)} 元（100％）｜第2年度起</div>
-      <div class="note">第1年度改按年繳保費總和×1.06；各給付一次為限。</div></div>
+      <div class="pay">初期/輕度 ${fmt(moneyWan(wan,10))} 元（10％）｜重度 ${fmt(moneyWan(wan,100))} 元（100％）｜第2年度起</div></div>
     <div class="benefit"><div class="title">② 特定癌症加成｜${m.cancerN} 項</div>
       <div class="desc">${m.cancers}</div>
-      <div class="pay">加成 10％～50％ → ${fmt(add10)}～${fmt(add50)} 元；與重度合計約 ${fmt(total110)}～${fmt(total150)} 元</div></div>
+      <div class="pay">加成後約 ${fmt(moneyWan(wan,110))}～${fmt(moneyWan(wan,150))} 元（110％～150％）</div></div>
     <div class="benefit"><div class="title">③ 特定手術｜${m.surgeryN} 項</div>
       <div class="desc">${m.surgery}</div>
-      <div class="pay">${fmt(surg)} 元（2％）｜限一次</div></div>
+      <div class="pay">${fmt(moneyWan(wan,2))} 元（2％）｜限一次</div></div>
     <div class="benefit"><div class="title">④ 特定傷病</div>
       <div class="desc">${m.illness}</div>
-      <div class="pay">${fmt(ill)} 元（10％）｜限一次</div></div>
+      <div class="pay">${fmt(moneyWan(wan,10))} 元（10％）｜限一次</div></div>
     <div class="benefit"><div class="title">⑤ 豁免保費</div>
-      <div class="pay">癌症（重度）或意外 1～6 級失能 → 豁免本契約續期保費</div></div>
+      <div class="pay">癌症（重度）或意外 1～6 級失能 → 豁免續期保費</div></div>
     <div class="benefit"><div class="title">⑥ 祝壽保險金（95歲）</div>
-      <div class="pay">當年度保險金額＝年繳保費總和×1.06 − 已領累計${maturity!=null?`｜約 ${fmt(maturity)} 元`:''}</div></div>
+      <div class="pay">年繳保費總和×1.06 − 已領累計${maturity!=null?`｜約 ${fmt(maturity)} 元`:''}</div></div>
     <div class="benefit"><div class="title">⑦ 身故保障</div>
-      <div class="pay">給付當年度保險金額（扣除已領累計）後契約終止｜無解約金</div></div>`;
+      <div class="pay">當年度保險金額（扣除已領累計）｜無解約金</div></div>`;
 }
 function renderRules(){
   const m=META[state.prod];
@@ -575,55 +625,57 @@ function renderRules(){
     <dt>健康管理保險費折扣</dt><dd>18歲起，指定期間繳交健檢報告，次一年度主約續期折1％。</dd>
     <dt>性別</dt><dd>${state.prod==='CIA'?'限男性':'限女性'}</dd>`;
 }
-function recalcPremium(){
-  const err=document.getElementById('premErr');
-  const wan=+document.getElementById('amount').value;
-  const rate=rateOf(state.age, state.term);
-  const clear=()=>['pAnnual','pSemi','pQtr','pMon','pTotal'].forEach(id=>document.getElementById(id).textContent='—');
-  if(state.age==null||state.age<0||state.age>65){ err.textContent='投保年齡須為 0～65 歲'; clear(); return; }
-  if(rate==null){ err.textContent=`保險年齡 ${state.age} 歲無法投保 ${state.term} 年期`; clear(); document.getElementById('rateDetail').textContent=''; return; }
-  if(!wan||wan<50||wan>500){ err.textContent='保額須為 50～500 萬'; clear(); return; }
-  err.textContent='';
-  const annual=rate*wan;
-  document.getElementById('pAnnual').textContent=fmt(annual);
-  document.getElementById('pSemi').textContent=fmt(Math.round(annual*MODAL.semi));
-  document.getElementById('pQtr').textContent=fmt(Math.round(annual*MODAL.qtr));
-  document.getElementById('pMon').textContent=fmt(Math.round(annual*MODAL.mon));
-  document.getElementById('pTotal').textContent=fmt(Math.round(annual*state.term))+' 元';
-  document.getElementById('rateDetail').textContent=
-    `${state.prod}｜${state.age}歲｜${state.term}年期｜費率 ${rate.toLocaleString('zh-TW')} 元／萬 × ${wan} 萬`;
-}
-function applyParsed(p){
-  const kindEl=document.getElementById('parseKind');
-  const explain=document.getElementById('ageExplain');
-  if(!p.ok){ kindEl.textContent='無法辨識'; explain.textContent=p.err; return false; }
-  setAgeUI(p.age);
-  if(p.kind==='age'){
-    kindEl.textContent='直接年齡';
-    explain.textContent=`「${p.age}」視為保險年齡。試算與單位表同步。`;
-  } else {
-    kindEl.textContent=(p.roc?'民國生日→':'生日→')+'保險年齡';
-    const d=p.info.asOf, last=p.info.lastBD;
-    let mo=(d.getFullYear()-last.getFullYear())*12+(d.getMonth()-last.getMonth());
-    if(d.getDate()<last.getDate()) mo-=1;
-    const added=p.info.ins>p.info.actual;
-    explain.textContent=`生日 ${p.display}｜今天 ${todayStr()}｜足歲 ${p.info.actual}，距上次生日約 ${mo} 個月`+
-      (added?`（已過半年）→ 保險年齡 ${p.info.ins} 歲`:`（未過半年）→ 保險年齡 ${p.info.ins} 歲`);
-  }
-  return true;
-}
-function applyAgeOrBirthInput(){
-  applyParsed(parseAgeOrBirth(document.getElementById('ageOrBirth').value));
-  refreshAll();
-}
+
 function refreshAll(){
   updateTermButtons();
-  recalcPremium();
+  updateAmtButtons();
+  document.getElementById('insAgeLabel').textContent =
+    state.age!=null ? state.age+' 歲' : '—';
+  renderChart();
   renderUnitTable();
   renderBenefits();
   renderRules();
 }
 
+function applyBirth(){
+  const err=document.getElementById('ageErr');
+  const explain=document.getElementById('ageExplain');
+  const v=document.getElementById('birthDate').value;
+  err.hidden=true; err.textContent='';
+  if(!v){ return; }
+  const info=calcInsuranceAge(v);
+  if(!info){ err.hidden=false; err.textContent='生日無效'; return; }
+  if(info.ins<0||info.ins>65){
+    err.hidden=false; err.textContent=`保險年齡 ${info.ins} 超出 0～65`;
+    state.age=null; refreshAll(); return;
+  }
+  state.age=info.ins;
+  document.getElementById('ageDirect').value='';
+  const d=info.asOf, last=info.lastBD;
+  let mo=(d.getFullYear()-last.getFullYear())*12+(d.getMonth()-last.getMonth());
+  if(d.getDate()<last.getDate()) mo-=1;
+  const added=info.ins>info.actual;
+  explain.textContent=`足歲 ${info.actual}，距上次生日約 ${mo} 個月`+
+    (added?`（已過半年）→ 保險年齡 ${info.ins} 歲`:`（未過半年）→ 保險年齡 ${info.ins} 歲`);
+  refreshAll();
+}
+
+function applyDirectAge(){
+  const raw=document.getElementById('ageDirect').value.trim();
+  const err=document.getElementById('ageErr');
+  if(raw==='') return;
+  const age=+raw;
+  if(!Number.isFinite(age)||age<0||age>65){
+    err.hidden=false; err.textContent='保險年齡須為 0～65'; return;
+  }
+  err.hidden=true;
+  state.age=age|0;
+  document.getElementById('birthDate').value='';
+  document.getElementById('ageExplain').textContent=`「${state.age}」視為保險年齡。`;
+  refreshAll();
+}
+
+document.getElementById('birthDate').max = todayStr();
 document.getElementById('prodSeg').addEventListener('click', e=>{
   const b=e.target.closest('button[data-prod]'); if(!b) return;
   state.prod=b.dataset.prod; setTheme(); refreshAll();
@@ -632,87 +684,88 @@ document.getElementById('termSeg').addEventListener('click', e=>{
   const b=e.target.closest('button[data-term]'); if(!b||b.disabled) return;
   state.term=+b.dataset.term; refreshAll();
 });
-document.getElementById('ageOrBirth').addEventListener('input', applyAgeOrBirthInput);
-document.getElementById('amount').addEventListener('input', refreshAll);
-function setDirectAge(v){
-  v=Math.max(0, Math.min(65, v|0));
-  setAgeUI(v);
-  document.getElementById('ageOrBirth').value=String(v);
-  document.getElementById('parseKind').textContent='直接年齡';
-  document.getElementById('ageExplain').textContent=`「${v}」視為保險年齡。`;
-  refreshAll();
-}
-document.getElementById('ageSlider').addEventListener('input', e=>setDirectAge(+e.target.value));
-document.getElementById('ageInput').addEventListener('change', e=>setDirectAge(+e.target.value));
-document.getElementById('ageMinus').addEventListener('click', ()=>setDirectAge(state.age-1));
-document.getElementById('agePlus').addEventListener('click', ()=>setDirectAge(state.age+1));
-document.getElementById('btnScrollUnit').addEventListener('click', ()=>{
-  document.getElementById('unitSection').scrollIntoView({block:'nearest', behavior:'smooth'});
+document.getElementById('birthDate').addEventListener('change', applyBirth);
+document.getElementById('ageDirect').addEventListener('change', applyDirectAge);
+document.getElementById('amtGrid').addEventListener('click', e=>{
+  const b=e.target.closest('button[data-amt]'); if(!b) return;
+  state.amount=+b.dataset.amt; refreshAll();
+});
+document.getElementById('amtCustom').addEventListener('change', e=>{
+  let v=+e.target.value;
+  if(!v) return;
+  v=Math.max(50, Math.min(500, v|0));
+  state.amount=v; e.target.value=v; refreshAll();
 });
 
 async function downloadExport(){
   const btn=document.getElementById('btnDownload');
   const hint=document.getElementById('dlHint');
-  if(typeof html2canvas!=='function'){
-    hint.textContent='下載元件載入中，請稍後再試。';
-    return;
-  }
+  if(typeof html2canvas!=='function'){ hint.textContent='下載元件載入中…'; return; }
   btn.disabled=true; hint.textContent='產生圖片中…';
+  const mount=document.getElementById('exportMount');
   try{
-    // wait chart image
-    const img=document.getElementById('chartImg');
-    if(!img.complete) await new Promise(r=>{ img.onload=r; img.onerror=r; });
-    const root=document.getElementById('exportRoot');
-    const prev={width:root.style.width,maxWidth:root.style.maxWidth,margin:root.style.margin};
-    root.style.width='640px'; root.style.maxWidth='640px'; root.style.margin='0 auto';
-    let canvas;
-    try{
-      canvas=await html2canvas(root, {
-        backgroundColor:'#ffffff',
-        scale:2,
-        useCORS:true,
-        logging:false,
-        scrollX:0, scrollY:0,
-        windowWidth:640
-      });
-    }finally{
-      root.style.width=prev.width; root.style.maxWidth=prev.maxWidth; root.style.margin=prev.margin;
-    }
+    const live=document.getElementById('liveChart').cloneNode(true);
+    const unit=document.querySelector('#unitAnchor .unit-section').cloneNode(true);
+    mount.innerHTML='';
+    const wrap=document.createElement('div');
+    wrap.style.cssText='width:1024px;padding:20px;background:#fff;font-family:PingFang TC,Microsoft JhengHei,sans-serif';
+    const title=document.createElement('div');
+    title.style.cssText='font-size:18px;font-weight:800;margin-bottom:12px;color:#0f2a4a';
+    title.textContent=`${META[state.prod].pill}｜${state.age}歲｜${state.term}年期｜保額${state.amount}萬`;
+    wrap.appendChild(title);
+    wrap.appendChild(live);
+    const spacer=document.createElement('div'); spacer.style.height='16px'; wrap.appendChild(spacer);
+    wrap.appendChild(unit);
+    mount.appendChild(wrap);
+    // force 3-col in export
+    const g=wrap.querySelector('.bgrid');
+    if(g) g.style.gridTemplateColumns='repeat(3,minmax(0,1fr))';
+    await new Promise(r=>setTimeout(r,80));
+    const canvas=await html2canvas(wrap,{
+      backgroundColor:'#ffffff', scale:2, useCORS:true, logging:false,
+      width:1024, windowWidth:1024
+    });
     const a=document.createElement('a');
-    const m=META[state.prod];
-    a.download=`${state.prod}_${state.age}歲${m.sex}_${state.term}年期.png`;
+    a.download=`${state.prod}_${state.age}歲${META[state.prod].sex}_${state.term}年期_${state.amount}萬.png`;
     a.href=canvas.toDataURL('image/png');
     a.click();
     hint.textContent='已下載 PNG（保障圖＋單位試算表）。';
+    window.__lastExportCanvas=canvas;
   }catch(err){
     hint.textContent='下載失敗：'+(err&&err.message?err.message:err);
   }finally{
     btn.disabled=false;
+    mount.innerHTML='';
   }
 }
 document.getElementById('btnDownload').addEventListener('click', downloadExport);
 
-
-document.getElementById('csMinus').addEventListener('click', ()=>setDirectAge(state.age-1));
-document.getElementById('csPlus').addEventListener('click', ()=>setDirectAge(state.age+1));
-document.getElementById('csAge').addEventListener('change', e=>setDirectAge(+e.target.value));
-document.getElementById('csTerm').addEventListener('click', e=>{
-  const b=e.target.closest('button[data-term]'); if(!b||b.disabled) return;
-  state.term=+b.dataset.term; refreshAll();
-});
-
+// default: age 49 via direct (no birth), matches prior demos
+document.getElementById('ageDirect').value='49';
 setTheme();
-applyAgeOrBirthInput();
+applyDirectAge();
+document.querySelector('.secondary-age').open=false;
 
-window.calcInsuranceAge=calcInsuranceAge;
-window.RATES=RATES;
+
+function updateStickyFit(){
+  const el=document.getElementById('controls');
+  if(!el) return;
+  const desktop=window.matchMedia('(min-width:1024px)').matches;
+  const fits=el.offsetHeight < window.innerHeight - 24;
+  el.style.position = (desktop && fits) ? 'sticky' : 'static';
+}
+window.addEventListener('resize', updateStickyFit);
+window.addEventListener('load', updateStickyFit);
+setTimeout(updateStickyFit, 0);
+
 window.state=state;
-window.renderUnitTable=renderUnitTable;
+window.RATES=RATES;
+window.calcInsuranceAge=calcInsuranceAge;
 window.__exportTest=async function(){
-  if(typeof html2canvas!=='function') throw new Error('html2canvas missing');
-  const root=document.getElementById('exportRoot');
-  const canvas=await html2canvas(root,{backgroundColor:'#ffffff',scale:1,useCORS:true,logging:false});
-  return {w:canvas.width,h:canvas.height, dataUrlLen: canvas.toDataURL('image/png').length};
+  await downloadExport();
+  const c=window.__lastExportCanvas;
+  if(!c) throw new Error('no canvas');
+  return {w:c.width,h:c.height};
 };
 </script>
 </body>
