@@ -5,37 +5,43 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#1a5f9e">
 <title>CIA／CIB 癌症險試算｜富邦業務用</title>
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js" defer></script>
 <style>
 :root{
   --cia:#1a5f9e; --cia-soft:#e8f2fa; --cia-mid:#4a8fc4;
   --cib:#c2185b; --cib-soft:#fce4ec; --cib-mid:#e91e63;
   --bg:#f4f6f8; --card:#fff; --text:#1a1a1a; --muted:#667085;
-  --line:#e4e7ec; --ok:#027a48; --warn:#b54708; --radius:14px;
+  --line:#e4e7ec; --warn:#b54708; --radius:14px;
   --shadow:0 2px 10px rgba(16,24,40,.06);
   --accent:var(--cia); --accent-soft:var(--cia-soft); --accent-mid:var(--cia-mid);
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html{scroll-behavior:smooth}
+html{scroll-behavior:auto}
 body{
   margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;
-  background:var(--bg); color:var(--text); line-height:1.5; font-size:15px; padding:0 0 48px;
+  background:var(--bg); color:var(--text); line-height:1.5; font-size:15px; padding:0 0 56px;
+  overflow-anchor:none;
 }
 .topbar{
   background:linear-gradient(135deg,var(--accent),var(--accent-mid));
-  color:#fff; padding:16px 16px 18px; position:sticky; top:0; z-index:20;
+  color:#fff; padding:14px 14px 16px; position:sticky; top:0; z-index:40;
   box-shadow:0 2px 12px rgba(0,0,0,.15);
 }
-.topbar h1{margin:0; font-size:1.1rem; font-weight:700}
-.topbar .sub{margin:4px 0 0; opacity:.92; font-size:.75rem; line-height:1.35}
-.wrap{max-width:640px; margin:0 auto; padding:14px 12px 0}
+.topbar h1{margin:0; font-size:1.05rem; font-weight:700}
+.topbar .sub{margin:3px 0 0; opacity:.92; font-size:.72rem; line-height:1.35}
+.wrap{max-width:640px; margin:0 auto; padding:12px 12px 0}
 .card{
   background:var(--card); border-radius:var(--radius); box-shadow:var(--shadow);
   padding:14px; margin-bottom:12px; border:1px solid var(--line);
 }
-.card h2{margin:0 0 10px; font-size:.92rem; color:var(--accent); display:flex; align-items:center; gap:8px}
+.card h2{margin:0 0 10px; font-size:.9rem; color:var(--accent); display:flex; align-items:center; gap:8px}
 .card h2 .num{
   background:var(--accent); color:#fff; width:22px; height:22px; border-radius:50%;
-  font-size:.72rem; display:inline-flex; align-items:center; justify-content:center; font-weight:700; flex-shrink:0;
+  font-size:.7rem; display:inline-flex; align-items:center; justify-content:center; font-weight:700; flex-shrink:0;
+}
+.sticky-age{
+  position:sticky; top:64px; z-index:30; background:var(--card);
+  box-shadow:0 4px 14px rgba(16,24,40,.08);
 }
 .seg{display:grid; grid-template-columns:1fr 1fr; gap:8px; background:var(--bg); padding:4px; border-radius:12px}
 .seg.term{grid-template-columns:1fr 1fr 1fr}
@@ -45,80 +51,98 @@ body{
 }
 .seg button.active{background:var(--accent); color:#fff; box-shadow:0 2px 8px rgba(0,0,0,.15)}
 .seg button:disabled{opacity:.35; cursor:not-allowed}
-label.field{display:block; margin-bottom:10px}
-label.field > span{display:block; font-size:.75rem; color:var(--muted); margin-bottom:4px; font-weight:600}
-input[type=date], input[type=number], input[type=text], select{
+label.field{display:block; margin-bottom:8px}
+label.field > span{display:block; font-size:.72rem; color:var(--muted); margin-bottom:4px; font-weight:600}
+input[type=text], input[type=number]{
   width:100%; padding:11px 12px; border:1.5px solid var(--line); border-radius:10px;
   font-size:1rem; background:#fff; color:var(--text); outline:none; appearance:none; -webkit-appearance:none;
 }
 input:focus{border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-soft)}
-.row2{display:grid; grid-template-columns:1fr 1fr; gap:10px}
-.hint{font-size:.72rem; color:var(--muted); margin:4px 0 0; line-height:1.4}
+.hint{font-size:.7rem; color:var(--muted); margin:4px 0 0; line-height:1.4}
 .age-box{
-  background:var(--accent-soft); border-radius:12px; padding:12px; margin-top:4px;
-  display:grid; grid-template-columns:1fr 1fr; gap:8px;
+  background:var(--accent-soft); border-radius:12px; padding:10px 12px; margin-top:6px;
+  display:grid; grid-template-columns:1fr 1fr; gap:6px; min-height:78px;
 }
-.age-box .k{font-size:.7rem; color:var(--muted)}
-.age-box .v{font-size:1.3rem; font-weight:800; color:var(--accent); line-height:1.2}
-.age-box .explain{grid-column:1/-1; font-size:.7rem; color:var(--muted); line-height:1.4}
-.age-ctrl{
-  margin-top:10px; padding:12px; border:1px dashed var(--accent); border-radius:12px; background:#fff;
-}
-.age-ctrl .title{font-size:.78rem; font-weight:700; color:var(--accent); margin-bottom:8px}
-.age-ctrl .row{display:flex; align-items:center; gap:8px}
-.age-ctrl input[type=range]{flex:1; accent-color:var(--accent)}
+.age-box .k{font-size:.68rem; color:var(--muted)}
+.age-box .v{font-size:1.15rem; font-weight:800; color:var(--accent); line-height:1.2}
+.age-box .explain{grid-column:1/-1; font-size:.68rem; color:var(--muted); line-height:1.35; min-height:2.6em}
+.age-ctrl{margin-top:8px; display:flex; align-items:center; gap:8px}
 .age-ctrl .stepper{display:flex; gap:4px}
 .age-ctrl .stepper button{
-  width:36px; height:36px; border-radius:10px; border:1.5px solid var(--line);
-  background:#fff; font-size:1.1rem; font-weight:700; color:var(--accent); cursor:pointer;
+  width:34px; height:34px; border-radius:10px; border:1.5px solid var(--line);
+  background:#fff; font-size:1.05rem; font-weight:700; color:var(--accent); cursor:pointer;
 }
-.age-ctrl .age-num{width:64px; text-align:center; font-weight:800; font-size:1.1rem; padding:8px}
-.premium-grid{display:grid; grid-template-columns:1fr 1fr; gap:8px}
-.p-item{background:var(--bg); border-radius:12px; padding:12px; text-align:center; border:1px solid var(--line)}
+.age-ctrl .age-num{width:56px; text-align:center; font-weight:800; padding:7px; flex-shrink:0}
+.age-ctrl input[type=range]{flex:1; accent-color:var(--accent)}
+.premium-grid{display:grid; grid-template-columns:1fr 1fr; gap:8px; min-height:150px}
+.p-item{background:var(--bg); border-radius:12px; padding:11px; text-align:center; border:1px solid var(--line)}
 .p-item.main{grid-column:1/-1; background:var(--accent-soft); border-color:transparent}
-.p-item .lab{font-size:.7rem; color:var(--muted); font-weight:600}
-.p-item .amt{font-size:1.2rem; font-weight:800; color:var(--accent); margin-top:2px}
-.p-item.main .amt{font-size:1.5rem}
-.p-item .unit{font-size:.68rem; color:var(--muted)}
-.total-line{margin-top:10px; padding:12px; background:#fff8e6; border-radius:10px; border:1px solid #f5d78e; font-size:.86rem}
-.total-line strong{color:var(--warn); font-size:1.02rem}
-.benefit{border-left:4px solid var(--accent); padding:10px 12px; margin-bottom:8px; background:var(--accent-soft); border-radius:0 10px 10px 0}
-.benefit .title{font-weight:700; font-size:.88rem; margin-bottom:2px}
-.benefit .desc{font-size:.75rem; color:var(--muted); margin-bottom:4px}
-.benefit .pay{font-size:.9rem; font-weight:700; color:var(--accent)}
-.benefit .note{font-size:.68rem; color:var(--muted); margin-top:3px}
-.rules{font-size:.8rem; line-height:1.55}
-.rules dt{font-weight:700; color:var(--accent); margin-top:8px}
-.rules dd{margin:2px 0 0 0; color:#333}
-.chart-img{width:100%; border-radius:10px; border:1px solid var(--line); display:block; margin-top:8px}
-.unit-wrap{overflow:auto; -webkit-overflow-scrolling:touch; border:1px solid var(--line); border-radius:10px}
-table.unit{width:100%; border-collapse:collapse; font-size:.72rem; min-width:480px}
-table.unit th, table.unit td{padding:8px 6px; text-align:center; border-bottom:1px solid var(--line)}
-table.unit thead th{background:#1e3a5f; color:#fff; font-weight:600; position:sticky; top:0}
-table.unit thead th.agehd{background:#f5c518; color:#1a1a1a; font-size:.9rem}
-table.unit thead th.u05{background:#b8d4ef; color:#1a1a1a}
-table.unit thead th.u1{background:#f7e7a0; color:#1a1a1a}
-table.unit thead th.u2{background:#7ec8e8; color:#1a1a1a}
-table.unit thead th.u3{background:#f5b8c8; color:#1a1a1a}
-table.unit td.lab{text-align:left; font-weight:600; background:#fafafa; white-space:nowrap}
-table.unit tr.mat td{color:#c62828; font-weight:800}
-table.unit tr:nth-child(even) td:not(.lab){background:#f7fafc}
-.rate-wrap{overflow:auto; max-height:380px; border:1px solid var(--line); border-radius:10px; -webkit-overflow-scrolling:touch}
-table.rates{width:100%; border-collapse:collapse; font-size:.78rem; min-width:280px}
-table.rates th{position:sticky; top:0; background:var(--accent); color:#fff; padding:8px 6px; z-index:1}
-table.rates td{padding:6px; text-align:center; border-bottom:1px solid var(--line)}
-table.rates tr:nth-child(even) td{background:var(--accent-soft)}
-table.rates tr.hl td{background:#fff3cd; font-weight:700}
-table.rates td.na{color:#ccc}
-.disclaimer{font-size:.68rem; color:var(--muted); padding:8px 4px 24px; line-height:1.5; text-align:center}
-.err{color:#b42318; font-size:.84rem; padding:8px 0}
-.pill{display:inline-block; background:rgba(255,255,255,.22); padding:2px 8px; border-radius:999px; font-size:.68rem; margin-left:4px}
-.tag{display:inline-block; background:var(--accent-soft); color:var(--accent); font-size:.68rem; font-weight:700; padding:2px 8px; border-radius:999px; margin-left:6px}
+.p-item .lab{font-size:.68rem; color:var(--muted); font-weight:600}
+.p-item .amt{font-size:1.15rem; font-weight:800; color:var(--accent); margin-top:2px; min-height:1.3em}
+.p-item.main .amt{font-size:1.4rem}
+.p-item .unit{font-size:.65rem; color:var(--muted)}
+.total-line{margin-top:10px; padding:11px; background:#fff8e6; border-radius:10px; border:1px solid #f5d78e; font-size:.84rem; min-height:4.5em}
+.total-line strong{color:var(--warn)}
+.benefit{border-left:4px solid var(--accent); padding:9px 11px; margin-bottom:7px; background:var(--accent-soft); border-radius:0 10px 10px 0}
+.benefit .title{font-weight:700; font-size:.85rem}
+.benefit .desc{font-size:.72rem; color:var(--muted)}
+.benefit .pay{font-size:.86rem; font-weight:700; color:var(--accent)}
+.benefit .note{font-size:.66rem; color:var(--muted); margin-top:2px}
+.rules{font-size:.78rem; line-height:1.5}
+.rules dt{font-weight:700; color:var(--accent); margin-top:7px}
+.rules dd{margin:2px 0 0}
+.chart-img{
+  width:100%; display:block; border-radius:8px; border:1px solid var(--line);
+  background:#fafafa; aspect-ratio:1026/845; object-fit:contain;
+}
+body.theme-cib .chart-img{aspect-ratio:1029/846}
+.export-actions{display:flex; gap:8px; margin:10px 0 4px; flex-wrap:wrap}
+.btn{
+  border:0; border-radius:10px; padding:10px 14px; font-weight:700; font-size:.85rem; cursor:pointer;
+}
+.btn-primary{background:var(--accent); color:#fff}
+.btn-ghost{background:var(--bg); color:var(--accent); border:1.5px solid var(--line)}
+.btn:disabled{opacity:.5; cursor:wait}
+.err{color:#b42318; font-size:.82rem; padding:6px 0; min-height:1.2em}
+.pill{display:inline-block; background:rgba(255,255,255,.22); padding:2px 8px; border-radius:999px; font-size:.66rem; margin-left:4px}
+.tag{display:inline-block; background:var(--accent-soft); color:var(--accent); font-size:.66rem; font-weight:700; padding:2px 8px; border-radius:999px}
+.disclaimer{font-size:.66rem; color:var(--muted); padding:8px 4px 20px; line-height:1.5; text-align:center}
 body.theme-cib{--accent:var(--cib); --accent-soft:var(--cib-soft); --accent-mid:var(--cib-mid)}
 body.theme-cib .topbar{background:linear-gradient(135deg,#c2185b,#ec407a)}
+
+/* ===== Image-like unit table ===== */
+.unit-section{margin-top:4px}
+.unit-section h3{margin:0 0 8px; font-size:.95rem; font-weight:800; color:#1a1a1a}
+.unit-frame{
+  border:2px solid #222; border-radius:2px; overflow:hidden; background:#fff;
+  font-family:"Microsoft JhengHei","Noto Sans TC","PingFang TC",sans-serif;
+}
+table.unitpic{
+  width:100%; border-collapse:collapse; table-layout:fixed; font-size:13px;
+}
+table.unitpic th, table.unitpic td{
+  border:1px solid #222; padding:8px 4px; text-align:center; vertical-align:middle;
+  line-height:1.25;
+}
+table.unitpic thead th{font-weight:800; font-size:13px}
+table.unitpic th.agehd{background:#f5c518; color:#111; font-size:15px; font-weight:900; width:28%}
+table.unitpic th.u05{background:#b8d4ef; color:#111}
+table.unitpic th.u1{background:#f7e7a0; color:#111}
+table.unitpic th.u2{background:#7ec8e8; color:#111}
+table.unitpic th.u3{background:#f5b8c8; color:#111}
+table.unitpic td.lab{text-align:left; padding-left:8px; font-weight:700; background:#fafafa; font-size:12px}
+table.unitpic td.c05{background:#d6e8f7}
+table.unitpic td.c1{background:#fbf3c8}
+table.unitpic td.c2{background:#b7e0f2}
+table.unitpic td.c3{background:#f8d0db}
+table.unitpic tr.mat td{color:#c62828; font-weight:900; font-size:14px}
+table.unitpic tr.mat td.lab{color:#c62828; background:#fff5f5}
+#exportRoot{background:#fff; padding:0}
 @media (min-width:600px){
   .premium-grid{grid-template-columns:repeat(4,1fr)}
   .p-item.main{grid-column:auto}
+  table.unitpic{font-size:14px}
+  table.unitpic th.agehd{font-size:16px}
 }
 </style>
 </head>
@@ -138,48 +162,39 @@ body.theme-cib .topbar{background:linear-gradient(135deg,#c2185b,#ec407a)}
     <p class="hint" id="prodHint">男性專屬｜豪愛守護防癌終身健康保險</p>
   </div>
 
-  <div class="card">
-    <h2><span class="num">2</span>保險年齡</h2>
+  <div class="card sticky-age" id="stickyAge">
+    <h2><span class="num">2</span>保險年齡／年期／保額</h2>
     <label class="field"><span>輸入年齡或生日（二擇一）</span>
-      <input type="text" id="ageOrBirth" inputmode="text" placeholder="例：29　或　1998/03/27　或　87/03/27" value="29" autocomplete="off">
+      <input type="text" id="ageOrBirth" placeholder="例：29　或　1998/03/27　或　87/03/27" value="49" autocomplete="off">
     </label>
-    <p class="hint">直接填數字＝保險年齡；填生日（西元 1998/03/27、1998-03-27，或民國 87/03/27）則自動換算。基準日固定為今天。</p>
+    <p class="hint">數字＝保險年齡；生日可用 1998/03/27、1998-03-27 或民國 87/03/27。基準日＝今天。</p>
     <div class="age-box">
-      <div><div class="k">辨識結果</div><div class="v" id="parseKind" style="font-size:1rem">—</div></div>
+      <div><div class="k">辨識結果</div><div class="v" id="parseKind" style="font-size:.95rem">—</div></div>
       <div><div class="k">保險年齡</div><div class="v" id="insAge">—</div></div>
-      <div class="explain" id="ageExplain">保險年齡＝足歲；距上次生日超過半年（＞6 個月）則加 1 歲。</div>
+      <div class="explain" id="ageExplain">保險年齡＝足歲；距上次生日超過半年則加 1 歲。</div>
     </div>
     <div class="age-ctrl">
-      <div class="title">微調保險年齡（試算／單位表同步）</div>
-      <div class="row">
-        <div class="stepper">
-          <button type="button" id="ageMinus" aria-label="減一歲">−</button>
-          <button type="button" id="agePlus" aria-label="加一歲">＋</button>
-        </div>
-        <input type="number" class="age-num" id="ageInput" min="0" max="65" step="1" value="29">
-        <input type="range" id="ageSlider" min="0" max="65" value="29">
+      <div class="stepper">
+        <button type="button" id="ageMinus">−</button>
+        <button type="button" id="agePlus">＋</button>
       </div>
+      <input type="number" class="age-num" id="ageInput" min="0" max="65" step="1" value="49">
+      <input type="range" id="ageSlider" min="0" max="65" value="49">
     </div>
-  </div>
-
-  <div class="card">
-    <h2><span class="num">3</span>年期與保額</h2>
-    <label class="field"><span>繳費年期</span></label>
+    <label class="field" style="margin-top:10px"><span>繳費年期</span></label>
     <div class="seg term" id="termSeg">
       <button type="button" data-term="10">10 年期</button>
       <button type="button" data-term="20" class="active">20 年期</button>
       <button type="button" data-term="30">30 年期</button>
     </div>
-    <p class="hint">10 年期 0–65 歲；20 年期 0–55 歲；30 年期 0–45 歲。</p>
-    <label class="field" style="margin-top:10px"><span>保額（萬元）｜限 50～500 萬</span>
+    <label class="field" style="margin-top:10px"><span>保額（萬）｜50～500</span>
       <input type="number" id="amount" min="50" max="500" step="1" value="100" inputmode="numeric">
     </label>
-    <p class="hint">最低 50 萬、最高累計本險種 500 萬（以萬元為單位）。費率單位：元／每萬元保額。</p>
   </div>
 
   <div class="card">
-    <h2><span class="num">4</span>保費試算結果</h2>
-    <div id="premErr" class="err" hidden></div>
+    <h2><span class="num">3</span>保費試算</h2>
+    <div id="premErr" class="err"></div>
     <div class="premium-grid">
       <div class="p-item main"><div class="lab">年繳保費</div><div class="amt" id="pAnnual">—</div><div class="unit">元／年</div></div>
       <div class="p-item"><div class="lab">半年繳 ×0.52</div><div class="amt" id="pSemi">—</div><div class="unit">元／期</div></div>
@@ -189,60 +204,67 @@ body.theme-cib .topbar{background:linear-gradient(135deg,#c2185b,#ec407a)}
     <div class="total-line">
       全程應繳合計（年繳 × 年期）：<strong id="pTotal">—</strong>
       <div class="hint" id="rateDetail"></div>
-      <div class="hint">健康管理保險費折扣：保險年齡 18 歲起，指定期間內繳交健檢報告，次一保單年度主約續期保費可折 1％（與繳費方式折扣合計另計）。試算數字為標準體年繳費率、未含折扣。</div>
+      <div class="hint">健康管理保險費折扣：18 歲起繳交健檢報告，次一年度主約續期可折 1％。試算為標準體、未含折扣。</div>
+    </div>
+  </div>
+
+  <!-- Exportable block: chart + unit table -->
+  <div class="card" id="visualCard">
+    <h2><span class="num">4</span>保障圖＋單位試算表 <span class="tag" id="unitTag">20 年期</span></h2>
+    <div class="export-actions">
+      <button type="button" class="btn btn-primary" id="btnDownload">下載圖片</button>
+      <button type="button" class="btn btn-ghost" id="btnScrollUnit">看單位表</button>
+    </div>
+    <p class="hint" id="dlHint">下載＝目前保障圖＋下方單位試算表合成一張 PNG，方便傳給客戶。</p>
+
+    <div id="exportRoot">
+      <img class="chart-img" id="chartImg" src="cia-chart.jpg" alt="保障內容圖" width="1026" height="845">
+      <div class="unit-section" id="unitSection">
+        <h3>單位試算表</h3>
+        <div class="unit-frame">
+          <table class="unitpic" id="unitTable">
+            <thead>
+              <tr>
+                <th class="agehd" id="unitAgeHd">49歲/男</th>
+                <th class="u05">半單位</th>
+                <th class="u1">1單位</th>
+                <th class="u2">2單位</th>
+                <th class="u3">3單位</th>
+              </tr>
+            </thead>
+            <tbody id="unitBody">
+              <!-- filled by JS; fixed 7 rows to avoid layout jump -->
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   </div>
 
   <div class="card">
-    <h2><span class="num">5</span>單位試算表 <span class="tag" id="unitTag">—</span></h2>
-    <p class="hint" style="margin-bottom:8px">隨保險年齡、年期、商品即時重算。滿期金＝年存 × 年期 × 1.06（未扣已領保險金）。特定癌症加成以第 6 保單年度起 50％ 加成、合計 150％ 為例。</p>
-    <div class="unit-wrap">
-      <table class="unit" id="unitTable">
-        <thead>
-          <tr>
-            <th class="agehd" id="unitAgeHd">—</th>
-            <th class="u05">半單位<br>50萬</th>
-            <th class="u1">1單位<br>100萬</th>
-            <th class="u2">2單位<br>200萬</th>
-            <th class="u3">3單位<br>300萬</th>
-          </tr>
-        </thead>
-        <tbody id="unitBody"></tbody>
-      </table>
-    </div>
-  </div>
-
-  <div class="card">
-    <h2><span class="num">6</span>保障內容（依保額換算）</h2>
+    <h2><span class="num">5</span>保障內容（依保額換算）</h2>
     <div id="benefits"></div>
-    <p class="hint" style="margin-top:8px">下方為暫用圖（之後會換校正版）。試算文字以正式條款／DM／商品內容說明為準。</p>
-    <img class="chart-img" id="chartImg" src="cia-benefits.jpg" alt="保障圖">
   </div>
 
   <div class="card">
-    <h2><span class="num">7</span>投保規則摘要</h2>
+    <h2><span class="num">6</span>投保規則摘要</h2>
     <dl class="rules" id="rulesBox"></dl>
   </div>
 
-  <div class="card">
-    <h2><span class="num">8</span>完整費率表</h2>
-    <p class="hint" style="margin-bottom:8px">單位：元／每萬元保額（年繳）。目前保險年齡列反黃。</p>
-    <div class="rate-wrap">
-      <table class="rates" id="rateTable">
-        <thead><tr><th>投保年齡</th><th>10年期</th><th>20年期</th><th>30年期</th></tr></thead>
-        <tbody></tbody>
-      </table>
-    </div>
-  </div>
-
   <p class="disclaimer">
-    本試算僅供業務參考，費率與保障以富邦人壽正式條款、DM、商品內容說明與費率表為準（115/10/23 起適用）。<br>
-    本保險因費率計算已考慮脫退率，故無解約金。等待期間：一般 30 日／癌症 90 日。<br>
-    繳別係數：半年繳 ×0.52、季繳 ×0.262、月繳 ×0.088。祝壽保險金：保險年齡屆滿 95 歲仍生存。
+    本試算僅供業務參考，以富邦人壽正式條款、DM、商品內容說明與費率表為準（115/10/23 起適用）。<br>
+    本保險無解約金。等待期間：一般 30 日／癌症 90 日。祝壽保險金：保險年齡 95 歲仍生存。<br>
+    繳別係數：半年繳 ×0.52、季繳 ×0.262、月繳 ×0.088。
   </p>
 </div>
 
 <script>
+/* Chart paths: prefer gpt cropped charts if present (hook for later swap) */
+const CHART = {
+  CIA: { src: 'cia-chart.jpg', w:1026, h:845 },
+  CIB: { src: 'cib-chart.jpg', w:1029, h:846 }
+};
+
 const RATES = {
   CIA: {
     10: [320,325,335,340,350,355,365,370,375,385,390,395,400,405,410,415,420,425,430,435,445,455,465,475,485,500,510,520,530,545,555,570,585,600,610,625,640,655,665,680,695,715,730,745,765,780,795,815,830,845,865,900,935,965,998,1032,1065,1100,1135,1165,1200,1225,1250,1280,1305,1330],
@@ -258,38 +280,36 @@ const RATES = {
 const MODAL = { semi:0.52, qtr:0.262, mon:0.088 };
 const META = {
   CIA: {
-    full: '富邦人壽豪愛守護防癌終身健康保險（CIA）｜男性專屬｜115/10/23 起銷售',
-    short: '男性專屬｜豪愛守護防癌終身健康保險',
-    sex: '男', pill: '男性 CIA', chart: 'cia-benefits.jpg',
-    cancers: '攝護腺癌、睪丸癌、大腸癌（結腸／直腸乙狀／直腸）、肛門癌、陰莖癌、其他男性生殖器癌、膀胱癌等 9 項',
-    cancerN: 9,
-    surgery: '攝護腺／前列腺相關手術共 8 項（被膜下／恥骨下前列腺切除、經尿道攝護腺切除等）',
-    surgeryN: 8,
-    illness: '嚴重頭部創傷、嚴重第三度燒燙傷'
+    full:'富邦人壽豪愛守護防癌終身健康保險（CIA）｜男性專屬｜115/10/23 起銷售',
+    short:'男性專屬｜豪愛守護防癌終身健康保險',
+    sex:'男', pill:'男性 CIA',
+    cancers:'攝護腺癌、睪丸癌、大腸癌、肛門癌、陰莖癌、其他男性生殖器癌、膀胱癌等 9 項',
+    cancerN:9, surgeryN:8,
+    surgery:'攝護腺／前列腺相關手術共 8 項',
+    illness:'嚴重頭部創傷、嚴重第三度燒燙傷',
+    bonusLab:'男性癌症加成合計(例：第6年)',
+    illLab:'頭部創傷/三度燒燙傷'
   },
   CIB: {
-    full: '富邦人壽真馨守護防癌終身健康保險（CIB）｜女性專屬｜115/10/23 起銷售',
-    short: '女性專屬｜真馨守護防癌終身健康保險',
-    sex: '女', pill: '女性 CIB', chart: 'cib-benefits.jpg',
-    cancers: '乳癌、子宮頸癌、子宮體癌、卵巢癌、外陰／陰道癌、皮膚惡性黑色素瘤等 11 項',
-    cancerN: 11,
-    surgery: '尿失禁／骨盆底相關手術共 14 項',
-    surgeryN: 14,
-    illness: '嚴重頭部創傷、嚴重第三度燒燙傷'
+    full:'富邦人壽真馨守護防癌終身健康保險（CIB）｜女性專屬｜115/10/23 起銷售',
+    short:'女性專屬｜真馨守護防癌終身健康保險',
+    sex:'女', pill:'女性 CIB',
+    cancers:'乳癌、子宮頸癌、子宮體癌、卵巢癌等 11 項',
+    cancerN:11, surgeryN:14,
+    surgery:'尿失禁／骨盆底相關手術共 14 項',
+    illness:'嚴重頭部創傷、嚴重第三度燒燙傷',
+    bonusLab:'婦科癌症加成合計(例：第6年)',
+    illLab:'頭部創傷/三度燒燙傷'
   }
 };
 
-const state = { prod:'CIA', term:20, age:29 };
+const state = { prod:'CIA', term:20, age:49 };
 
 function todayStr(){
   const t=new Date();
   return `${t.getFullYear()}-${String(t.getMonth()+1).padStart(2,'0')}-${String(t.getDate()).padStart(2,'0')}`;
 }
-function todayDate(){
-  const t=new Date();
-  return new Date(t.getFullYear(), t.getMonth(), t.getDate());
-}
-/** 保險年齡：足歲；距上次生日超過 6 個月則 +1。基準日＝今天 */
+function todayDate(){ const t=new Date(); return new Date(t.getFullYear(), t.getMonth(), t.getDate()); }
 function calcInsuranceAge(birthdayISO, asOfISO){
   const b=new Date(birthdayISO+'T00:00:00');
   const d=asOfISO ? new Date(asOfISO+'T00:00:00') : todayDate();
@@ -299,29 +319,19 @@ function calcInsuranceAge(birthdayISO, asOfISO){
   if(lastBD>d){ years-=1; lastBD=new Date(d.getFullYear()-1, b.getMonth(), b.getDate()); }
   const actual=years;
   const six=new Date(lastBD); six.setMonth(six.getMonth()+6);
-  const ins = d>six ? actual+1 : actual;
-  return {actual, ins, lastBD, six, asOf:d};
+  return {actual, ins: d>six ? actual+1 : actual, lastBD, six, asOf:d};
 }
 function fmt(n){ if(n==null||isNaN(n)) return '—'; return Math.round(n).toLocaleString('zh-TW'); }
-function fmtDec(n,d=1){
-  if(n==null||isNaN(n)) return '—';
-  const x=Number(n);
-  if(Number.isInteger(x)) return x.toLocaleString('zh-TW');
-  return x.toLocaleString('zh-TW',{minimumFractionDigits:d, maximumFractionDigits:d});
-}
 function moneyWan(wan,pct){ return Math.round(wan*10000*(pct/100)); }
 
-/** 解析單一輸入：純年齡 或 生日（西元／民國） */
 function parseAgeOrBirth(raw){
   const s=(raw||'').trim();
   if(!s) return {ok:false, err:'請輸入年齡或生日'};
-  // pure age: 0-65 integer
   if(/^\d{1,2}$/.test(s)){
     const age=+s;
     if(age<0||age>65) return {ok:false, err:'保險年齡須為 0～65'};
     return {ok:true, kind:'age', age};
   }
-  // birthday patterns
   let m=s.match(/^(\d{4})[\/\-\.年](\d{1,2})[\/\-\.月](\d{1,2})日?$/);
   let y,mo,da,roc=false;
   if(m){ y=+m[1]; mo=+m[2]; da=+m[3]; }
@@ -329,12 +339,12 @@ function parseAgeOrBirth(raw){
     m=s.match(/^(\d{2,3})[\/\-\.年](\d{1,2})[\/\-\.月](\d{1,2})日?$/);
     if(m){ roc=true; y=+m[1]+1911; mo=+m[2]; da=+m[3]; }
   }
-  if(!m) return {ok:false, err:'格式無法辨識。請填年齡（如 29）或生日（如 1998/03/27、87/03/27）'};
+  if(!m) return {ok:false, err:'格式無法辨識。例：29　或　1998/03/27　或　87/03/27'};
   if(mo<1||mo>12||da<1||da>31) return {ok:false, err:'生日日期無效'};
   const iso=`${y}-${String(mo).padStart(2,'0')}-${String(da).padStart(2,'0')}`;
   const info=calcInsuranceAge(iso);
   if(!info) return {ok:false, err:'生日無效或晚於今天'};
-  if(info.ins<0||info.ins>65) return {ok:false, err:`換算保險年齡 ${info.ins} 超出投保範圍 0～65`};
+  if(info.ins<0||info.ins>65) return {ok:false, err:`換算保險年齡 ${info.ins} 超出 0～65`};
   return {ok:true, kind:'birth', age:info.ins, info, iso, roc, display:`${y}/${String(mo).padStart(2,'0')}/${String(da).padStart(2,'0')}`};
 }
 
@@ -344,7 +354,9 @@ function setTheme(){
   document.getElementById('prodPill').textContent = m.pill;
   document.getElementById('prodFull').textContent = m.full;
   document.getElementById('prodHint').textContent = m.short;
-  document.getElementById('chartImg').src = m.chart;
+  const c=CHART[state.prod];
+  const img=document.getElementById('chartImg');
+  img.src=c.src; img.width=c.w; img.height=c.h;
   document.querySelectorAll('#prodSeg button').forEach(b=>b.classList.toggle('active', b.dataset.prod===state.prod));
 }
 function updateTermButtons(){
@@ -372,144 +384,96 @@ function rateOf(age, term){
   if(age==null||age<0||age>65) return null;
   return RATES[state.prod][term][age];
 }
+
 function renderUnitTable(){
   const age=state.age, term=state.term, m=META[state.prod];
   const rate=rateOf(age, term);
-  document.getElementById('unitAgeHd').textContent = (age!=null?age:'—')+'歲／'+m.sex;
+  document.getElementById('unitAgeHd').textContent = (age!=null?age:'—')+'歲/'+m.sex;
   document.getElementById('unitTag').textContent = term+' 年期';
   const units=[50,100,200,300];
+  const cls=['c05','c1','c2','c3'];
+  const cell = (vals) => vals.map((v,i)=>`<td class="${cls[i]}">${v}</td>`).join('');
+  let rows;
   if(rate==null){
-    document.getElementById('unitBody').innerHTML='<tr><td colspan="5" style="padding:16px;color:#b42318">此年齡無法投保 '+term+' 年期，請改年期或年齡。</td></tr>';
-    return;
+    rows = [
+      ['保額', units.map(u=>u+'萬')],
+      ['重度癌症', ['—','—','—','—']],
+      [m.bonusLab, ['—','—','—','—']],
+      [m.illLab, ['—','—','—','—']],
+      ['滿期金', ['請改年期','請改年期','請改年期','請改年期'], true],
+      ['年存', ['—','—','—','—']],
+      ['平均一個月', ['—','—','—','—']]
+    ];
+  } else {
+    const annuals=units.map(u=>rate*u);
+    const mats=annuals.map(a=>Math.round(a*term*1.06));
+    const months=annuals.map(a=>Math.round(a/12));
+    rows = [
+      ['保額', units.map(u=>u+'萬')],
+      ['重度癌症', units.map(u=>u+'萬')],
+      [m.bonusLab, units.map(u=>(u*1.5)%1===0?(u*1.5)+'萬':(u*1.5)+'萬')],
+      [m.illLab, units.map(u=>(u*0.1)+'萬')],
+      ['滿期金', mats.map(fmt), true],
+      ['年存', annuals.map(a=>fmt(a))],
+      ['平均一個月', months.map(fmt)]
+    ];
   }
-  const severe=units.map(u=>u+'萬');
-  const bonus=units.map(u=>(u*1.5)+'萬');
-  const ill=units.map(u=>(u*0.1)+'萬');
-  const annuals=units.map(u=>rate*u);
-  const mats=annuals.map(a=>Math.round(a*term*1.06));
-  const months=annuals.map(a=>a/12);
-  const illLabel='特定傷病（頭部創傷／燒燙傷）';
-  const bonusLabel = state.prod==='CIA' ? '男性特定癌症加成合計（例：第6年）' : '婦癌特定癌症加成合計（例：第6年）';
-  const rows=[
-    ['重度癌症', severe],
-    [bonusLabel, bonus],
-    [illLabel, ill],
-    ['滿期金（年存×年期×1.06）', mats.map(fmt), true],
-    ['年存（年繳）', annuals.map(a=>fmtDec(a, a%1?1:0))],
-    ['平均一個月', months.map(a=>fmtDec(a, a%1?2:0))]
-  ];
-  let html='';
-  for(const [lab, vals, isMat] of rows){
-    html+=`<tr${isMat?' class="mat"':''}><td class="lab">${lab}</td>`+vals.map(v=>`<td>${v}</td>`).join('')+`</tr>`;
-  }
-  document.getElementById('unitBody').innerHTML=html;
+  document.getElementById('unitBody').innerHTML = rows.map(([lab,vals,isMat])=>{
+    return `<tr${isMat?' class="mat"':''}><td class="lab">${lab}</td>${cell(vals)}</tr>`;
+  }).join('');
 }
+
 function renderBenefits(){
   const wan=+document.getElementById('amount').value||100;
   const m=META[state.prod];
-  const el=document.getElementById('benefits');
   const g10=moneyWan(wan,10), g100=moneyWan(wan,100);
   const add10=moneyWan(wan,10), add50=moneyWan(wan,50);
   const total110=moneyWan(wan,110), total150=moneyWan(wan,150);
   const surg=moneyWan(wan,2), ill=moneyWan(wan,10);
   const rate=rateOf(state.age, state.term);
   const annual=rate!=null?rate*wan:null;
-  const totalPay=annual!=null?Math.round(annual*state.term):null;
-  const maturity=totalPay!=null?Math.round(totalPay*1.06):null;
-  el.innerHTML=`
-    <div class="benefit">
-      <div class="title">① 一般癌症</div>
-      <div class="desc">首次罹患癌症（初期／輕度／重度）</div>
-      <div class="pay">初期或輕度：${fmt(g10)} 元（保額 10％）｜第 2 保單年度起</div>
-      <div class="pay">重度：${fmt(g100)} 元（保額 100％，與年繳保費總和×1.06 取較大）｜第 2 保單年度起</div>
-      <div class="note">※ 第 1 保單年度改按年繳保險費總和的 1.06 倍給付。各以給付一次為限。</div>
-    </div>
-    <div class="benefit">
-      <div class="title">② 特定癌症（重度）加成｜${m.cancerN} 項</div>
+  const maturity=annual!=null?Math.round(annual*state.term*1.06):null;
+  document.getElementById('benefits').innerHTML=`
+    <div class="benefit"><div class="title">① 一般癌症</div>
+      <div class="pay">初期/輕度 ${fmt(g10)} 元（10％）｜重度 ${fmt(g100)} 元（100％）｜第2年度起</div>
+      <div class="note">第1年度改按年繳保費總和×1.06；各給付一次為限。</div></div>
+    <div class="benefit"><div class="title">② 特定癌症加成｜${m.cancerN} 項</div>
       <div class="desc">${m.cancers}</div>
-      <div class="pay">加成：保額 10％～50％（第 2～第 6 保單年度起遞增）→ ${fmt(add10)}～${fmt(add50)} 元</div>
-      <div class="pay">與重度合計約：${fmt(total110)}～${fmt(total150)} 元（110％～150％）</div>
-      <div class="note">※ 須同時符合重度癌症給付條件；第 2 保單年度起；以給付一次為限。</div>
-    </div>
-    <div class="benefit">
-      <div class="title">③ 特定手術（共 ${m.surgeryN} 項，限一次）</div>
+      <div class="pay">加成 10％～50％ → ${fmt(add10)}～${fmt(add50)} 元；與重度合計約 ${fmt(total110)}～${fmt(total150)} 元</div></div>
+    <div class="benefit"><div class="title">③ 特定手術｜${m.surgeryN} 項</div>
       <div class="desc">${m.surgery}</div>
-      <div class="pay">${fmt(surg)} 元（保額 2％）</div>
-      <div class="note">※ 多項手術合計僅給付一次。</div>
-    </div>
-    <div class="benefit">
-      <div class="title">④ 特定傷病（限一次）</div>
+      <div class="pay">${fmt(surg)} 元（2％）｜限一次</div></div>
+    <div class="benefit"><div class="title">④ 特定傷病</div>
       <div class="desc">${m.illness}</div>
-      <div class="pay">${fmt(ill)} 元（保額 10％）</div>
-      <div class="note">※ 僅給付一次。</div>
-    </div>
-    <div class="benefit">
-      <div class="title">⑤ 豁免保費</div>
-      <div class="desc">符合條件時，豁免本契約（不含附約）以後各期保險費，契約繼續有效</div>
-      <div class="pay">首次罹患癌症（重度）　或　意外致成 1～6 級失能</div>
-    </div>
-    <div class="benefit">
-      <div class="title">⑥ 祝壽保險金（保險年齡屆滿 95 歲仍生存）</div>
-      <div class="pay">當年度保險金額＝年繳保險費總和 × 1.06 − 已領各項保險金累計${maturity!=null?`｜約 ${fmt(maturity)} 元（以年繳×年期估算）`:''}</div>
-      <div class="note">※ 官方名稱為「祝壽保險金」；年齡為 95 歲（非 89 歲）。</div>
-    </div>
-    <div class="benefit">
-      <div class="title">⑦ 身故保障</div>
-      <div class="pay">有效期間內身故：給付當年度保險金額（16 歲起為年繳保費總和×1.06 扣除已領累計）後契約終止</div>
-      <div class="note">※ 未滿 15 足歲身故改退還所繳保險費。本保險無解約金。</div>
-    </div>`;
+      <div class="pay">${fmt(ill)} 元（10％）｜限一次</div></div>
+    <div class="benefit"><div class="title">⑤ 豁免保費</div>
+      <div class="pay">癌症（重度）或意外 1～6 級失能 → 豁免本契約續期保費</div></div>
+    <div class="benefit"><div class="title">⑥ 祝壽保險金（95歲）</div>
+      <div class="pay">當年度保險金額＝年繳保費總和×1.06 − 已領累計${maturity!=null?`｜約 ${fmt(maturity)} 元`:''}</div></div>
+    <div class="benefit"><div class="title">⑦ 身故保障</div>
+      <div class="pay">給付當年度保險金額（扣除已領累計）後契約終止｜無解約金</div></div>`;
 }
 function renderRules(){
   const m=META[state.prod];
   document.getElementById('rulesBox').innerHTML=`
     <dt>商品全名</dt><dd>${m.full}</dd>
-    <dt>投保年齡／年期</dt><dd>10 年期 0–65 歲；20 年期 0–55 歲；30 年期 0–45 歲。保險期間終身。</dd>
-    <dt>保額</dt><dd>最低 50 萬、累計本險種最高 500 萬（與其他保額型癌症險合計亦 ≤500 萬）。</dd>
-    <dt>繳別</dt><dd>年繳、半年繳、季繳、月繳。</dd>
-    <dt>等待期間</dt><dd>一般 30 日；屬條款約定癌症者 90 日。意外傷害事故所致不受等待期間限制。</dd>
-    <dt>解約金</dt><dd>無解約金（費率已考慮脫退率）。</dd>
-    <dt>身故／祝壽</dt><dd>身故給付當年度保險金額；祝壽為保險年齡 95 歲仍生存時給付當年度保險金額。</dd>
-    <dt>健康管理保險費折扣</dt><dd>保險年齡 18 歲起，指定期間內繳交含身高、體重、血壓、血糖、血脂肪之健檢報告，次一保單年度主約續期保費折 1％。</dd>
-    <dt>性別限制</dt><dd>${state.prod==='CIA'?'被保險人限男性。':'被保險人限女性。'}</dd>`;
-}
-function renderRates(){
-  const tbody=document.querySelector('#rateTable tbody');
-  const age=state.age;
-  let html='';
-  for(let a=0;a<=65;a++){
-    const r10=RATES[state.prod][10][a], r20=RATES[state.prod][20][a], r30=RATES[state.prod][30][a];
-    html+=`<tr${age===a?' class="hl"':''}><td>${a}</td>
-      <td>${r10!=null?r10.toLocaleString('zh-TW'):'<span class="na">—</span>'}</td>
-      <td>${r20!=null?r20.toLocaleString('zh-TW'):'<span class="na">—</span>'}</td>
-      <td>${r30!=null?r30.toLocaleString('zh-TW'):'<span class="na">—</span>'}</td></tr>`;
-  }
-  tbody.innerHTML=html;
-  const row=tbody.querySelector('tr.hl');
-  if(row) row.scrollIntoView({block:'nearest'});
+    <dt>投保年齡／年期</dt><dd>10年期0–65；20年期0–55；30年期0–45。保險期間終身。</dd>
+    <dt>保額</dt><dd>最低50萬、累計本險種最高500萬。</dd>
+    <dt>等待期間</dt><dd>一般30日；癌症90日。意外不受限。</dd>
+    <dt>解約金</dt><dd>無解約金。</dd>
+    <dt>身故／祝壽</dt><dd>身故：當年度保險金額。祝壽：保險年齡95歲仍生存。</dd>
+    <dt>健康管理保險費折扣</dt><dd>18歲起，指定期間繳交健檢報告，次一年度主約續期折1％。</dd>
+    <dt>性別</dt><dd>${state.prod==='CIA'?'限男性':'限女性'}</dd>`;
 }
 function recalcPremium(){
   const err=document.getElementById('premErr');
   const wan=+document.getElementById('amount').value;
   const rate=rateOf(state.age, state.term);
-  if(state.age==null||state.age<0||state.age>65){
-    err.hidden=false; err.textContent='投保年齡須為 0～65 歲（保險年齡）。';
-    ['pAnnual','pSemi','pQtr','pMon','pTotal'].forEach(id=>document.getElementById(id).textContent='—');
-    document.getElementById('rateDetail').textContent='';
-    return;
-  }
-  if(rate==null){
-    err.hidden=false; err.textContent=`保險年齡 ${state.age} 歲無法投保 ${state.term} 年期。`;
-    ['pAnnual','pSemi','pQtr','pMon','pTotal'].forEach(id=>document.getElementById(id).textContent='—');
-    document.getElementById('rateDetail').textContent='';
-    return;
-  }
-  if(!wan||wan<50||wan>500){
-    err.hidden=false; err.textContent='保額須為 50～500 萬。';
-    ['pAnnual','pSemi','pQtr','pMon','pTotal'].forEach(id=>document.getElementById(id).textContent='—');
-    document.getElementById('rateDetail').textContent='';
-    return;
-  }
-  err.hidden=true;
+  const clear=()=>['pAnnual','pSemi','pQtr','pMon','pTotal'].forEach(id=>document.getElementById(id).textContent='—');
+  if(state.age==null||state.age<0||state.age>65){ err.textContent='投保年齡須為 0～65 歲'; clear(); return; }
+  if(rate==null){ err.textContent=`保險年齡 ${state.age} 歲無法投保 ${state.term} 年期`; clear(); document.getElementById('rateDetail').textContent=''; return; }
+  if(!wan||wan<50||wan>500){ err.textContent='保額須為 50～500 萬'; clear(); return; }
+  err.textContent='';
   const annual=rate*wan;
   document.getElementById('pAnnual').textContent=fmt(annual);
   document.getElementById('pSemi').textContent=fmt(Math.round(annual*MODAL.semi));
@@ -517,37 +481,29 @@ function recalcPremium(){
   document.getElementById('pMon').textContent=fmt(Math.round(annual*MODAL.mon));
   document.getElementById('pTotal').textContent=fmt(Math.round(annual*state.term))+' 元';
   document.getElementById('rateDetail').textContent=
-    `${state.prod}｜保險年齡 ${state.age} 歲｜${state.term} 年期｜費率 ${rate.toLocaleString('zh-TW')} 元／萬 × ${wan} 萬＝年繳 ${fmt(annual)} 元`;
+    `${state.prod}｜${state.age}歲｜${state.term}年期｜費率 ${rate.toLocaleString('zh-TW')} 元／萬 × ${wan} 萬`;
 }
 function applyParsed(p){
   const kindEl=document.getElementById('parseKind');
   const explain=document.getElementById('ageExplain');
-  if(!p.ok){
-    kindEl.textContent='無法辨識';
-    explain.textContent=p.err;
-    return false;
-  }
+  if(!p.ok){ kindEl.textContent='無法辨識'; explain.textContent=p.err; return false; }
   setAgeUI(p.age);
   if(p.kind==='age'){
     kindEl.textContent='直接年齡';
-    explain.textContent=`已將「${p.age}」視為保險年齡（未從生日換算）。試算與單位表皆用此年齡。`;
+    explain.textContent=`「${p.age}」視為保險年齡。試算與單位表同步。`;
   } else {
     kindEl.textContent=(p.roc?'民國生日→':'生日→')+'保險年齡';
-    const monthsPast = (()=>{
-      const d=p.info.asOf, last=p.info.lastBD;
-      let mo=(d.getFullYear()-last.getFullYear())*12 + (d.getMonth()-last.getMonth());
-      if(d.getDate()<last.getDate()) mo-=1;
-      return mo;
-    })();
+    const d=p.info.asOf, last=p.info.lastBD;
+    let mo=(d.getFullYear()-last.getFullYear())*12+(d.getMonth()-last.getMonth());
+    if(d.getDate()<last.getDate()) mo-=1;
     const added=p.info.ins>p.info.actual;
-    explain.textContent = `生日 ${p.display}｜今天 ${todayStr()}｜足歲 ${p.info.actual} 歲，距上次生日約 ${monthsPast} 個月` +
-      (added?`（已超過半年）→ 保險年齡 ${p.info.ins} 歲。`:`（未超過半年）→ 保險年齡 ${p.info.ins} 歲。`);
+    explain.textContent=`生日 ${p.display}｜今天 ${todayStr()}｜足歲 ${p.info.actual}，距上次生日約 ${mo} 個月`+
+      (added?`（已過半年）→ 保險年齡 ${p.info.ins} 歲`:`（未過半年）→ 保險年齡 ${p.info.ins} 歲`);
   }
   return true;
 }
 function applyAgeOrBirthInput(){
-  const p=parseAgeOrBirth(document.getElementById('ageOrBirth').value);
-  applyParsed(p);
+  applyParsed(parseAgeOrBirth(document.getElementById('ageOrBirth').value));
   refreshAll();
 }
 function refreshAll(){
@@ -556,7 +512,6 @@ function refreshAll(){
   renderUnitTable();
   renderBenefits();
   renderRules();
-  renderRates();
 }
 
 document.getElementById('prodSeg').addEventListener('click', e=>{
@@ -568,40 +523,56 @@ document.getElementById('termSeg').addEventListener('click', e=>{
   state.term=+b.dataset.term; refreshAll();
 });
 document.getElementById('ageOrBirth').addEventListener('input', applyAgeOrBirthInput);
-document.getElementById('ageOrBirth').addEventListener('change', applyAgeOrBirthInput);
 document.getElementById('amount').addEventListener('input', refreshAll);
-document.getElementById('ageSlider').addEventListener('input', e=>{
-  const v=+e.target.value;
+function setDirectAge(v){
+  v=Math.max(0, Math.min(65, v|0));
   setAgeUI(v);
   document.getElementById('ageOrBirth').value=String(v);
   document.getElementById('parseKind').textContent='直接年齡';
-  document.getElementById('ageExplain').textContent=`已將「${v}」視為保險年齡（滑桿調整）。`;
+  document.getElementById('ageExplain').textContent=`「${v}」視為保險年齡。`;
   refreshAll();
+}
+document.getElementById('ageSlider').addEventListener('input', e=>setDirectAge(+e.target.value));
+document.getElementById('ageInput').addEventListener('change', e=>setDirectAge(+e.target.value));
+document.getElementById('ageMinus').addEventListener('click', ()=>setDirectAge(state.age-1));
+document.getElementById('agePlus').addEventListener('click', ()=>setDirectAge(state.age+1));
+document.getElementById('btnScrollUnit').addEventListener('click', ()=>{
+  document.getElementById('unitSection').scrollIntoView({block:'nearest', behavior:'smooth'});
 });
-document.getElementById('ageInput').addEventListener('change', e=>{
-  let v=Math.max(0, Math.min(65, +e.target.value||0));
-  setAgeUI(v);
-  document.getElementById('ageOrBirth').value=String(v);
-  document.getElementById('parseKind').textContent='直接年齡';
-  document.getElementById('ageExplain').textContent=`已將「${v}」視為保險年齡。`;
-  refreshAll();
-});
-document.getElementById('ageMinus').addEventListener('click', ()=>{
-  const v=Math.max(0, state.age-1);
-  setAgeUI(v);
-  document.getElementById('ageOrBirth').value=String(v);
-  document.getElementById('parseKind').textContent='直接年齡';
-  document.getElementById('ageExplain').textContent=`已將「${v}」視為保險年齡。`;
-  refreshAll();
-});
-document.getElementById('agePlus').addEventListener('click', ()=>{
-  const v=Math.min(65, state.age+1);
-  setAgeUI(v);
-  document.getElementById('ageOrBirth').value=String(v);
-  document.getElementById('parseKind').textContent='直接年齡';
-  document.getElementById('ageExplain').textContent=`已將「${v}」視為保險年齡。`;
-  refreshAll();
-});
+
+async function downloadExport(){
+  const btn=document.getElementById('btnDownload');
+  const hint=document.getElementById('dlHint');
+  if(typeof html2canvas!=='function'){
+    hint.textContent='下載元件載入中，請稍後再試。';
+    return;
+  }
+  btn.disabled=true; hint.textContent='產生圖片中…';
+  try{
+    // wait chart image
+    const img=document.getElementById('chartImg');
+    if(!img.complete) await new Promise(r=>{ img.onload=r; img.onerror=r; });
+    const root=document.getElementById('exportRoot');
+    const canvas=await html2canvas(root, {
+      backgroundColor:'#ffffff',
+      scale:2,
+      useCORS:true,
+      logging:false,
+      scrollX:0, scrollY:0
+    });
+    const a=document.createElement('a');
+    const m=META[state.prod];
+    a.download=`${state.prod}_${state.age}歲${m.sex}_${state.term}年期.png`;
+    a.href=canvas.toDataURL('image/png');
+    a.click();
+    hint.textContent='已下載 PNG（保障圖＋單位試算表）。';
+  }catch(err){
+    hint.textContent='下載失敗：'+(err&&err.message?err.message:err);
+  }finally{
+    btn.disabled=false;
+  }
+}
+document.getElementById('btnDownload').addEventListener('click', downloadExport);
 
 setTheme();
 applyAgeOrBirthInput();
@@ -609,6 +580,13 @@ applyAgeOrBirthInput();
 window.calcInsuranceAge=calcInsuranceAge;
 window.RATES=RATES;
 window.state=state;
+window.renderUnitTable=renderUnitTable;
+window.__exportTest=async function(){
+  if(typeof html2canvas!=='function') throw new Error('html2canvas missing');
+  const root=document.getElementById('exportRoot');
+  const canvas=await html2canvas(root,{backgroundColor:'#ffffff',scale:1,useCORS:true,logging:false});
+  return {w:canvas.width,h:canvas.height, dataUrlLen: canvas.toDataURL('image/png').length};
+};
 </script>
 </body>
 </html>
