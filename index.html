@@ -1073,7 +1073,7 @@ function updateStickyFit(){
   const fits=el.offsetHeight < window.innerHeight - 24;
   el.style.position = (desktop && fits) ? 'sticky' : 'static';
 }
-window.addEventListener('resize', ()=>{ updateStickyFit(); scheduleFitOverlays(); }); });
+window.addEventListener('resize', ()=>{ updateStickyFit(); scheduleFitOverlays(); });
 
 document.getElementById('unitViewSeg').addEventListener('click', (e)=>{
   const btn=e.target.closest('button[data-unit-view]');
