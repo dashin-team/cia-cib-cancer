@@ -147,13 +147,13 @@ body.theme-cib .ov-title{color:#6a1b9a; background:#fff; border-color:#fff}
 .ov-purple{color:#6a1b9a}
 .ov-green{color:#2e7d32}
 /* positions as % of 1026x845 chart — centered on erased digit boxes */
-.ov-c1a{left:28.2%; top:27.9%; font-size:clamp(10px, 1.15vw, 13px); max-width:7.5%}
-.ov-c1b{left:28.1%; top:34.4%; font-size:clamp(10px, 1.15vw, 13px); max-width:8.5%}
-.ov-c2{left:55.5%; top:31.9%; font-size:clamp(9px, 1.05vw, 12px); max-width:14.2%; white-space:normal; line-height:1.1}
-.ov-c3{left:87.9%; top:35.6%; font-size:clamp(10px, 1.2vw, 13px); max-width:12.5%}
-.ov-c4{left:23.8%; top:68.6%; font-size:clamp(10px, 1.2vw, 13px); max-width:13.5%}
-.ov.compact{letter-spacing:-0.03em}
-.ov.compact .yen{font-size:.72em}
+.ov-c1a{left:28.2%; top:27.9%; font-size:clamp(15px, 2.0vw, 22px); max-width:7.6%}
+.ov-c1b{left:28.1%; top:34.4%; font-size:clamp(15px, 2.0vw, 22px); max-width:8.8%}
+.ov-c2{left:55.5%; top:32.2%; font-size:clamp(14px, 1.85vw, 20px); max-width:14.8%; white-space:normal; line-height:1.12}
+.ov-c3{left:87.9%; top:35.6%; font-size:clamp(16px, 2.1vw, 24px); max-width:13.2%}
+.ov-c4{left:23.8%; top:68.6%; font-size:clamp(16px, 2.1vw, 24px); max-width:13.8%}
+.ov.compact{letter-spacing:-0.02em}
+.ov.compact .yen{font-size:.75em}
 
 #unitAnchor{scroll-margin-top:12px}
 .unit-scroll{width:100%; max-width:100%; overflow-x:auto; -webkit-overflow-scrolling:touch; overscroll-behavior-x:contain}
@@ -475,25 +475,24 @@ function updateAmtButtons(){
 function fitOverlay(el, maxPct){
   const stage=document.getElementById('chartStage');
   if(!stage || !stage.clientWidth) return;
-  const pad=6; // keep padding inside box
-  const maxPx=Math.max(24, stage.clientWidth*(maxPct/100) - pad);
+  // Allow text to use ~90% of the inner-box width; shrink only if overflowing.
+  const boxPx=stage.clientWidth*(maxPct/100);
+  const maxPx=Math.max(28, boxPx * 0.92);
   el.style.maxWidth=maxPx+'px';
-  el.style.fontSize=''; // use CSS clamp as start
-  let fs=parseFloat(getComputedStyle(el).fontSize) || 12;
-  // binary-ish shrink until content fits
-  for(let i=0;i<24;i++){
+  el.style.fontSize=''; // start from large CSS clamp
+  let fs=parseFloat(getComputedStyle(el).fontSize) || 18;
+  const maxH = el.id==='ovC2' ? stage.clientHeight*0.10 : stage.clientHeight*0.055;
+  for(let i=0;i<28;i++){
     el.style.fontSize=fs+'px';
-    const w=el.scrollWidth;
-    const h=el.scrollHeight;
-    const maxH = el.id==='ovC2' ? stage.clientHeight*0.075 : stage.clientHeight*0.045;
-    if(w <= maxPx+0.5 && h <= maxH) break;
-    fs *= 0.9;
-    if(fs < 8){ fs=8; el.style.fontSize=fs+'px'; break; }
+    if(el.scrollWidth <= maxPx+0.5 && el.scrollHeight <= maxH) break;
+    fs *= 0.94;
+    if(fs < 11){ fs=11; el.style.fontSize=fs+'px'; break; }
   }
 }
 
 function fitAllOverlays(){
-  const map={ovC1a:7.2, ovC1b:8.2, ovC2:13.8, ovC3:12.0, ovC4:13.0};
+  // pct ≈ inner amount-box width / chart width (fill regions)
+  const map={ovC1a:7.8, ovC1b:9.0, ovC2:15.2, ovC3:13.5, ovC4:14.0};
   Object.keys(map).forEach(id=>{
     const el=document.getElementById(id);
     if(el) fitOverlay(el, map[id]);
@@ -750,19 +749,20 @@ async function downloadExport(){
     wrap.appendChild(stage);
     // shrink overlays to fit export width
     stage.querySelectorAll('.ov-c1a,.ov-c1b,.ov-c2,.ov-c3,.ov-c4').forEach(el=>{
-      let pct=13;
-      if(el.classList.contains('ov-c1a')) pct=7.2;
-      if(el.classList.contains('ov-c1b')) pct=8.2;
-      if(el.classList.contains('ov-c2')) pct=13.8;
-      if(el.classList.contains('ov-c3')) pct=12.0;
-      if(el.classList.contains('ov-c4')) pct=13.0;
-      const maxPx=Math.max(24, 984*(pct/100)-6);
+      let pct=14;
+      if(el.classList.contains('ov-c1a')) pct=7.8;
+      if(el.classList.contains('ov-c1b')) pct=9.0;
+      if(el.classList.contains('ov-c2')) pct=15.2;
+      if(el.classList.contains('ov-c3')) pct=13.5;
+      if(el.classList.contains('ov-c4')) pct=14.0;
+      const maxPx=Math.max(28, 984*(pct/100)*0.92);
       el.style.maxWidth=maxPx+'px';
-      let fs=parseFloat(getComputedStyle(el).fontSize)||12;
-      for(let i=0;i<24;i++){
+      el.style.fontSize='';
+      let fs=parseFloat(getComputedStyle(el).fontSize)||18;
+      for(let i=0;i<28;i++){
         el.style.fontSize=fs+'px';
         if(el.scrollWidth<=maxPx+0.5) break;
-        fs*=0.9; if(fs<8){ el.style.fontSize='8px'; break; }
+        fs*=0.94; if(fs<11){ el.style.fontSize='11px'; break; }
       }
     });
     const sp=document.createElement('div'); sp.style.height='16px'; wrap.appendChild(sp);
