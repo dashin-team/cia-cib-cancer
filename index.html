@@ -130,7 +130,7 @@ body.theme-cib .client-banner{background:#fce4ec; color:#c2185b}
   background:transparent; box-shadow:none; border:0; padding:0; margin:0;
   max-width:none; overflow:visible;
 }
-.ov .yen{font-size:.72em; margin-left:1px}
+.ov .yen{font-size:.78em; margin-left:1px}
 .ov-title{
   left:72.5%; top:7.2%;
   transform:translate(-50%, -50%);
@@ -147,13 +147,13 @@ body.theme-cib .ov-title{color:#6a1b9a; background:#fff; border-color:#fff}
 .ov-purple{color:#6a1b9a}
 .ov-green{color:#2e7d32}
 /* positions as % of 1026x845 chart — centered on erased digit boxes */
-.ov-c1a{left:28.2%; top:27.9%; font-size:clamp(13px, 1.7vw, 18px)}
-.ov-c1b{left:28.1%; top:34.4%; font-size:clamp(12px, 1.55vw, 17px)}
-.ov-c2{left:55.5%; top:31.9%; font-size:clamp(11px, 1.35vw, 14px); max-width:14.5%; white-space:normal; line-height:1.12}
-.ov-c3{left:87.9%; top:35.6%; font-size:clamp(13px, 1.7vw, 18px); max-width:13%}
-.ov-c4{left:23.6%; top:68.6%; font-size:clamp(14px, 1.85vw, 20px); max-width:12%}
-.ov.compact{letter-spacing:-0.04em}
-.ov.compact .yen{font-size:.65em}
+.ov-c1a{left:28.2%; top:27.9%; font-size:clamp(10px, 1.15vw, 13px); max-width:7.5%}
+.ov-c1b{left:28.1%; top:34.4%; font-size:clamp(10px, 1.15vw, 13px); max-width:8.5%}
+.ov-c2{left:55.5%; top:31.9%; font-size:clamp(9px, 1.05vw, 12px); max-width:14.2%; white-space:normal; line-height:1.1}
+.ov-c3{left:87.9%; top:35.6%; font-size:clamp(10px, 1.2vw, 13px); max-width:12.5%}
+.ov-c4{left:23.8%; top:68.6%; font-size:clamp(10px, 1.2vw, 13px); max-width:13.5%}
+.ov.compact{letter-spacing:-0.03em}
+.ov.compact .yen{font-size:.72em}
 
 #unitAnchor{scroll-margin-top:12px}
 .unit-scroll{width:100%; max-width:100%; overflow-x:auto; -webkit-overflow-scrolling:touch; overscroll-behavior-x:contain}
@@ -472,11 +472,39 @@ function updateAmtButtons(){
   }
 }
 
+function fitOverlay(el, maxPct){
+  const stage=document.getElementById('chartStage');
+  if(!stage || !stage.clientWidth) return;
+  const pad=6; // keep padding inside box
+  const maxPx=Math.max(24, stage.clientWidth*(maxPct/100) - pad);
+  el.style.maxWidth=maxPx+'px';
+  el.style.fontSize=''; // use CSS clamp as start
+  let fs=parseFloat(getComputedStyle(el).fontSize) || 12;
+  // binary-ish shrink until content fits
+  for(let i=0;i<24;i++){
+    el.style.fontSize=fs+'px';
+    const w=el.scrollWidth;
+    const h=el.scrollHeight;
+    const maxH = el.id==='ovC2' ? stage.clientHeight*0.075 : stage.clientHeight*0.045;
+    if(w <= maxPx+0.5 && h <= maxH) break;
+    fs *= 0.9;
+    if(fs < 8){ fs=8; el.style.fontSize=fs+'px'; break; }
+  }
+}
+
+function fitAllOverlays(){
+  const map={ovC1a:7.2, ovC1b:8.2, ovC2:13.8, ovC3:12.0, ovC4:13.0};
+  Object.keys(map).forEach(id=>{
+    const el=document.getElementById(id);
+    if(el) fitOverlay(el, map[id]);
+  });
+}
+
 function renderOverlays(){
   const wan=state.amount||100;
   document.getElementById('ovTitle').textContent = `保額 ${wan}萬`;
   const yen = '<span class="yen">元</span>';
-  const long = wan >= 300;
+  const long = wan >= 200;
   ['ovC1a','ovC1b','ovC2','ovC3','ovC4'].forEach(id=>{
     document.getElementById(id).classList.toggle('compact', long);
   });
@@ -485,6 +513,8 @@ function renderOverlays(){
   document.getElementById('ovC2').innerHTML = fmt(moneyWan(wan,110))+'元<br>～'+fmt(moneyWan(wan,150))+'元';
   document.getElementById('ovC3').innerHTML = fmt(moneyWan(wan,2))+yen;
   document.getElementById('ovC4').innerHTML = fmt(moneyWan(wan,10))+yen;
+  // fit after layout
+  requestAnimationFrame(()=>{ fitAllOverlays(); });
 }
 
 function renderPremium(){
@@ -718,6 +748,23 @@ async function downloadExport(){
     wrap.appendChild(title);
     stage.style.width='984px';
     wrap.appendChild(stage);
+    // shrink overlays to fit export width
+    stage.querySelectorAll('.ov-c1a,.ov-c1b,.ov-c2,.ov-c3,.ov-c4').forEach(el=>{
+      let pct=13;
+      if(el.classList.contains('ov-c1a')) pct=7.2;
+      if(el.classList.contains('ov-c1b')) pct=8.2;
+      if(el.classList.contains('ov-c2')) pct=13.8;
+      if(el.classList.contains('ov-c3')) pct=12.0;
+      if(el.classList.contains('ov-c4')) pct=13.0;
+      const maxPx=Math.max(24, 984*(pct/100)-6);
+      el.style.maxWidth=maxPx+'px';
+      let fs=parseFloat(getComputedStyle(el).fontSize)||12;
+      for(let i=0;i<24;i++){
+        el.style.fontSize=fs+'px';
+        if(el.scrollWidth<=maxPx+0.5) break;
+        fs*=0.9; if(fs<8){ el.style.fontSize='8px'; break; }
+      }
+    });
     const sp=document.createElement('div'); sp.style.height='16px'; wrap.appendChild(sp);
     wrap.appendChild(unit);
     mount.appendChild(wrap);
@@ -754,7 +801,7 @@ function updateStickyFit(){
   const fits=el.offsetHeight < window.innerHeight - 24;
   el.style.position = (desktop && fits) ? 'sticky' : 'static';
 }
-window.addEventListener('resize', updateStickyFit);
+window.addEventListener('resize', ()=>{ updateStickyFit(); fitAllOverlays(); });
 
 // default demo: age mode 49
 document.getElementById('ageInput').value='49';
