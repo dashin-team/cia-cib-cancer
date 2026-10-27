@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#0f2a4a">
-<title>CIA／CIB 癌症險試算｜大心</title>
+<title>男癌／女癌試算｜大心</title>
 <link rel="icon" type="image/png" href="favicon.png">
 <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js" defer></script>
 <style>
@@ -67,7 +67,7 @@ a{color:inherit; text-decoration:none}
 body.theme-cib .seg button.active{background:#c2185b}
 
 label.field{display:grid; gap:6px; font-size:17px; font-weight:800; color:#334b57; margin-top:12px}
-label.field:first-of-type{margin-top:0}
+label.field.client-name{margin-top:0; margin-bottom:4px}
 input[type=text], input[type=number]{
   width:100%; min-height:44px; padding:0 12px;
   border:1px solid #b9c8c7; border-radius:0; background:#fff; color:var(--ink);
@@ -82,10 +82,10 @@ input:focus{border-color:var(--blue); box-shadow:0 0 0 3px #05679a1c}
 .age-line .err{color:var(--red)}
 .hint{font-size:14px; color:var(--muted); margin:6px 0 0; font-weight:600}
 .amt-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-top:8px}
-@media (min-width:400px){.amt-grid{grid-template-columns:repeat(6,1fr)}}
 .amt-grid button{
-  min-height:44px; border:1.5px solid var(--line); background:#fff;
+  min-height:52px; padding:6px 4px; border:1.5px solid var(--line); background:#fff;
   border-radius:8px; font-weight:800; font-size:14px; color:var(--ink); line-height:1.25;
+  white-space:nowrap;
 }
 .amt-grid button.active{border-color:var(--accent); background:var(--accent-soft); color:var(--accent)}
 body.theme-cib .amt-grid button.active{border-color:#c2185b; background:#fce4ec; color:#c2185b}
@@ -98,7 +98,6 @@ body.theme-cib .amt-grid button.active{border-color:#c2185b; background:#fce4ec;
 }
 .premium-box .lab{font-size:14px; color:var(--muted); font-weight:700}
 .premium-box .amt{font-size:28px; font-weight:900; color:var(--red); margin-top:2px}
-.premium-box .sub{font-size:14px; color:var(--muted); margin-top:4px}
 
 .btn{
   display:inline-flex; align-items:center; justify-content:center;
@@ -111,10 +110,18 @@ body.theme-cib .btn{background:#880e4f}
 .dl-hint{font-size:14px; color:var(--muted); margin:8px 0 0; text-align:center}
 
 /* Chart image + overlays */
-#chartAnchor{scroll-margin-top:12px}
-.chart-wrap{padding:0; overflow:hidden; margin:0}
-.chart-stage{position:relative; width:100%; line-height:0}
-.chart-stage > img.base{width:100%; height:auto; display:block}
+.maincol{display:flex; flex-direction:column; gap:12px; align-items:stretch}
+#chartAnchor{scroll-margin-top:12px; height:fit-content; min-height:0; align-self:start; width:100%}
+.chart-wrap{padding:0 !important; overflow:hidden; margin:0; height:fit-content; min-height:0; align-self:start; width:100%}
+.chart-stage{position:relative; width:100%; line-height:0; height:fit-content; min-height:0}
+.chart-stage > img.base{width:100%; height:auto; display:block; vertical-align:top}
+.client-banner{
+  display:none; margin:0 0 10px; padding:10px 14px; border-radius:10px;
+  background:var(--accent-soft); color:var(--accent); font-size:18px; font-weight:900;
+  line-height:1.35;
+}
+.client-banner.show{display:block}
+body.theme-cib .client-banner{background:#fce4ec; color:#c2185b}
 .ov{
   position:absolute; transform:translate(-50%, -50%);
   font-family:"Microsoft JhengHei","Noto Sans TC","PingFang TC",sans-serif;
@@ -209,7 +216,7 @@ body.theme-cib{--accent:#c2185b; --accent-soft:#fce4ec}
     <img class="brand-logo" src="logo.png" alt="大心" width="34" height="48">
     <div class="brand-text">
       <span class="brand-slogan">台南最大心，服務最用心</span>
-      <h1>CIA／CIB 癌症險試算</h1>
+      <h1>男癌／女癌試算</h1>
     </div>
   </div>
 </header>
@@ -224,6 +231,9 @@ body.theme-cib{--accent:#c2185b; --accent-soft:#fce4ec}
   <div class="layout">
     <aside class="controls card" id="controls">
       <h2>投保條件</h2>
+      <label class="field client-name">客戶姓名
+        <input type="text" id="clientName" placeholder="輸入客戶姓名" autocomplete="name" maxlength="40">
+      </label>
       <div class="seg" id="prodSeg">
         <button type="button" class="active" data-prod="CIA">男性 CIA</button>
         <button type="button" data-prod="CIB">女性 CIB</button>
@@ -274,7 +284,6 @@ body.theme-cib{--accent:#c2185b; --accent-soft:#fce4ec}
       <div class="premium-box" id="premiumBox">
         <div class="lab">年繳保費（依目前保額）</div>
         <div class="amt" id="premAnnual">—</div>
-        <div class="sub" id="premSub">月繳約 —｜全程合計 —</div>
       </div>
 
       <button type="button" class="btn" id="btnDownload">下載圖片</button>
@@ -282,6 +291,7 @@ body.theme-cib{--accent:#c2185b; --accent-soft:#fce4ec}
     </aside>
 
     <div class="maincol">
+      <div class="client-banner" id="clientBanner" aria-live="polite"></div>
       <section class="card chart-wrap" id="chartAnchor">
         <div class="chart-stage" id="chartStage">
           <img class="base" id="chartBase" src="cia-base.png" width="1026" height="845" alt="保障圖">
@@ -294,7 +304,7 @@ body.theme-cib{--accent:#c2185b; --accent-soft:#fce4ec}
         </div>
       </section>
 
-      <section class="card" id="unitAnchor" style="margin-top:12px">
+      <section class="card" id="unitAnchor">
         <h2>單位試算表 <span class="tag" id="unitTag">20 年期</span></h2>
         <div class="unit-section" id="unitSection">
           <div class="unit-scroll">
@@ -380,7 +390,7 @@ const META = {
   }
 };
 const MODAL={semi:0.52,qtr:0.262,mon:0.088};
-const state={prod:'CIA', term:20, age:49, amount:100, mode:'birth'};
+const state={prod:'CIA', term:20, age:49, amount:100, mode:'birth', clientName:''};
 
 function todayDate(){const t=new Date(); return new Date(t.getFullYear(),t.getMonth(),t.getDate());}
 function todayStr(){const t=todayDate(); return `${t.getFullYear()}-${String(t.getMonth()+1).padStart(2,'0')}-${String(t.getDate()).padStart(2,'0')}`;}
@@ -479,15 +489,28 @@ function renderPremium(){
   const wan=state.amount||100;
   const rate=rateOf(state.age, state.term);
   const el=document.getElementById('premAnnual');
-  const sub=document.getElementById('premSub');
   if(rate==null){
     el.textContent='—';
-    sub.textContent = state.age==null ? '請先輸入年齡' : `保險年齡 ${state.age} 無法投保 ${state.term} 年期`;
     return;
   }
   const annual=rate*wan;
   el.textContent = fmt(annual)+' 元';
-  sub.textContent = `費率 ${fmt(rate)} 元／萬 × ${wan} 萬｜月繳約 ${fmt(Math.round(annual*MODAL.mon))}｜全程合計 ${fmt(Math.round(annual*state.term))}`;
+}
+
+function clientNameTrim(){
+  return (state.clientName||'').trim();
+}
+
+function renderClientBanner(){
+  const el=document.getElementById('clientBanner');
+  const name=clientNameTrim();
+  if(!name){
+    el.classList.remove('show');
+    el.textContent='';
+    return;
+  }
+  el.textContent = `${name} 先生/小姐 專屬試算`;
+  el.classList.add('show');
 }
 
 function renderUnitTable(){
@@ -580,6 +603,7 @@ function refreshAmountSide(){
   renderOverlays();
   renderPremium();
   renderBenefits();
+  renderClientBanner();
 }
 function refreshAll(){
   refreshUnitSide();
@@ -673,8 +697,22 @@ async function downloadExport(){
     const wrap=document.createElement('div');
     wrap.style.cssText='width:1024px;padding:20px;background:#fff;font-family:PingFang TC,Microsoft JhengHei,sans-serif';
     const title=document.createElement('div');
-    title.style.cssText='font-size:18px;font-weight:800;margin-bottom:12px;color:#0f2a4a';
-    title.textContent=`${META[state.prod].pill}｜${state.age??'—'}歲｜${state.term}年期｜保額${state.amount}萬`;
+    title.style.cssText='font-size:20px;font-weight:900;margin-bottom:6px;color:#0f2a4a;line-height:1.35';
+    const name=clientNameTrim();
+    const rate=rateOf(state.age, state.term);
+    const prem = rate==null ? '—' : (fmt(rate*state.amount)+' 元');
+    const bits=[`${META[state.prod].pill}`, `${state.age??'—'}歲`, `${state.term}年期`, `保額${state.amount}萬`, `年繳${prem}`];
+    if(name){
+      const t1=document.createElement('div');
+      t1.style.cssText='font-size:22px;font-weight:900;margin-bottom:4px';
+      t1.textContent=`${name} 先生/小姐 專屬試算`;
+      const t2=document.createElement('div');
+      t2.style.cssText='font-size:17px;font-weight:800;color:#334b57';
+      t2.textContent=bits.join('｜');
+      title.appendChild(t1); title.appendChild(t2);
+    } else {
+      title.textContent = bits.join('｜');
+    }
     wrap.appendChild(title);
     stage.style.width='984px';
     wrap.appendChild(stage);
@@ -690,7 +728,7 @@ async function downloadExport(){
       width:1024, windowWidth:1024
     });
     const a=document.createElement('a');
-    a.download=`${state.prod}_${state.age??'x'}歲${META[state.prod].sex}_${state.term}年期_${state.amount}萬.png`;
+    const nm=clientNameTrim(); a.download=`${nm?nm+'_':''}${state.prod}_${state.age??'x'}歲${META[state.prod].sex}_${state.term}年期_${state.amount}萬.png`;
     a.href=canvas.toDataURL('image/png');
     a.click();
     hint.textContent='已下載 PNG（保障圖＋單位試算表）。';
@@ -701,6 +739,10 @@ async function downloadExport(){
     btn.disabled=false; mount.innerHTML='';
   }
 }
+document.getElementById('clientName').addEventListener('input', e=>{
+  state.clientName=e.target.value;
+  renderClientBanner();
+});
 document.getElementById('btnDownload').addEventListener('click', downloadExport);
 
 function updateStickyFit(){
