@@ -13,7 +13,7 @@
   --blue:#05679a; --navy:#0f2a4a; --gold:#c9a45c; --red:#c83632; --line:#d6ddd9;
   --accent:var(--blue); --accent-soft:#e8f3f9;
   --radius:12px; --shadow:0 8px 22px #1f373e14;
-  --gap:16px; --max:1200px; --ctrl:320px;
+  --gap:12px; --max:1200px; --ctrl:320px;
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html{background:#e8ebe7}
@@ -21,7 +21,7 @@ body{
   margin:0; color:var(--ink); overflow-x:hidden;
   background:radial-gradient(circle at 70% 10%,#f7f2e8 0,#e8ebe7 48%,#dce4e2 100%);
   font-family:"PingFang TC","Noto Sans TC","Microsoft JhengHei",system-ui,sans-serif;
-  font-size:15px; line-height:1.5;
+  font-size:16px; line-height:1.55;
 }
 img{max-width:100%; height:auto; display:block}
 button,input{font:inherit} button{cursor:pointer}
@@ -31,18 +31,19 @@ a{color:inherit; text-decoration:none}
 .brand{display:flex; align-items:center; gap:12px; max-width:var(--max); margin:0 auto}
 .brand-logo{width:34px; height:48px; flex:none}
 .brand-text{display:flex; flex-direction:column; min-width:0; line-height:1.3}
-.brand-slogan{opacity:.92; font-size:13px; font-weight:700; letter-spacing:.08em}
-.topbar h1{margin:0; font-size:20px; font-weight:800}
+.brand-slogan{opacity:.92; font-size:14px; font-weight:700; letter-spacing:.08em}
+.topbar h1{margin:0; font-size:22px; font-weight:800}
 
-.app{max-width:var(--max); margin:0 auto; padding:12px 12px 40px}
+.app{max-width:var(--max); margin:0 auto; padding:10px 12px 28px}
 .quicknav{display:flex; gap:8px; flex-wrap:wrap; margin:0 0 12px}
 .quicknav a{
   display:inline-flex; align-items:center; justify-content:center;
   min-height:40px; padding:0 14px; border-radius:999px;
-  background:var(--paper); border:1px solid #142a371f; font-size:13px; font-weight:700;
+  background:var(--paper); border:1px solid #142a371f; font-size:15px; font-weight:700;
   box-shadow:var(--shadow);
 }
 .layout{display:grid; gap:var(--gap); grid-template-columns:1fr}
+.maincol,.controls,.card{min-width:0}
 @media (min-width:1024px){
   .layout{grid-template-columns:var(--ctrl) minmax(0,1fr); align-items:start}
   .controls{position:sticky; top:12px}
@@ -51,66 +52,67 @@ a{color:inherit; text-decoration:none}
   background:var(--paper); border:1px solid #142a371f;
   border-radius:var(--radius); box-shadow:var(--shadow); padding:14px;
 }
-.card h2{margin:0 0 12px; font-size:16px; font-weight:800; color:var(--navy); display:flex; align-items:center; gap:8px}
-.card h2 .tag{margin-left:auto; background:var(--accent-soft); color:var(--accent); font-size:12px; font-weight:800; padding:4px 10px; border-radius:999px}
+.card h2{margin:0 0 12px; font-size:18px; font-weight:800; color:var(--navy); display:flex; align-items:center; gap:8px}
+.card h2 .tag{margin-left:auto; background:var(--accent-soft); color:var(--accent); font-size:14px; font-weight:800; padding:4px 10px; border-radius:999px}
 
 .seg{display:grid; grid-template-columns:1fr 1fr; gap:8px; background:var(--cream); padding:4px; border-radius:10px}
 .seg.term{grid-template-columns:repeat(3,1fr)}
 .seg.mode{margin-bottom:10px}
 .seg button{
   border:0; background:transparent; min-height:44px; border-radius:8px;
-  font-weight:800; color:var(--muted); font-size:14px;
+  font-weight:800; color:var(--muted); font-size:16px;
 }
 .seg button.active{background:var(--accent); color:#fff; box-shadow:0 2px 8px #0002}
 .seg button:disabled{opacity:.35; cursor:not-allowed}
 body.theme-cib .seg button.active{background:#c2185b}
 
-label.field{display:grid; gap:6px; font-size:13px; font-weight:800; color:#334b57; margin-top:12px}
+label.field{display:grid; gap:6px; font-size:17px; font-weight:800; color:#334b57; margin-top:12px}
 label.field:first-of-type{margin-top:0}
 input[type=text], input[type=number]{
   width:100%; min-height:44px; padding:0 12px;
   border:1px solid #b9c8c7; border-radius:0; background:#fff; color:var(--ink);
-  font-size:16px; font-weight:700; outline:none;
+  font-size:17px; font-weight:700; outline:none;
 }
 input:focus{border-color:var(--blue); box-shadow:0 0 0 3px #05679a1c}
 .age-line{
   margin-top:8px; padding:10px 12px; background:var(--accent-soft);
-  border-radius:8px; font-size:13px; font-weight:700; color:var(--accent);
+  border-radius:8px; font-size:16px; font-weight:700; color:var(--accent);
   min-height:44px; display:flex; align-items:center; flex-wrap:wrap; gap:6px;
 }
 .age-line .err{color:var(--red)}
-.hint{font-size:12px; color:var(--muted); margin:6px 0 0; font-weight:600}
-.amt-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin-top:8px}
+.hint{font-size:14px; color:var(--muted); margin:6px 0 0; font-weight:600}
+.amt-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-top:8px}
+@media (min-width:400px){.amt-grid{grid-template-columns:repeat(6,1fr)}}
 .amt-grid button{
   min-height:44px; border:1.5px solid var(--line); background:#fff;
-  border-radius:8px; font-weight:800; font-size:12px; color:var(--ink); line-height:1.2;
+  border-radius:8px; font-weight:800; font-size:14px; color:var(--ink); line-height:1.25;
 }
 .amt-grid button.active{border-color:var(--accent); background:var(--accent-soft); color:var(--accent)}
 body.theme-cib .amt-grid button.active{border-color:#c2185b; background:#fce4ec; color:#c2185b}
 .custom-amt{display:flex; gap:8px; margin-top:8px; align-items:center}
 .custom-amt input{flex:1}
-.custom-amt span{font-size:13px; font-weight:700; color:var(--muted)}
+.custom-amt span{font-size:15px; font-weight:700; color:var(--muted)}
 .premium-box{
   margin-top:12px; padding:12px; border-radius:10px; background:#fff8e6;
   border:1px solid #f5d78e;
 }
-.premium-box .lab{font-size:12px; color:var(--muted); font-weight:700}
-.premium-box .amt{font-size:22px; font-weight:900; color:var(--red); margin-top:2px}
-.premium-box .sub{font-size:12px; color:var(--muted); margin-top:4px}
+.premium-box .lab{font-size:14px; color:var(--muted); font-weight:700}
+.premium-box .amt{font-size:28px; font-weight:900; color:var(--red); margin-top:2px}
+.premium-box .sub{font-size:14px; color:var(--muted); margin-top:4px}
 
 .btn{
   display:inline-flex; align-items:center; justify-content:center;
   min-height:48px; width:100%; border:0; border-radius:10px;
-  font-weight:800; font-size:15px; margin-top:14px;
+  font-weight:800; font-size:17px; margin-top:14px;
   background:var(--navy); color:#fff;
 }
 .btn:disabled{opacity:.5; cursor:wait}
 body.theme-cib .btn{background:#880e4f}
-.dl-hint{font-size:12px; color:var(--muted); margin:8px 0 0; text-align:center}
+.dl-hint{font-size:14px; color:var(--muted); margin:8px 0 0; text-align:center}
 
 /* Chart image + overlays */
 #chartAnchor{scroll-margin-top:12px}
-.chart-wrap{padding:0; overflow:hidden}
+.chart-wrap{padding:0; overflow:hidden; margin:0}
 .chart-stage{position:relative; width:100%; line-height:0}
 .chart-stage > img.base{width:100%; height:auto; display:block}
 .ov{
@@ -122,7 +124,7 @@ body.theme-cib .btn{background:#880e4f}
 .ov .yen{font-size:.72em; margin-left:1px}
 .ov-title{
   left:70.5%; top:6.6%;
-  color:#ffe566; font-size:clamp(10px, 1.55vw, 16px);
+  color:#ffe566; font-size:clamp(13px, 1.8vw, 18px);
   letter-spacing:.02em; text-shadow:0 1px 0 #0006;
 }
 body.theme-cib .ov-title{color:#ffe0f0}
@@ -130,39 +132,46 @@ body.theme-cib .ov-title{color:#ffe0f0}
 .ov-blue{color:#1565c0}
 .ov-purple{color:#6a1b9a}
 .ov-green{color:#2e7d32}
-/* positions as % of 1026x845 chart */
-.ov-c1a{left:28.5%; top:27.8%; font-size:clamp(11px, 1.5vw, 17px)}
-.ov-c1b{left:28.0%; top:34.0%; font-size:clamp(11px, 1.5vw, 17px)}
-.ov-c2{left:55.5%; top:32.5%; font-size:clamp(10px, 1.35vw, 15px)}
-.ov-c3{left:89.0%; top:32.5%; font-size:clamp(13px, 1.7vw, 20px)}
-.ov-c4{left:23.5%; top:68.0%; font-size:clamp(13px, 1.7vw, 20px)}
+/* positions as % of 1026x845 chart — centered on erased digit boxes */
+.ov-c1a{left:28.8%; top:27.95%; font-size:clamp(13px, 1.7vw, 18px)}
+.ov-c1b{left:28.3%; top:34.15%; font-size:clamp(12px, 1.55vw, 17px)}
+.ov-c2{left:55.5%; top:32.6%; font-size:clamp(11px, 1.4vw, 15px)}
+.ov-c3{left:89.0%; top:32.7%; font-size:clamp(14px, 1.85vw, 20px)}
+.ov-c4{left:23.6%; top:68.1%; font-size:clamp(14px, 1.85vw, 20px)}
+.ov.compact{letter-spacing:-0.04em}
+.ov.compact .yen{font-size:.65em}
 
 #unitAnchor{scroll-margin-top:12px}
-.unit-frame{border:2px solid #222; background:#fff; width:100%; overflow:hidden}
+.unit-scroll{width:100%; max-width:100%; overflow-x:auto; -webkit-overflow-scrolling:touch; overscroll-behavior-x:contain}
+.unit-frame{border:2px solid #222; background:#fff; width:max(100%, 820px); min-width:820px}
 table.unitpic{
   width:100%; border-collapse:collapse; table-layout:fixed;
-  font-size:clamp(10px, 1.1vw, 13px);
+  font-size:16px;
   font-family:"Microsoft JhengHei","Noto Sans TC","PingFang TC",sans-serif;
 }
-table.unitpic col.c-lab{width:18%}
-table.unitpic col.c-u{width:20.5%}
+table.unitpic col.c-lab{width:15%}
+table.unitpic col.c-u{width:14.16%}
 table.unitpic th, table.unitpic td{
-  border:1px solid #222; padding:7px 3px; text-align:center; vertical-align:middle;
-  line-height:1.2; overflow:hidden; word-break:break-word;
+  border:1px solid #222; padding:8px 4px; text-align:center; vertical-align:middle;
+  line-height:1.25; overflow:hidden; word-break:break-word;
 }
-table.unitpic th.agehd{background:#f5c518; font-weight:900}
+table.unitpic th.agehd{background:#f5c518; font-weight:900; font-size:16px}
 table.unitpic th.u05{background:#b8d4ef}
 table.unitpic th.u1{background:#f7e7a0}
 table.unitpic th.u2{background:#7ec8e8}
 table.unitpic th.u3{background:#f5b8c8}
-table.unitpic td.lab{text-align:left; padding-left:6px; font-weight:700; background:#fafafa; font-size:clamp(9px,1vw,12px)}
+table.unitpic th.u4{background:#c5e1a5}
+table.unitpic th.u5{background:#ce93d8; color:#111}
+table.unitpic td.lab{text-align:left; padding-left:6px; font-weight:700; background:#fafafa; font-size:15px}
 table.unitpic td.c05{background:#d6e8f7}
 table.unitpic td.c1{background:#fbf3c8}
 table.unitpic td.c2{background:#b7e0f2}
 table.unitpic td.c3{background:#f8d0db}
-table.unitpic td.num{font-variant-numeric:tabular-nums; white-space:nowrap; letter-spacing:-.02em}
-table.unitpic tr.mat td{color:#c62828; font-weight:900}
-table.unitpic tr.mat td.lab{background:#fff5f5}
+table.unitpic td.c4{background:#e6f4d4}
+table.unitpic td.c5{background:#e1bee7}
+table.unitpic td.num{font-variant-numeric:tabular-nums; white-space:nowrap; letter-spacing:-.02em; font-size:15px}
+table.unitpic tr.mat td{color:#c62828; font-weight:900; font-size:15px}
+table.unitpic tr.mat td.lab{background:#fff5f5; font-size:15px}
 
 #infoAnchor{scroll-margin-top:12px}
 details.info{
@@ -171,19 +180,19 @@ details.info{
 }
 details.info summary{
   min-height:48px; display:flex; align-items:center; cursor:pointer;
-  font-weight:800; color:var(--navy); list-style:none;
+  font-weight:800; color:var(--navy); list-style:none; font-size:16px;
 }
 details.info summary::-webkit-details-marker{display:none}
 details.info summary::after{content:"▾"; margin-left:auto; color:var(--muted)}
 details.info[open] summary::after{content:"▴"}
 .benefit{border-left:4px solid var(--accent); padding:8px 10px; margin:8px 0; background:var(--accent-soft); border-radius:0 8px 8px 0}
-.benefit .title{font-weight:800; font-size:14px}
-.benefit .desc{font-size:12px; color:var(--muted)}
-.benefit .pay{font-size:13px; font-weight:800; color:var(--accent)}
-.rules{font-size:13px; line-height:1.55; padding-bottom:12px}
+.benefit .title{font-weight:800; font-size:16px}
+.benefit .desc{font-size:14px; color:var(--muted)}
+.benefit .pay{font-size:15px; font-weight:800; color:var(--accent)}
+.rules{font-size:15px; line-height:1.55; padding-bottom:12px}
 .rules dt{font-weight:800; color:var(--accent); margin-top:8px}
 .rules dd{margin:2px 0 0}
-.disclaimer{font-size:12px; color:var(--muted); text-align:center; padding:16px 8px 8px; line-height:1.5}
+.disclaimer{font-size:14px; color:var(--muted); text-align:center; padding:16px 8px 8px; line-height:1.5}
 body.theme-cib{--accent:#c2185b; --accent-soft:#fce4ec}
 #exportMount{position:fixed; left:-10000px; top:0; width:1024px; background:#fff; z-index:-1; pointer-events:none}
 .hidden{display:none !important}
@@ -248,6 +257,8 @@ body.theme-cib{--accent:#c2185b; --accent-soft:#fce4ec}
           <button type="button" data-amt="100" class="active">1單位<br>100萬</button>
           <button type="button" data-amt="200">2單位<br>200萬</button>
           <button type="button" data-amt="300">3單位<br>300萬</button>
+          <button type="button" data-amt="400">4單位<br>400萬</button>
+          <button type="button" data-amt="500">5單位<br>500萬</button>
         </div>
         <div class="custom-amt">
           <input type="number" id="amtCustom" min="50" max="500" step="1" placeholder="自訂 50–500" inputmode="numeric">
@@ -278,25 +289,30 @@ body.theme-cib{--accent:#c2185b; --accent-soft:#fce4ec}
         </div>
       </section>
 
-      <section class="card" id="unitAnchor" style="margin-top:var(--gap)">
+      <section class="card" id="unitAnchor" style="margin-top:12px">
         <h2>單位試算表 <span class="tag" id="unitTag">20 年期</span></h2>
         <div class="unit-section" id="unitSection">
-          <div class="unit-frame">
-            <table class="unitpic" id="unitTable">
-              <colgroup>
-                <col class="c-lab"><col class="c-u"><col class="c-u"><col class="c-u"><col class="c-u">
-              </colgroup>
-              <thead>
-                <tr>
-                  <th class="agehd" id="unitAgeHd">—歲/男</th>
-                  <th class="u05">半單位</th>
-                  <th class="u1">1單位</th>
-                  <th class="u2">2單位</th>
-                  <th class="u3">3單位</th>
-                </tr>
-              </thead>
-              <tbody id="unitBody"></tbody>
-            </table>
+          <div class="unit-scroll">
+            <div class="unit-frame">
+              <table class="unitpic" id="unitTable">
+                <colgroup>
+                  <col class="c-lab">
+                  <col class="c-u"><col class="c-u"><col class="c-u"><col class="c-u"><col class="c-u"><col class="c-u">
+                </colgroup>
+                <thead>
+                  <tr>
+                    <th class="agehd" id="unitAgeHd">—歲/男</th>
+                    <th class="u05">半單位</th>
+                    <th class="u1">1單位</th>
+                    <th class="u2">2單位</th>
+                    <th class="u3">3單位</th>
+                    <th class="u4">4單位</th>
+                    <th class="u5">5單位</th>
+                  </tr>
+                </thead>
+                <tbody id="unitBody"></tbody>
+              </table>
+            </div>
           </div>
         </div>
       </section>
@@ -435,7 +451,7 @@ function updateAmtButtons(){
   });
   const c=document.getElementById('amtCustom');
   if(document.activeElement!==c){
-    c.value = [50,100,200,300].includes(state.amount) ? '' : state.amount;
+    c.value = [50,100,200,300,400,500].includes(state.amount) ? '' : state.amount;
   }
 }
 
@@ -443,6 +459,10 @@ function renderOverlays(){
   const wan=state.amount||100;
   document.getElementById('ovTitle').textContent = `保額 ${wan}萬`;
   const yen = '<span class="yen">元</span>';
+  const long = wan >= 300;
+  ['ovC1a','ovC1b','ovC2','ovC3','ovC4'].forEach(id=>{
+    document.getElementById(id).classList.toggle('compact', long);
+  });
   document.getElementById('ovC1a').innerHTML = fmt(moneyWan(wan,10))+yen;
   document.getElementById('ovC1b').innerHTML = fmt(moneyWan(wan,100))+yen;
   document.getElementById('ovC2').innerHTML = fmt(moneyWan(wan,110))+'元<br>～'+fmt(moneyWan(wan,150))+'元';
@@ -470,8 +490,9 @@ function renderUnitTable(){
   const rate=rateOf(age, term);
   document.getElementById('unitAgeHd').textContent = (age!=null?age:'—')+'歲/'+m.sex;
   document.getElementById('unitTag').textContent = term+' 年期';
-  const units=[50,100,200,300];
-  const cls=['c05','c1','c2','c3'];
+  const units=[50,100,200,300,400,500];
+  const cls=['c05','c1','c2','c3','c4','c5'];
+  const dashes = units.map(()=> '—');
   const cell=(vals,isNum)=>vals.map((v,i)=>`<td class="${cls[i]}${isNum?' num':''}">${v}</td>`).join('');
   const bonusShort = state.prod==='CIA' ? '男性癌症加成(第6年)' : '婦科癌症加成(第6年)';
   const illShort = '頭部創傷/燒燙傷';
@@ -479,12 +500,12 @@ function renderUnitTable(){
   if(rate==null){
     rows=[
       ['保額', units.map(u=>u+'萬'), false],
-      ['重度癌症', ['—','—','—','—'], true],
-      [bonusShort, ['—','—','—','—'], true],
-      [illShort, ['—','—','—','—'], true],
-      ['滿期金', ['—','—','—','—'], true, true],
-      ['年存', ['—','—','—','—'], true],
-      ['平均一個月', ['—','—','—','—'], true],
+      ['重度癌症', dashes, true],
+      [bonusShort, dashes, true],
+      [illShort, dashes, true],
+      ['滿期金', dashes, true, true],
+      ['年存', dashes, true],
+      ['平均一個月', dashes, true],
     ];
   } else {
     const annuals=units.map(u=>rate*u);
@@ -641,6 +662,8 @@ async function downloadExport(){
   try{
     const stage=document.getElementById('chartStage').cloneNode(true);
     const unit=document.getElementById('unitSection').cloneNode(true);
+    stage.removeAttribute('id');
+    unit.querySelectorAll('[id]').forEach(el=>el.removeAttribute('id'));
     mount.innerHTML='';
     const wrap=document.createElement('div');
     wrap.style.cssText='width:1024px;padding:20px;background:#fff;font-family:PingFang TC,Microsoft JhengHei,sans-serif';
