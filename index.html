@@ -284,6 +284,12 @@ body.theme-cia{--cancer-accent:#1565c0}
 .detail-year .dp{display:block; font-size:clamp(12px,1.4vw,15px); font-weight:900; color:var(--cancer-accent,#1565c0); margin:2px 0}
 .detail-year .da{display:block; font-size:10.5px; font-weight:800; color:var(--ink); font-variant-numeric:tabular-nums; letter-spacing:-.02em}
 .detail-src{font-size:10px; color:#9aa6ad; line-height:1.3; margin:auto 0 0}
+
+.detail-intro{font-size:13px; font-weight:700; color:var(--ink); line-height:1.4; margin:0 0 6px}
+.detail-cost{font-size:12.5px; font-weight:800; color:var(--cancer-accent,#1565c0); margin:0 0 2px; line-height:1.35}
+.detail-cost-src{font-size:10px; color:#9aa6ad; margin:0 0 8px; line-height:1.3}
+.detail-icd{display:none}
+
 @media (max-width:699px){
   .detail-years{grid-template-columns:repeat(3,minmax(0,1fr))}
 }
@@ -502,17 +508,35 @@ const SPECIFIC_CANCERS = {
     body: 'assets/body-male.png', gptBody: 'gpt/body-male-gpt.png',
     source: 'CIA條款附表一／第十五條',
     items: [
-      {id:'c18', name:'結腸惡性腫瘤', short:'結腸癌', icd:'C18', callout:'colo'},
-      {id:'c19', name:'直腸乙狀結腸連接處惡性腫瘤', short:'直腸乙狀結腸癌', icd:'C19', callout:'colo'},
-      {id:'c20', name:'直腸惡性腫瘤', short:'直腸癌', icd:'C20', callout:'colo'},
-      {id:'c21', name:'肛門及肛(門)管惡性腫瘤', short:'肛門癌', icd:'C21', callout:'anus'},
-      {id:'c60', name:'陰莖惡性腫瘤', short:'陰莖癌', icd:'C60', callout:'penile'},
-      {id:'c61', name:'攝護腺惡性腫瘤', short:'攝護腺癌', icd:'C61', callout:'prostate'},
-      {id:'c62', name:'睪丸之惡性腫瘤', short:'睪丸癌', icd:'C62', callout:'testis'},
-      {id:'c63', name:'其他及未明示男性生殖器官之惡性腫瘤', short:'其他男性生殖器癌', icd:'C63', callout:'penile'},
-      {id:'c67', name:'膀胱惡性腫瘤', short:'膀胱癌', icd:'C67', callout:'bladder'}
+      {id:'c18', short:'結腸癌', callout:'colo',
+        intro:'大腸常見惡性腫瘤，早期常無明顯症狀。',
+        cost:'自費標靶約 每月10～30萬', costSrc:'公開藥價整理（癌思停／爾必得舒等）'},
+      {id:'c19', short:'直腸乙狀結腸癌', callout:'colo',
+        intro:'直腸與乙狀結腸交接處的惡性腫瘤。',
+        cost:'自費標靶約 每月10～30萬', costSrc:'公開藥價整理（癌思停／爾必得舒等）'},
+      {id:'c20', short:'直腸癌', callout:'colo',
+        intro:'靠近肛門的大腸惡性腫瘤，可影響排便。',
+        cost:'自費標靶約 每月10～30萬', costSrc:'公開藥價整理（癌思停／爾必得舒等）'},
+      {id:'c21', short:'肛門癌', callout:'anus',
+        intro:'肛門及肛管的惡性腫瘤，相對少見。',
+        cost:'自費標靶／免疫約 每月10～30萬', costSrc:'亞東醫院：免疫每次約5～15萬'},
+      {id:'c60', short:'陰莖癌', callout:'penile',
+        intro:'陰莖皮膚或黏膜的惡性腫瘤，相對少見。',
+        cost:'自費標靶／免疫約 每月10～30萬', costSrc:'亞東醫院：免疫每次約5～15萬'},
+      {id:'c61', short:'攝護腺癌', callout:'prostate',
+        intro:'男性常見癌症，早期常無明顯症狀。',
+        cost:'新一代口服荷爾蒙自費約 每月10萬', costSrc:'臺大泌尿部／楓城泌尿學會衛教'},
+      {id:'c62', short:'睪丸癌', callout:'testis',
+        intro:'好發於年輕男性的睪丸惡性腫瘤。',
+        cost:'自費標靶／免疫約 每月10～30萬', costSrc:'亞東醫院：免疫每次約5～15萬'},
+      {id:'c63', short:'其他男性生殖器癌', callout:'penile',
+        intro:'其他及未明示男性生殖器官惡性腫瘤。',
+        cost:'自費標靶／免疫約 每月10～30萬', costSrc:'亞東醫院：免疫每次約5～15萬'},
+      {id:'c67', short:'膀胱癌', callout:'bladder',
+        intro:'泌尿系統常見惡性腫瘤，血尿為重要警訊。',
+        cost:'自費免疫約 每次5～15萬', costSrc:'亞東醫院腫瘤科說明'}
     ],
-    callouts: [{"id": "colo", "organ": "結腸・直腸", "icd": "C18–C20", "box": {"left": 4.328, "top": 23.895, "width": 25.414, "height": 11.395}, "items": ["c18", "c19", "c20"]}, {"id": "bladder", "organ": "膀胱", "icd": "C67", "box": {"left": 4.42, "top": 42.541, "width": 25.322, "height": 11.464}, "items": ["c67"]}, {"id": "testis", "organ": "睪丸", "icd": "C62", "box": {"left": 4.328, "top": 61.188, "width": 25.506, "height": 11.395}, "items": ["c62"]}, {"id": "anus", "organ": "肛門", "icd": "C21", "box": {"left": 70.166, "top": 24.724, "width": 25.506, "height": 11.326}, "items": ["c21"]}, {"id": "prostate", "organ": "攝護腺", "icd": "C61", "box": {"left": 70.166, "top": 43.301, "width": 25.414, "height": 11.326}, "items": ["c61"]}, {"id": "penile", "organ": "陰莖・其他", "icd": "C60・C63", "box": {"left": 70.166, "top": 61.878, "width": 25.506, "height": 11.326}, "items": ["c60", "c63"]}]
+    callouts: [{"id": "colo", "organ": "大腸直腸癌", "box": {"left": 4.328, "top": 23.895, "width": 25.414, "height": 11.395}, "items": ["c18", "c19", "c20"]}, {"id": "bladder", "organ": "膀胱癌", "box": {"left": 4.42, "top": 42.541, "width": 25.322, "height": 11.464}, "items": ["c67"]}, {"id": "testis", "organ": "睪丸癌", "box": {"left": 4.328, "top": 61.188, "width": 25.506, "height": 11.395}, "items": ["c62"]}, {"id": "anus", "organ": "肛門癌", "box": {"left": 70.166, "top": 24.724, "width": 25.506, "height": 11.326}, "items": ["c21"]}, {"id": "prostate", "organ": "攝護腺癌", "box": {"left": 70.166, "top": 43.301, "width": 25.414, "height": 11.326}, "items": ["c61"]}, {"id": "penile", "organ": "陰莖癌・其他", "box": {"left": 70.166, "top": 61.878, "width": 25.506, "height": 11.326}, "items": ["c60", "c63"]}]
   },
   CIB: {
     product: '真馨守護',
@@ -522,19 +546,41 @@ const SPECIFIC_CANCERS = {
     body: 'assets/body-female.png', gptBody: 'gpt/body-female-gpt.png',
     source: 'CIB條款附表一／第十五條',
     items: [
-      {id:'c43', name:'皮膚惡性黑色素瘤', short:'惡性黑色素瘤', icd:'C43', callout:'skin'},
-      {id:'c44', name:'皮膚之其他及未明示惡性腫瘤', short:'其他皮膚惡性腫瘤', icd:'C44', callout:'skin'},
-      {id:'c50', name:'乳房惡性腫瘤', short:'乳癌', icd:'C50', callout:'breast'},
-      {id:'c51', name:'外陰惡性腫瘤', short:'外陰癌', icd:'C51', callout:'pelvic'},
-      {id:'c52', name:'陰道惡性腫瘤', short:'陰道癌', icd:'C52', callout:'pelvic'},
-      {id:'c53', name:'子宮頸惡性腫瘤', short:'子宮頸癌', icd:'C53', callout:'cervix'},
-      {id:'c54', name:'子宮體惡性腫瘤', short:'子宮體癌', icd:'C54', callout:'uterus'},
-      {id:'c55', name:'未明示部位子宮惡性腫瘤', short:'子宮惡性腫瘤', icd:'C55', callout:'uterus'},
-      {id:'c56', name:'卵巢惡性腫瘤', short:'卵巢癌', icd:'C56', callout:'ovary'},
-      {id:'c57', name:'其他及未明示女性生殖器官之惡性腫瘤', short:'其他女性生殖器癌', icd:'C57', callout:'pelvic'},
-      {id:'c58', name:'胎盤惡性腫瘤', short:'胎盤癌', icd:'C58', callout:'pelvic'}
+      {id:'c43', short:'惡性黑色素瘤', callout:'skin',
+        intro:'惡性度較高的皮膚色素細胞癌。',
+        cost:'自費免疫約 每月18～25萬', costSrc:'公開整理（免疫檢查點抑制劑月費）'},
+      {id:'c44', short:'其他皮膚惡性腫瘤', callout:'skin',
+        intro:'皮膚其他及未明示之惡性腫瘤。',
+        cost:'自費標靶／免疫約 每月10～30萬', costSrc:'亞東醫院：免疫每次約5～15萬'},
+      {id:'c50', short:'乳癌', callout:'breast',
+        intro:'台灣女性發生率最高的癌症。',
+        cost:'自費標靶／新藥約 每月10～20萬', costSrc:'中央社／病友案例（轉移新藥月費約20萬）'},
+      {id:'c51', short:'外陰癌', callout:'pelvic',
+        intro:'外陰部位的惡性腫瘤，相對少見。',
+        cost:'自費標靶／免疫約 每月10～30萬', costSrc:'亞東醫院：免疫每次約5～15萬'},
+      {id:'c52', short:'陰道癌', callout:'pelvic',
+        intro:'陰道黏膜的惡性腫瘤，相對少見。',
+        cost:'自費標靶／免疫約 每月10～30萬', costSrc:'亞東醫院：免疫每次約5～15萬'},
+      {id:'c53', short:'子宮頸癌', callout:'cervix',
+        intro:'可透過抹片與疫苗預防的婦癌。',
+        cost:'自費標靶／免疫約 每月10～30萬', costSrc:'亞東醫院：免疫每次約5～15萬'},
+      {id:'c54', short:'子宮體癌', callout:'uterus',
+        intro:'多為子宮內膜癌，常見於停經前後。',
+        cost:'部分化療／標靶須自費，一年可逾百萬', costSrc:'TVBS／癌症希望基金會病友調查'},
+      {id:'c55', short:'子宮惡性腫瘤', callout:'uterus',
+        intro:'未明示部位的子宮惡性腫瘤。',
+        cost:'部分化療／標靶須自費，一年可逾百萬', costSrc:'TVBS／癌症希望基金會病友調查'},
+      {id:'c56', short:'卵巢癌', callout:'ovary',
+        intro:'早期症狀不明顯，常較晚才發現。',
+        cost:'PARP抑制劑自費約 每月十餘萬', costSrc:'《康健》癌症專題／鄭文芳醫師'},
+      {id:'c57', short:'其他女性生殖器癌', callout:'pelvic',
+        intro:'其他及未明示女性生殖器官惡性腫瘤。',
+        cost:'自費標靶／免疫約 每月10～30萬', costSrc:'亞東醫院：免疫每次約5～15萬'},
+      {id:'c58', short:'胎盤癌', callout:'pelvic',
+        intro:'與妊娠相關的罕見惡性腫瘤。',
+        cost:'自費標靶／免疫約 每月10～30萬', costSrc:'亞東醫院：免疫每次約5～15萬'}
     ],
-    callouts: [{"id": "breast", "organ": "乳房", "icd": "C50", "box": {"left": 4.492, "top": 14.258, "width": 25.488, "height": 10.938}, "items": ["c50"]}, {"id": "ovary", "organ": "卵巢", "icd": "C56", "box": {"left": 4.004, "top": 34.505, "width": 24.023, "height": 10.938}, "items": ["c56"]}, {"id": "uterus", "organ": "子宮體・未明示", "icd": "C54・C55", "box": {"left": 4.004, "top": 55.469, "width": 23.438, "height": 10.938}, "items": ["c54", "c55"]}, {"id": "cervix", "organ": "子宮頸", "icd": "C53", "box": {"left": 69.531, "top": 14.193, "width": 26.465, "height": 10.938}, "items": ["c53"]}, {"id": "skin", "organ": "皮膚", "icd": "C43・C44", "box": {"left": 72.754, "top": 32.031, "width": 23.047, "height": 10.872}, "items": ["c43", "c44"]}, {"id": "pelvic", "organ": "外陰・陰道・胎盤", "icd": "C51–C58", "box": {"left": 72.07, "top": 56.25, "width": 23.926, "height": 11.003}, "items": ["c51", "c52", "c57", "c58"]}]
+    callouts: [{"id": "breast", "organ": "乳癌", "box": {"left": 4.492, "top": 14.258, "width": 25.488, "height": 10.938}, "items": ["c50"]}, {"id": "ovary", "organ": "卵巢癌", "box": {"left": 4.004, "top": 34.505, "width": 24.023, "height": 10.938}, "items": ["c56"]}, {"id": "pelvic", "organ": "外陰癌・陰道癌・胎盤癌", "box": {"left": 4.004, "top": 55.469, "width": 23.438, "height": 10.938}, "items": ["c51", "c52", "c57", "c58"]}, {"id": "skin", "organ": "皮膚癌", "box": {"left": 69.531, "top": 14.193, "width": 26.465, "height": 10.938}, "items": ["c43", "c44"]}, {"id": "uterus", "organ": "子宮體癌", "box": {"left": 72.754, "top": 32.031, "width": 23.047, "height": 10.872}, "items": ["c54", "c55"]}, {"id": "cervix", "organ": "子宮頸癌", "box": {"left": 72.07, "top": 56.25, "width": 23.926, "height": 11.003}, "items": ["c53"]}]
   }
 };
 const SPECIFIC_BONUS = [
@@ -869,10 +915,15 @@ function renderCancerDetail(item){
     return '<div class="detail-year"><span class="dy">'+short+'</span><span class="dp">'+totalPct+
       '%</span><span class="da">'+fmt(moneyOfPct(totalPct))+'</span></div>';
   }).join('');
+  const intro=item.intro ? '<p class="detail-intro">'+item.intro+'</p>' : '';
+  const cost=item.cost
+    ? '<p class="detail-cost">約略費用：'+item.cost+'</p>'+(item.costSrc?'<p class="detail-cost-src">'+item.costSrc+'</p>':'')
+    : '';
   box.innerHTML=
     '<div class="detail-name">'+item.short+'</div>'+
-    '<div class="detail-icd">'+item.icd+' · 保額 '+state.amount+'萬</div>'+
-    '<p class="detail-one">重度100%＋加成10%～50%</p>'+
+    intro+
+    cost+
+    '<p class="detail-one">保額 '+state.amount+'萬 · 重度100%＋加成10%～50%</p>'+
     '<div class="detail-years">'+cells+'</div>'+
     '<p class="detail-src">'+b.source+'</p>';
 }

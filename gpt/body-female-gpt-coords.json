@@ -10,8 +10,7 @@
   "cards": [
     {
       "id": "breast",
-      "organ": "乳房",
-      "icd": "C50",
+      "organ": "乳癌",
       "left": 4.492,
       "top": 14.258,
       "width": 25.488,
@@ -19,44 +18,39 @@
     },
     {
       "id": "ovary",
-      "organ": "卵巢",
-      "icd": "C56",
+      "organ": "卵巢癌",
       "left": 4.004,
       "top": 34.505,
       "width": 24.023,
       "height": 10.938
     },
     {
-      "id": "uterus",
-      "organ": "子宮體・未明示",
-      "icd": "C54・C55",
+      "id": "pelvic",
+      "organ": "外陰癌・陰道癌・胎盤癌",
       "left": 4.004,
       "top": 55.469,
       "width": 23.438,
       "height": 10.938
     },
     {
-      "id": "cervix",
-      "organ": "子宮頸",
-      "icd": "C53",
+      "id": "skin",
+      "organ": "皮膚癌",
       "left": 69.531,
       "top": 14.193,
       "width": 26.465,
       "height": 10.938
     },
     {
-      "id": "skin",
-      "organ": "皮膚",
-      "icd": "C43・C44",
+      "id": "uterus",
+      "organ": "子宮體癌",
       "left": 72.754,
       "top": 32.031,
       "width": 23.047,
       "height": 10.872
     },
     {
-      "id": "pelvic",
-      "organ": "外陰・陰道・胎盤",
-      "icd": "C51–C58",
+      "id": "cervix",
+      "organ": "子宮頸癌",
       "left": 72.07,
       "top": 56.25,
       "width": 23.926,
