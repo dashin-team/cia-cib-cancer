@@ -43,7 +43,7 @@ a{color:inherit; text-decoration:none}
 .maincol,.controls,.card,.cancer-sec{min-width:0}
 @media (min-width:900px){
   .layout{
-    grid-template-columns:minmax(280px,var(--ctrl)) minmax(0,1fr);
+    grid-template-columns:minmax(260px,300px) minmax(0,1fr);
     grid-template-areas:"ctrl cancer" "main main";
     align-items:start;
   }
@@ -231,51 +231,45 @@ body.theme-cib{--accent:#c2185b; --accent-soft:#fce4ec}
 
 /* —— 保障癌症 —— */
 .cancer-sec{padding:12px 14px 14px}
-.cancer-sec h2{margin:0 0 6px; font-size:17px; flex-wrap:wrap}
-.cancer-note{margin:0 0 10px; font-size:13px; color:var(--muted); line-height:1.45}
+.cancer-sec h2{margin:0 0 4px; font-size:17px; flex-wrap:wrap}
+.cancer-note{margin:0 0 8px; font-size:12.5px; color:var(--muted); line-height:1.35}
 .cancer-grid{display:grid; gap:12px; grid-template-columns:1fr}
-@media (min-width:700px){
-  .cancer-grid{grid-template-columns:minmax(0,1.05fr) minmax(220px,.95fr); align-items:start}
+@media (min-width:900px){
+  .cancer-grid{grid-template-columns:minmax(0,1.15fr) minmax(240px,0.9fr); align-items:stretch}
 }
-.body-wrap{position:relative; width:100%; line-height:0; background:#faf9f6; border-radius:12px; overflow:hidden; border:1px solid #142a3714}
-.body-wrap img{width:100%; height:auto; display:block}
-.body-wrap svg.body-lines{position:absolute; inset:0; width:100%; height:100%; pointer-events:none}
-.callout{
-  position:absolute; z-index:2; transform:translate(-50%,-50%);
-  min-width:108px; max-width:42%; padding:7px 10px; border-radius:12px;
-  background:#fff; border:1.5px solid var(--cancer-accent,#1565c0);
-  box-shadow:0 2px 8px #00000014; cursor:pointer; text-align:left;
-  line-height:1.25; transition:box-shadow .15s, transform .15s;
+.body-fig{
+  position:relative; display:flex; align-items:center; justify-content:center;
+  background:#faf9f6; border-radius:12px; border:1px solid #142a3714;
+  padding:8px; min-height:0; overflow:hidden;
 }
-.callout:hover,.callout.active{box-shadow:0 4px 14px #00000022; transform:translate(-50%,-50%) scale(1.03)}
-.callout .co-org{display:block; font-size:clamp(11px,1.35cqw,13px); font-weight:900; color:var(--cancer-accent,#1565c0)}
-.callout .co-name{display:block; font-size:clamp(10px,1.2cqw,12px); font-weight:700; color:var(--ink); margin-top:2px}
+.body-fig img{width:100%; max-width:420px; height:auto; display:block; margin:0 auto}
+.body-fig.with-gpt img{max-width:100%}
 body.theme-cib{--cancer-accent:#c2185b}
 body.theme-cia{--cancer-accent:#1565c0}
 .cancer-side{display:flex; flex-direction:column; gap:10px; min-height:0}
-.chip-box,.detail-box{
-  background:#fff; border:1px solid #142a3718; border-radius:12px; padding:12px;
-}
-.chip-title{font-size:14px; font-weight:900; color:var(--navy); margin:0 0 8px}
-.chips{display:flex; flex-wrap:wrap; gap:8px}
+.chip-box,.detail-box{background:#fff; border:1px solid #142a3718; border-radius:12px; padding:12px}
+.chip-title{font-size:13px; font-weight:900; color:var(--navy); margin:0 0 8px}
+.chips{display:flex; flex-wrap:wrap; gap:6px}
 .chip{
   border:1.5px solid #d5dde4; background:#fff; border-radius:999px;
-  padding:8px 12px; font-size:13px; font-weight:800; color:var(--ink);
-  cursor:pointer; line-height:1.2;
+  padding:6px 10px; font-size:12.5px; font-weight:800; color:var(--ink); cursor:pointer; line-height:1.2;
 }
 .chip:hover{border-color:var(--cancer-accent,#1565c0)}
 .chip.active{background:var(--cancer-accent,#1565c0); color:#fff; border-color:transparent}
-.detail-box{min-height:160px}
-.detail-prompt{font-size:clamp(18px,2.4vw,22px); font-weight:900; color:var(--navy); margin:4px 0 8px}
-.detail-hint{font-size:13px; color:var(--muted); line-height:1.5}
-.detail-name{font-size:clamp(18px,2.2vw,22px); font-weight:900; color:var(--cancer-accent,#1565c0); margin:0 0 4px}
-.detail-icd{font-size:13px; font-weight:700; color:var(--muted); margin:0 0 10px}
-.detail-rows{display:grid; gap:6px; margin:0 0 10px}
-.detail-row{display:flex; justify-content:space-between; gap:10px; font-size:14px; font-weight:800; flex-wrap:wrap}
-.detail-row .amt{font-size:clamp(16px,2vw,20px); font-weight:900; color:var(--ink); font-variant-numeric:tabular-nums}
-.detail-total{border-top:1px dashed #d5dde4; padding-top:8px; margin-top:4px}
-.detail-src{font-size:11px; color:#8a969e; line-height:1.4; margin:0}
-
+.detail-box{flex:1; display:flex; flex-direction:column; min-height:0}
+.detail-prompt{font-size:clamp(15px,1.8vw,18px); font-weight:900; color:var(--navy); margin:0 0 4px}
+.detail-name{font-size:clamp(16px,1.8vw,20px); font-weight:900; color:var(--cancer-accent,#1565c0); margin:0 0 2px}
+.detail-icd{font-size:11.5px; font-weight:700; color:var(--muted); margin:0 0 6px}
+.detail-one{font-size:13px; font-weight:800; color:var(--ink); margin:0 0 8px}
+.detail-years{display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:5px; margin:0 0 8px}
+.detail-year{background:#f7f5f0; border-radius:9px; padding:7px 3px; text-align:center; border:1px solid #e8e4dc}
+.detail-year .dy{display:block; font-size:10.5px; font-weight:800; color:var(--muted)}
+.detail-year .dp{display:block; font-size:clamp(12px,1.4vw,15px); font-weight:900; color:var(--cancer-accent,#1565c0); margin:2px 0}
+.detail-year .da{display:block; font-size:10.5px; font-weight:800; color:var(--ink); font-variant-numeric:tabular-nums; letter-spacing:-.02em}
+.detail-src{font-size:10px; color:#9aa6ad; line-height:1.3; margin:auto 0 0}
+@media (max-width:699px){
+  .detail-years{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
 </style>
 </head>
 <body class="theme-cia">
@@ -356,21 +350,18 @@ body.theme-cia{--cancer-accent:#1565c0}
 
     <section class="card cancer-sec" id="cancerSec" aria-label="保障癌症">
       <h2 id="cancerTitle">豪愛守護 CIA 特定癌症（9項）</h2>
-      <p class="cancer-note" id="cancerNote">條款附表一所列特定癌症，於第2保單年度起另給付特定癌症保險金（保額10%～50%，第6年起50%）。其餘癌症仍依一般保障：初期／輕度10%、重度100%。</p>
+      <p class="cancer-note" id="cancerNote">特定癌症另給加成10%～50%（第2年起）；其餘：初期／輕度10%、重度100%。</p>
       <div class="cancer-grid">
-        <div class="body-wrap" id="bodyWrap">
-          <img id="bodyImg" src="assets/body-male.png" width="567" height="833" alt="男性人體圖">
-          <svg class="body-lines" id="bodyLines" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"></svg>
-          <div id="bodyCallouts"></div>
+        <div class="body-fig" id="bodyFig">
+          <img id="bodyImg" src="assets/body-male.png" alt="特定癌症人體圖">
         </div>
         <div class="cancer-side">
           <div class="chip-box">
-            <div class="chip-title" id="chipTitle">請點選特定癌症</div>
+            <div class="chip-title" id="chipTitle">請選擇一種癌症</div>
             <div class="chips" id="cancerChips" role="listbox" aria-label="特定癌症列表"></div>
           </div>
           <div class="detail-box" id="cancerDetail">
             <div class="detail-prompt">請選擇一種癌症</div>
-            <p class="detail-hint">點人體標註或右側項目，顯示該癌症的特定癌症保險金比例與目前保額對應金額。</p>
           </div>
         </div>
       </div>
@@ -488,8 +479,8 @@ const SPECIFIC_CANCERS = {
     code: 'CIA',
     count: 9,
     title: '豪愛守護 CIA 特定癌症（9項）',
-    body: 'assets/body-male.png',
-    source: '《CIA保險單條款樣張（自1151023起適用）》附表一、第十五條；DM公版註3',
+    body: 'assets/body-male.png', gptBody: 'gpt/body-male-gpt.png',
+    source: 'CIA條款附表一／第十五條',
     items: [
       {id:'c18', name:'結腸惡性腫瘤', short:'結腸癌', icd:'C18', callout:'colo'},
       {id:'c19', name:'直腸乙狀結腸連接處惡性腫瘤', short:'直腸乙狀結腸癌', icd:'C19', callout:'colo'},
@@ -502,12 +493,12 @@ const SPECIFIC_CANCERS = {
       {id:'c67', name:'膀胱惡性腫瘤', short:'膀胱癌', icd:'C67', callout:'bladder'}
     ],
     callouts: [
-      {id:'colo', organ:'大腸・直腸・肛門', label:'結腸／直腸／肛門惡性腫瘤', tip:[0.48,0.70], card:[0.14,0.66]},
-      {id:'bladder', organ:'膀胱', label:'膀胱惡性腫瘤', tip:[0.50,0.78], card:[0.14,0.80]},
-      {id:'prostate', organ:'攝護腺', label:'攝護腺惡性腫瘤', tip:[0.50,0.82], card:[0.86,0.78]},
-      {id:'testis', organ:'睪丸', label:'睪丸惡性腫瘤', tip:[0.50,0.88], card:[0.86,0.88]},
-      {id:'penis', organ:'陰莖', label:'陰莖惡性腫瘤', tip:[0.50,0.85], card:[0.14,0.90]},
-      {id:'mgential', organ:'其他男性生殖器', label:'其他男性生殖器官惡性腫瘤', tip:[0.52,0.84], card:[0.86,0.70]}
+      {id:'colo', side:'left', organ:'大腸・直腸・肛門', label:'結腸／直腸／肛門惡性腫瘤', tip:[0.50,0.68]},
+      {id:'bladder', side:'left', organ:'膀胱', label:'膀胱惡性腫瘤', tip:[0.50,0.78]},
+      {id:'penis', side:'left', organ:'陰莖', label:'陰莖惡性腫瘤', tip:[0.50,0.86]},
+      {id:'prostate', side:'right', organ:'攝護腺', label:'攝護腺惡性腫瘤', tip:[0.50,0.82]},
+      {id:'testis', side:'right', organ:'睪丸', label:'睪丸惡性腫瘤', tip:[0.50,0.90]},
+      {id:'mgential', side:'right', organ:'其他男性生殖器', label:'其他男性生殖器官惡性腫瘤', tip:[0.52,0.84]}
     ]
   },
   CIB: {
@@ -515,8 +506,8 @@ const SPECIFIC_CANCERS = {
     code: 'CIB',
     count: 11,
     title: '真馨守護 CIB 特定癌症（11項）',
-    body: 'assets/body-female.png',
-    source: '《CIB 保險單條款樣張（自115.10.23起適用）》附表一、第十五條；DM公版註3',
+    body: 'assets/body-female.png', gptBody: 'gpt/body-female-gpt.png',
+    source: 'CIB條款附表一／第十五條',
     items: [
       {id:'c43', name:'皮膚惡性黑色素瘤', short:'惡性黑色素瘤', icd:'C43', callout:'skin'},
       {id:'c44', name:'皮膚之其他及未明示惡性腫瘤', short:'其他皮膚惡性腫瘤', icd:'C44', callout:'skin'},
@@ -531,15 +522,15 @@ const SPECIFIC_CANCERS = {
       {id:'c58', name:'胎盤惡性腫瘤', short:'胎盤癌', icd:'C58', callout:'placenta'}
     ],
     callouts: [
-      {id:'skin', organ:'皮膚', label:'皮膚惡性腫瘤／黑色素瘤', tip:[0.62,0.22], card:[0.86,0.16]},
-      {id:'breast', organ:'乳房', label:'乳房惡性腫瘤', tip:[0.38,0.38], card:[0.14,0.36]},
-      {id:'uterus', organ:'子宮', label:'子宮體／子宮惡性腫瘤', tip:[0.50,0.72], card:[0.86,0.68]},
-      {id:'cervix', organ:'子宮頸', label:'子宮頸惡性腫瘤', tip:[0.50,0.74], card:[0.14,0.72]},
-      {id:'ovary', organ:'卵巢', label:'卵巢惡性腫瘤', tip:[0.42,0.70], card:[0.86,0.78]},
-      {id:'vulva', organ:'外陰', label:'外陰惡性腫瘤', tip:[0.50,0.86], card:[0.14,0.86]},
-      {id:'vagina', organ:'陰道', label:'陰道惡性腫瘤', tip:[0.50,0.82], card:[0.14,0.78]},
-      {id:'fgential', organ:'其他女性生殖器', label:'其他女性生殖器官惡性腫瘤', tip:[0.55,0.76], card:[0.86,0.86]},
-      {id:'placenta', organ:'胎盤', label:'胎盤惡性腫瘤', tip:[0.50,0.70], card:[0.86,0.58]}
+      {id:'breast', side:'left', organ:'乳房', label:'乳房惡性腫瘤', tip:[0.38,0.40]},
+      {id:'cervix', side:'left', organ:'子宮頸', label:'子宮頸惡性腫瘤', tip:[0.50,0.74]},
+      {id:'vagina', side:'left', organ:'陰道', label:'陰道惡性腫瘤', tip:[0.50,0.82]},
+      {id:'vulva', side:'left', organ:'外陰', label:'外陰惡性腫瘤', tip:[0.50,0.88]},
+      {id:'placenta', side:'left', organ:'胎盤', label:'胎盤惡性腫瘤', tip:[0.50,0.68]},
+      {id:'skin', side:'right', organ:'皮膚', label:'皮膚惡性腫瘤／黑色素瘤', tip:[0.62,0.28]},
+      {id:'uterus', side:'right', organ:'子宮', label:'子宮體／子宮惡性腫瘤', tip:[0.50,0.70]},
+      {id:'ovary', side:'right', organ:'卵巢', label:'卵巢惡性腫瘤', tip:[0.42,0.72]},
+      {id:'fgential', side:'right', organ:'其他女性生殖器', label:'其他女性生殖器官惡性腫瘤', tip:[0.55,0.78]}
     ]
   }
 };
@@ -866,89 +857,71 @@ function renderCancerDetail(item){
   const box=document.getElementById('cancerDetail');
   const b=specificBundle();
   if(!item){
-    box.innerHTML=`<div class="detail-prompt">請選擇一種癌症</div>
-      <p class="detail-hint">點人體標註或右側項目，顯示該癌症的特定癌症保險金比例與目前保額對應金額。</p>`;
+    box.innerHTML='<div class="detail-prompt">請選擇一種癌症</div>';
     return;
   }
-  const severe=moneyOfPct(100);
-  const rows=SPECIFIC_BONUS.map(s=>{
-    const bonus=moneyOfPct(s.pct);
-    const total=severe+bonus;
-    return `<div class="detail-row"><span>${s.year}　特定加成 ${s.pct}%</span><span class="amt">${fmt(bonus)} 元</span></div>
-      <div class="detail-row detail-total"><span>合計（重度100%＋特定${s.pct}%＝${100+s.pct}%）</span><span class="amt">${fmt(total)} 元</span></div>`;
+  const cells=SPECIFIC_BONUS.map(s=>{
+    const totalPct=100+s.pct;
+    const short=s.year.includes('6')?'第6年起':s.year.replace('保單年度','');
+    return '<div class="detail-year"><span class="dy">'+short+'</span><span class="dp">'+totalPct+
+      '%</span><span class="da">'+fmt(moneyOfPct(totalPct))+'</span></div>';
   }).join('');
-  box.innerHTML=`
-    <div class="detail-name">${item.short}</div>
-    <div class="detail-icd">${item.name}　ICD-10-CM ${item.icd}</div>
-    <div class="detail-rows">
-      <div class="detail-row"><span>重度癌症保險金（100%）</span><span class="amt">${fmt(severe)} 元</span></div>
-      <div class="detail-row"><span>目前保額</span><span class="amt">${state.amount}萬</span></div>
-      ${rows}
-    </div>
-    <p class="detail-src">來源：${b.source}。特定癌症保險金自第2保單年度起、限給付一次；比例依診斷確定日之保單年度，與癌別無關。</p>`;
+  box.innerHTML=
+    '<div class="detail-name">'+item.short+'</div>'+
+    '<div class="detail-icd">'+item.icd+' · 保額 '+state.amount+'萬</div>'+
+    '<p class="detail-one">重度100%＋加成10%～50%</p>'+
+    '<div class="detail-years">'+cells+'</div>'+
+    '<p class="detail-src">'+b.source+'</p>';
 }
 function selectCancer(id){
   selectedCancerId=id;
   const b=specificBundle();
   const item=b.items.find(x=>x.id===id)||null;
   document.querySelectorAll('.chip').forEach(ch=>ch.classList.toggle('active', ch.dataset.id===id));
-  document.querySelectorAll('.callout').forEach(co=>{
-    const on=item && co.dataset.id===item.callout;
-    co.classList.toggle('active', !!on);
-  });
   renderCancerDetail(item);
-  drawCancerLines(item?item.callout:null);
 }
-function drawCancerLines(activeCalloutId){
-  const svg=document.getElementById('bodyLines');
-  const b=specificBundle();
-  if(!svg) return;
-  const accent=getComputedStyle(document.body).getPropertyValue('--cancer-accent').trim()||'#1565c0';
-  svg.innerHTML=b.callouts.map(co=>{
-    const [tx,ty]=co.tip; const [cx,cy]=co.card;
-    const active=activeCalloutId===co.id;
-    const op=activeCalloutId && !active ? 0.25 : 0.85;
-    return `<line x1="${cx*100}" y1="${cy*100}" x2="${tx*100}" y2="${ty*100}" stroke="${accent}" stroke-width="${active?0.7:0.45}" stroke-opacity="${op}" />
-      <circle cx="${tx*100}" cy="${ty*100}" r="${active?1.1:0.8}" fill="${accent}" fill-opacity="${op}"/>`;
-  }).join('');
+function setBodyImage(b){
+  const img=document.getElementById('bodyImg');
+  const fig=document.getElementById('bodyFig');
+  if(!img||!fig) return;
+  const gpt=b.gptBody;
+  const fallback=b.body;
+  const probe=new Image();
+  probe.onload=function(){
+    img.src=gpt;
+    img.alt=b.product+'特定癌症圖';
+    fig.classList.add('with-gpt');
+  };
+  probe.onerror=function(){
+    img.src=fallback;
+    img.alt=b.product+'特定癌症圖';
+    fig.classList.remove('with-gpt');
+  };
+  probe.src=gpt;
 }
 function renderCancerPanel(){
   const b=specificBundle();
   document.body.classList.toggle('theme-cia', state.prod==='CIA');
   document.body.classList.toggle('theme-cib', state.prod==='CIB');
   document.getElementById('cancerTitle').textContent=b.title;
-  const img=document.getElementById('bodyImg');
-  if(img.getAttribute('src')!==b.body){ img.src=b.body; img.alt=b.product+'人體圖'; }
+  const note=document.getElementById('cancerNote');
+  if(note) note.textContent='特定癌症另給加成10%～50%（第2年起）；其餘：初期／輕度10%、重度100%。';
+  setBodyImage(b);
   const chips=document.getElementById('cancerChips');
   chips.innerHTML=b.items.map(it=>
-    `<button type="button" class="chip" role="option" data-id="${it.id}">${it.short}</button>`
+    '<button type="button" class="chip" role="option" data-id="'+it.id+'">'+it.short+'</button>'
   ).join('');
-  chips.onclick=(e)=>{
+  chips.onclick=function(e){
     const btn=e.target.closest('.chip'); if(!btn) return;
     selectCancer(btn.dataset.id);
   };
-  const wrap=document.getElementById('bodyCallouts');
-  wrap.innerHTML=b.callouts.map(co=>
-    `<button type="button" class="callout" data-id="${co.id}" style="left:${co.card[0]*100}%; top:${co.card[1]*100}%">
-      <span class="co-org">${co.organ}</span>
-      <span class="co-name">${co.label}</span>
-    </button>`
-  ).join('');
-  wrap.onclick=(e)=>{
-    const co=e.target.closest('.callout'); if(!co) return;
-    const first=b.items.find(it=>it.callout===co.dataset.id);
-    if(first) selectCancer(first.id);
-  };
-  // keep selection if still valid
-  if(selectedCancerId && b.items.some(it=>it.id===selectedCancerId)){
+  if(selectedCancerId && b.items.some(function(it){return it.id===selectedCancerId;})){
     selectCancer(selectedCancerId);
   } else {
     selectedCancerId=null;
     renderCancerDetail(null);
-    drawCancerLines(null);
   }
 }
-
 
 function refreshAll(){
   refreshUnitSide();
@@ -1100,7 +1073,7 @@ function updateStickyFit(){
   const fits=el.offsetHeight < window.innerHeight - 24;
   el.style.position = (desktop && fits) ? 'sticky' : 'static';
 }
-window.addEventListener('resize', ()=>{ updateStickyFit(); scheduleFitOverlays(); });
+window.addEventListener('resize', ()=>{ updateStickyFit(); scheduleFitOverlays(); }); });
 
 document.getElementById('unitViewSeg').addEventListener('click', (e)=>{
   const btn=e.target.closest('button[data-unit-view]');
