@@ -147,11 +147,11 @@ body.theme-cib .ov-title{color:#6a1b9a; background:#fff; border-color:#fff}
 .ov-purple{color:#6a1b9a}
 .ov-green{color:#2e7d32}
 /* positions as % of 1026x845 chart — centered on erased digit boxes */
-.ov-c1a{left:28.2%; top:27.9%; font-size:clamp(15px, 2.0vw, 22px); max-width:8.0%}
-.ov-c1b{left:28.1%; top:34.4%; font-size:clamp(15px, 2.0vw, 22px); max-width:9.2%}
-.ov-c2{left:55.5%; top:32.2%; font-size:clamp(14px, 1.85vw, 20px); max-width:15.5%; white-space:nowrap; line-height:1.15}
-.ov-c3{left:87.9%; top:35.6%; font-size:clamp(16px, 2.1vw, 24px); max-width:14.0%}
-.ov-c4{left:23.8%; top:68.6%; font-size:clamp(16px, 2.1vw, 24px); max-width:14.4%}
+.ov-c1a{left:28.2%; top:27.9%; font-size:clamp(18px, 2.6vw, 30px); max-width:10.5%}
+.ov-c1b{left:28.1%; top:34.4%; font-size:clamp(18px, 2.6vw, 30px); max-width:12.0%}
+.ov-c2{left:55.5%; top:32.2%; font-size:clamp(17px, 2.45vw, 28px); max-width:18.5%; white-space:nowrap; line-height:1.12}
+.ov-c3{left:87.9%; top:35.6%; font-size:clamp(18px, 2.6vw, 30px); max-width:15.5%}
+.ov-c4{left:23.8%; top:68.6%; font-size:clamp(18px, 2.6vw, 30px); max-width:16.0%}
 .ov.compact{letter-spacing:-0.02em}
 .ov.compact .yen{font-size:.75em}
 
@@ -482,13 +482,13 @@ function fitOverlay(el, maxPct){
   el.style.fontSize='';
   el.style.letterSpacing='';
   let fs=parseFloat(getComputedStyle(el).fontSize) || 18;
-  const maxH = el.id==='ovC2' ? stage.clientHeight*0.13 : stage.clientHeight*0.058;
+  const maxH = el.id==='ovC2' ? stage.clientHeight*0.15 : stage.clientHeight*0.075;
   for(let i=0;i<30;i++){
     el.style.fontSize=fs+'px';
     if(el.scrollWidth <= maxPx+0.5 && el.scrollHeight <= maxH) break;
     fs *= 0.94;
-    if(fs < 10.5){
-      fs=10.5; el.style.fontSize=fs+'px';
+    if(fs < 12){
+      fs=12; el.style.fontSize=fs+'px';
       el.style.letterSpacing='-0.04em';
       if(el.scrollWidth > maxPx+0.5) el.style.letterSpacing='-0.06em';
       break;
@@ -497,7 +497,7 @@ function fitOverlay(el, maxPct){
 }
 
 function fitAllOverlays(){
-  const map={ovC1a:8.0, ovC1b:9.2, ovC2:15.8, ovC3:14.0, ovC4:14.4};
+  const map={ovC1a:10.5, ovC1b:12.0, ovC2:18.5, ovC3:15.5, ovC4:16.0};
   Object.keys(map).forEach(id=>{
     const el=document.getElementById(id);
     if(el) fitOverlay(el, map[id]);
@@ -755,11 +755,11 @@ async function downloadExport(){
     // shrink overlays to fit export width
     stage.querySelectorAll('.ov-c1a,.ov-c1b,.ov-c2,.ov-c3,.ov-c4').forEach(el=>{
       let pct=14.4;
-      if(el.classList.contains('ov-c1a')) pct=8.0;
-      if(el.classList.contains('ov-c1b')) pct=9.2;
-      if(el.classList.contains('ov-c2')) pct=15.8;
-      if(el.classList.contains('ov-c3')) pct=14.0;
-      if(el.classList.contains('ov-c4')) pct=14.4;
+      if(el.classList.contains('ov-c1a')) pct=10.5;
+      if(el.classList.contains('ov-c1b')) pct=12.0;
+      if(el.classList.contains('ov-c2')) pct=18.5;
+      if(el.classList.contains('ov-c3')) pct=15.5;
+      if(el.classList.contains('ov-c4')) pct=16.0;
       const maxPx=Math.max(28, 984*(pct/100)*0.90);
       el.style.maxWidth=maxPx+'px';
       el.style.fontSize='';
