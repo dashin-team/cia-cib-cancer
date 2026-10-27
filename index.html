@@ -113,7 +113,7 @@ body.theme-cib .btn{background:#880e4f}
 .maincol{display:flex; flex-direction:column; gap:12px; align-items:stretch}
 #chartAnchor{scroll-margin-top:12px; height:fit-content; min-height:0; align-self:start; width:100%}
 .chart-wrap{padding:0 !important; overflow:hidden; margin:0; height:fit-content; min-height:0; align-self:start; width:100%}
-.chart-stage{position:relative; width:100%; line-height:0; height:fit-content; min-height:0}
+.chart-stage{position:relative; width:100%; line-height:0; height:fit-content; min-height:0; container-type:inline-size; container-name:chart}
 .chart-stage > img.base{width:100%; height:auto; display:block; vertical-align:top}
 .client-banner{
   display:none; margin:0 0 10px; padding:10px 14px; border-radius:10px;
@@ -147,24 +147,29 @@ body.theme-cib .ov-title{color:#6a1b9a; background:#fff; border-color:#fff}
 .ov-purple{color:#6a1b9a}
 .ov-green{color:#2e7d32}
 /* positions as % of 1026x845 chart — centered on erased digit boxes */
-.ov-c1a{left:28.2%; top:27.9%; font-size:clamp(18px, 2.6vw, 30px); max-width:10.5%}
-.ov-c1b{left:28.1%; top:34.4%; font-size:clamp(18px, 2.6vw, 30px); max-width:12.0%}
-.ov-c2{left:55.5%; top:32.2%; font-size:clamp(17px, 2.45vw, 28px); max-width:18.5%; white-space:nowrap; line-height:1.12}
-.ov-c3{left:87.9%; top:35.6%; font-size:clamp(18px, 2.6vw, 30px); max-width:15.5%}
-.ov-c4{left:23.8%; top:68.6%; font-size:clamp(18px, 2.6vw, 30px); max-width:16.0%}
+.ov-c1a{left:28.2%; top:27.9%; font-size:clamp(10px, 2.15cqw, 24px); max-width:8.5%}
+.ov-c1b{left:28.1%; top:34.4%; font-size:clamp(10px, 2.15cqw, 24px); max-width:9.5%}
+.ov-c2{left:55.5%; top:32.2%; font-size:clamp(9px, 2.05cqw, 22px); max-width:15%; white-space:nowrap; line-height:1.12}
+.ov-c3{left:87.9%; top:35.6%; font-size:clamp(10px, 2.15cqw, 24px); max-width:13%}
+.ov-c4{left:23.8%; top:68.6%; font-size:clamp(10px, 2.15cqw, 24px); max-width:14%}
 .ov.compact{letter-spacing:-0.02em}
 .ov.compact .yen{font-size:.75em}
 
 #unitAnchor{scroll-margin-top:12px}
+.unit-head{display:flex; flex-wrap:wrap; align-items:center; gap:10px 14px; justify-content:space-between; margin:0 0 10px}
+.unit-head h2{margin:0}
+.unit-view-seg{flex:1 1 260px; max-width:360px; display:grid; grid-template-columns:1fr 1fr; gap:6px; background:var(--cream); padding:3px; border-radius:10px}
+.unit-view-seg button{border:0; background:transparent; min-height:40px; border-radius:8px; font-weight:800; color:var(--muted); font-size:13px; line-height:1.25; padding:4px 6px}
+.unit-view-seg button.active{background:#fff; color:var(--ink); box-shadow:0 1px 4px #00000014}
 .unit-scroll{width:100%; max-width:100%; overflow-x:auto; -webkit-overflow-scrolling:touch; overscroll-behavior-x:contain}
-.unit-frame{border:2px solid #222; background:#fff; width:max(100%, 820px); min-width:820px}
+.unit-frame{border:2px solid #222; background:#fff; width:100%; min-width:0}
 table.unitpic{
   width:100%; border-collapse:collapse; table-layout:fixed;
   font-size:16px;
   font-family:"Microsoft JhengHei","Noto Sans TC","PingFang TC",sans-serif;
 }
-table.unitpic col.c-lab{width:15%}
-table.unitpic col.c-u{width:14.16%}
+table.unitpic col.c-lab{width:20%}
+table.unitpic col.c-u{width:20%}
 table.unitpic th, table.unitpic td{
   border:1px solid #222; padding:8px 4px; text-align:center; vertical-align:middle;
   line-height:1.25; overflow:hidden; word-break:break-word;
@@ -307,24 +312,21 @@ body.theme-cib{--accent:#c2185b; --accent-soft:#fce4ec}
       </section>
 
       <section class="card" id="unitAnchor">
-        <h2>單位試算表 <span class="tag" id="unitTag">20 年期</span></h2>
+        <div class="unit-head">
+          <h2>單位試算表 <span class="tag" id="unitTag">20 年期</span></h2>
+          <div class="seg unit-view-seg" id="unitViewSeg" role="tablist" aria-label="單位試算表欄位">
+            <button type="button" class="active" data-unit-view="low" role="tab" aria-selected="true">半單位～3單位</button>
+            <button type="button" data-unit-view="high" role="tab" aria-selected="false">4單位・5單位</button>
+          </div>
+        </div>
         <div class="unit-section" id="unitSection">
           <div class="unit-scroll">
             <div class="unit-frame">
               <table class="unitpic" id="unitTable">
-                <colgroup>
-                  <col class="c-lab">
-                  <col class="c-u"><col class="c-u"><col class="c-u"><col class="c-u"><col class="c-u"><col class="c-u">
-                </colgroup>
+                <colgroup id="unitCols"></colgroup>
                 <thead>
-                  <tr>
+                  <tr id="unitHeadRow">
                     <th class="agehd" id="unitAgeHd">—歲/男</th>
-                    <th class="u05">半單位</th>
-                    <th class="u1">1單位</th>
-                    <th class="u2">2單位</th>
-                    <th class="u3">3單位</th>
-                    <th class="u4">4單位</th>
-                    <th class="u5">5單位</th>
                   </tr>
                 </thead>
                 <tbody id="unitBody"></tbody>
@@ -392,7 +394,13 @@ const META = {
   }
 };
 const MODAL={semi:0.52,qtr:0.262,mon:0.088};
-const state={prod:'CIA', term:20, age:49, amount:100, mode:'birth', clientName:''};
+const state={prod:'CIA', term:20, age:49, amount:100, mode:'birth', clientName:'', unitView:'low'};
+const UNIT_VIEWS={
+  low:{units:[50,100,200,300], cls:['c05','c1','c2','c3'], th:[['u05','半單位'],['u1','1單位'],['u2','2單位'],['u3','3單位']]},
+  high:{units:[400,500], cls:['c4','c5'], th:[['u4','4單位'],['u5','5單位']]}
+};
+const OVERLAY_MAX_PCT={ovC1a:8.5, ovC1b:9.5, ovC2:15.0, ovC3:13.0, ovC4:14.0};
+const OVERLAY_BASE_CQW={ovC1a:2.15, ovC1b:2.15, ovC2:2.05, ovC3:2.15, ovC4:2.15};
 
 function todayDate(){const t=new Date(); return new Date(t.getFullYear(),t.getMonth(),t.getDate());}
 function todayStr(){const t=todayDate(); return `${t.getFullYear()}-${String(t.getMonth()+1).padStart(2,'0')}-${String(t.getDate()).padStart(2,'0')}`;}
@@ -445,6 +453,7 @@ function setTheme(){
   document.body.className = state.prod==='CIB' ? 'theme-cib' : 'theme-cia';
   document.getElementById('prodHint').textContent = m.short;
   document.getElementById('chartBase').src = state.prod==='CIA' ? 'cia-base.png' : 'cib-base.png';
+  scheduleFitOverlays();
   document.querySelectorAll('#prodSeg button').forEach(b=>b.classList.toggle('active', b.dataset.prod===state.prod));
 }
 
@@ -472,36 +481,72 @@ function updateAmtButtons(){
   }
 }
 
-function fitOverlay(el, maxPct){
-  const stage=document.getElementById('chartStage');
-  if(!stage || !stage.clientWidth) return;
-  // Fill most of the inner box (~90%); shrink only when overflowing.
-  const boxPx=stage.clientWidth*(maxPct/100);
-  const maxPx=Math.max(28, boxPx * 0.90);
-  el.style.maxWidth=maxPx+'px';
-  el.style.fontSize='';
-  el.style.letterSpacing='';
-  let fs=parseFloat(getComputedStyle(el).fontSize) || 18;
-  const maxH = el.id==='ovC2' ? stage.clientHeight*0.15 : stage.clientHeight*0.075;
-  for(let i=0;i<30;i++){
-    el.style.fontSize=fs+'px';
-    if(el.scrollWidth <= maxPx+0.5 && el.scrollHeight <= maxH) break;
-    fs *= 0.94;
-    if(fs < 12){
-      fs=12; el.style.fontSize=fs+'px';
-      el.style.letterSpacing='-0.04em';
-      if(el.scrollWidth > maxPx+0.5) el.style.letterSpacing='-0.06em';
+function chartImageWidth(root){
+  const stage = root || document.getElementById('chartStage');
+  if(!stage) return 0;
+  const img = stage.querySelector('img.base') || document.getElementById('chartBase');
+  const w = (img && img.clientWidth) ? img.clientWidth : stage.clientWidth;
+  return w || 0;
+}
+
+function fitOverlay(el, maxPct, root){
+  const stage = root || document.getElementById('chartStage');
+  if(!stage) return;
+  const W = chartImageWidth(stage);
+  if(!W) return;
+  const maxPx = Math.max(4, W * (maxPct/100));
+  const baseCqw = OVERLAY_BASE_CQW[el.id] || 2.1;
+  const fsCap = el.id==='ovC2' ? 22 : 24;
+  const softFloor = Math.max(7, W * 0.008);
+  let fs = Math.min(fsCap, Math.max(softFloor, W * (baseCqw/100)));
+  el.style.maxWidth = maxPx + 'px';
+  el.style.letterSpacing = '';
+  const maxH = el.id==='ovC2' ? stage.clientHeight * 0.12 : stage.clientHeight * 0.065;
+  for(let i=0;i<48;i++){
+    el.style.fontSize = fs + 'px';
+    if(el.scrollWidth <= maxPx + 0.5 && el.scrollHeight <= maxH + 0.5) break;
+    fs *= 0.92;
+    if(fs < softFloor){
+      el.style.letterSpacing = '-0.04em';
+    }
+    if(fs < 6){
+      fs = 6;
+      el.style.fontSize = fs + 'px';
+      el.style.letterSpacing = '-0.08em';
+      // last resort: scaleX to force fit without layout overflow
+      if(el.scrollWidth > maxPx + 0.5){
+        const sx = maxPx / el.scrollWidth;
+        el.style.transform = 'translate(-50%, -50%) scaleX('+sx.toFixed(4)+')';
+      }
       break;
     }
   }
+  // reset scale if not needed
+  if(el.scrollWidth <= maxPx + 0.5){
+    el.style.transform = 'translate(-50%, -50%)';
+  }
 }
 
-function fitAllOverlays(){
-  const map={ovC1a:10.5, ovC1b:12.0, ovC2:18.5, ovC3:15.5, ovC4:16.0};
-  Object.keys(map).forEach(id=>{
-    const el=document.getElementById(id);
-    if(el) fitOverlay(el, map[id]);
+function fitAllOverlays(root){
+  const stage = root || document.getElementById('chartStage');
+  if(!stage) return;
+  const live = !root || root === document.getElementById('chartStage');
+  if(live){
+    Object.keys(OVERLAY_MAX_PCT).forEach(id=>{
+      const el=document.getElementById(id);
+      if(el) fitOverlay(el, OVERLAY_MAX_PCT[id], stage);
+    });
+    return;
+  }
+  const classMap={ovC1a:'.ov-c1a', ovC1b:'.ov-c1b', ovC2:'.ov-c2', ovC3:'.ov-c3', ovC4:'.ov-c4'};
+  Object.keys(OVERLAY_MAX_PCT).forEach(id=>{
+    const el=root.querySelector(classMap[id]);
+    if(el){ el.id=id; fitOverlay(el, OVERLAY_MAX_PCT[id], root); el.removeAttribute('id'); }
   });
+}
+
+function scheduleFitOverlays(){
+  requestAnimationFrame(()=>{ requestAnimationFrame(()=> fitAllOverlays()); });
 }
 
 function renderOverlays(){
@@ -518,7 +563,7 @@ function renderOverlays(){
   document.getElementById('ovC3').innerHTML = fmt(moneyWan(wan,2))+yen;
   document.getElementById('ovC4').innerHTML = fmt(moneyWan(wan,10))+yen;
   // fit after layout
-  requestAnimationFrame(()=>{ fitAllOverlays(); });
+  scheduleFitOverlays();
 }
 
 function renderPremium(){
@@ -552,10 +597,26 @@ function renderClientBanner(){
 function renderUnitTable(){
   const age=state.age, term=state.term, m=META[state.prod];
   const rate=rateOf(age, term);
+  const view=UNIT_VIEWS[state.unitView]||UNIT_VIEWS.low;
+  const units=view.units;
+  const cls=view.cls;
   document.getElementById('unitAgeHd').textContent = (age!=null?age:'—')+'歲/'+m.sex;
   document.getElementById('unitTag').textContent = term+' 年期';
-  const units=[50,100,200,300,400,500];
-  const cls=['c05','c1','c2','c3','c4','c5'];
+  const cols=document.getElementById('unitCols');
+  if(cols){
+    cols.innerHTML = '<col class="c-lab">' + units.map(()=>'<col class="c-u">').join('');
+  }
+  const head=document.getElementById('unitHeadRow');
+  if(head){
+    const ageTh=document.getElementById('unitAgeHd');
+    head.innerHTML='';
+    head.appendChild(ageTh);
+    view.th.forEach(([c,lab])=>{
+      const th=document.createElement('th');
+      th.className=c; th.textContent=lab;
+      head.appendChild(th);
+    });
+  }
   const dashes = units.map(()=> '—');
   const cell=(vals,isNum)=>vals.map((v,i)=>`<td class="${cls[i]}${isNum?' num':''}">${v}</td>`).join('');
   const bonusShort = state.prod==='CIA' ? '男性癌症加成(第6年)' : '婦科癌症加成(第6年)';
@@ -752,31 +813,15 @@ async function downloadExport(){
     wrap.appendChild(title);
     stage.style.width='984px';
     wrap.appendChild(stage);
-    // shrink overlays to fit export width
-    stage.querySelectorAll('.ov-c1a,.ov-c1b,.ov-c2,.ov-c3,.ov-c4').forEach(el=>{
-      let pct=14.4;
-      if(el.classList.contains('ov-c1a')) pct=10.5;
-      if(el.classList.contains('ov-c1b')) pct=12.0;
-      if(el.classList.contains('ov-c2')) pct=18.5;
-      if(el.classList.contains('ov-c3')) pct=15.5;
-      if(el.classList.contains('ov-c4')) pct=16.0;
-      const maxPx=Math.max(28, 984*(pct/100)*0.90);
-      el.style.maxWidth=maxPx+'px';
-      el.style.fontSize='';
-      let fs=parseFloat(getComputedStyle(el).fontSize)||18;
-      for(let i=0;i<28;i++){
-        el.style.fontSize=fs+'px';
-        if(el.scrollWidth<=maxPx+0.5) break;
-        fs*=0.94; if(fs<11){ el.style.fontSize='11px'; break; }
-      }
-    });
     const sp=document.createElement('div'); sp.style.height='16px'; wrap.appendChild(sp);
     wrap.appendChild(unit);
     mount.appendChild(wrap);
-    // wait base image in clone
+    // wait base image in clone, then fit overlays to laid-out width
     const img=stage.querySelector('img.base');
     if(img && !img.complete) await new Promise(r=>{ img.onload=r; img.onerror=r; });
     await new Promise(r=>setTimeout(r,80));
+    fitAllOverlays(stage);
+    await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
     const canvas=await html2canvas(wrap,{
       backgroundColor:'#ffffff', scale:2, useCORS:true, logging:false,
       width:1024, windowWidth:1024
@@ -806,7 +851,26 @@ function updateStickyFit(){
   const fits=el.offsetHeight < window.innerHeight - 24;
   el.style.position = (desktop && fits) ? 'sticky' : 'static';
 }
-window.addEventListener('resize', ()=>{ updateStickyFit(); fitAllOverlays(); });
+window.addEventListener('resize', ()=>{ updateStickyFit(); scheduleFitOverlays(); });
+
+document.getElementById('unitViewSeg').addEventListener('click', (e)=>{
+  const btn=e.target.closest('button[data-unit-view]');
+  if(!btn) return;
+  state.unitView = btn.dataset.unitView;
+  document.querySelectorAll('#unitViewSeg button').forEach(b=>{
+    const on=b===btn;
+    b.classList.toggle('active', on);
+    b.setAttribute('aria-selected', on?'true':'false');
+  });
+  renderUnitTable();
+});
+
+const chartBaseEl=document.getElementById('chartBase');
+chartBaseEl.addEventListener('load', scheduleFitOverlays);
+if(chartBaseEl.complete) scheduleFitOverlays();
+if(document.fonts && document.fonts.ready){
+  document.fonts.ready.then(scheduleFitOverlays).catch(()=>{});
+}
 
 // default demo: age mode 49
 document.getElementById('ageInput').value='49';
@@ -814,6 +878,7 @@ setMode('age');
 setTheme();
 refreshAll();
 setTimeout(updateStickyFit,0);
+setTimeout(scheduleFitOverlays, 0);
 
 window.state=state;
 window.RATES=RATES;
