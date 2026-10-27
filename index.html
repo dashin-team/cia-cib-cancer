@@ -24,7 +24,7 @@ body{
 }
 .topbar{
   background:linear-gradient(135deg,var(--accent),var(--accent-mid));
-  color:#fff; padding:14px 14px 16px; position:sticky; top:0; z-index:40;
+  color:#fff; padding:10px 14px 12px; position:relative; z-index:1;
   box-shadow:0 2px 12px rgba(0,0,0,.15);
 }
 .topbar h1{margin:0; font-size:1.05rem; font-weight:700}
@@ -39,10 +39,35 @@ body{
   background:var(--accent); color:#fff; width:22px; height:22px; border-radius:50%;
   font-size:.7rem; display:inline-flex; align-items:center; justify-content:center; font-weight:700; flex-shrink:0;
 }
-.sticky-age{
-  position:sticky; top:64px; z-index:30; background:var(--card);
-  box-shadow:0 4px 14px rgba(16,24,40,.08);
+
+.compact-sticky{
+  position:static;
+  display:flex; align-items:center; justify-content:space-between; gap:8px;
+  background:#fff;
+  border:1px solid var(--line); border-radius:12px;
+  padding:8px 10px; margin-bottom:10px;
+  box-shadow:none;
+  min-height:44px;
 }
+.compact-sticky .cs-age{display:flex; align-items:center; gap:4px; flex-shrink:0}
+.compact-sticky .cs-age button{
+  width:30px; height:30px; border-radius:8px; border:1px solid var(--line);
+  background:#fff; font-weight:800; color:var(--accent); cursor:pointer; font-size:1rem;
+}
+.compact-sticky .cs-age input{
+  width:44px; height:30px; text-align:center; font-weight:800; font-size:.95rem;
+  border:1.5px solid var(--line); border-radius:8px; padding:0;
+}
+.compact-sticky .cs-lab{font-size:.75rem; font-weight:700; color:var(--muted); margin-left:2px; white-space:nowrap}
+.compact-sticky .cs-term{display:flex; gap:4px}
+.compact-sticky .cs-term button{
+  border:0; background:var(--bg); padding:6px 8px; border-radius:8px;
+  font-size:.72rem; font-weight:700; color:var(--muted); cursor:pointer;
+}
+.compact-sticky .cs-term button.active{background:var(--accent); color:#fff}
+.compact-sticky .cs-term button:disabled{opacity:.35}
+.wrap{padding-top:10px}
+
 .seg{display:grid; grid-template-columns:1fr 1fr; gap:8px; background:var(--bg); padding:4px; border-radius:12px}
 .seg.term{grid-template-columns:1fr 1fr 1fr}
 .seg button{
@@ -91,11 +116,8 @@ input:focus{border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-soft)}
 .rules{font-size:.78rem; line-height:1.5}
 .rules dt{font-weight:700; color:var(--accent); margin-top:7px}
 .rules dd{margin:2px 0 0}
-.chart-img{
-  width:100%; display:block; border-radius:8px; border:1px solid var(--line);
-  background:#fafafa; aspect-ratio:1026/845; object-fit:contain;
-}
-body.theme-cib .chart-img{aspect-ratio:1029/846}
+
+
 .export-actions{display:flex; gap:8px; margin:10px 0 4px; flex-wrap:wrap}
 .btn{
   border:0; border-radius:10px; padding:10px 14px; font-weight:700; font-size:.85rem; cursor:pointer;
@@ -104,45 +126,85 @@ body.theme-cib .chart-img{aspect-ratio:1029/846}
 .btn-ghost{background:var(--bg); color:var(--accent); border:1.5px solid var(--line)}
 .btn:disabled{opacity:.5; cursor:wait}
 .err{color:#b42318; font-size:.82rem; padding:6px 0; min-height:1.2em}
+.chart-img{width:100%; display:block; border-radius:8px; border:1px solid var(--line); background:#fafafa; object-fit:contain;}
 .pill{display:inline-block; background:rgba(255,255,255,.22); padding:2px 8px; border-radius:999px; font-size:.66rem; margin-left:4px}
 .tag{display:inline-block; background:var(--accent-soft); color:var(--accent); font-size:.66rem; font-weight:700; padding:2px 8px; border-radius:999px}
 .disclaimer{font-size:.66rem; color:var(--muted); padding:8px 4px 20px; line-height:1.5; text-align:center}
 body.theme-cib{--accent:var(--cib); --accent-soft:var(--cib-soft); --accent-mid:var(--cib-mid)}
 body.theme-cib .topbar{background:linear-gradient(135deg,#c2185b,#ec407a)}
 
-/* ===== Image-like unit table ===== */
-.unit-section{margin-top:4px}
-.unit-section h3{margin:0 0 8px; font-size:.95rem; font-weight:800; color:#1a1a1a}
+/* ===== Image-like unit table (fits 390px + html2canvas) ===== */
+.unit-section{margin-top:8px}
+.unit-section h3{margin:0 0 8px; font-size:.92rem; font-weight:800; color:#1a1a1a}
 .unit-frame{
   border:2px solid #222; border-radius:2px; overflow:hidden; background:#fff;
   font-family:"Microsoft JhengHei","Noto Sans TC","PingFang TC",sans-serif;
+  width:100%; max-width:100%;
 }
 table.unitpic{
-  width:100%; border-collapse:collapse; table-layout:fixed; font-size:13px;
+  width:100%; max-width:100%; border-collapse:collapse; table-layout:fixed;
+  font-size:clamp(8px, 2.3vw, 12.5px);
 }
+table.unitpic col.c-lab{width:18%}
+table.unitpic col.c-u{width:20.5%}
 table.unitpic th, table.unitpic td{
-  border:1px solid #222; padding:8px 4px; text-align:center; vertical-align:middle;
-  line-height:1.25;
+  border:1px solid #222;
+  padding:clamp(3px, 1vw, 7px) 1px;
+  text-align:center; vertical-align:middle;
+  line-height:1.15;
+  overflow:hidden;
+  word-break:break-word;
+  overflow-wrap:anywhere;
+  box-sizing:border-box;
 }
-table.unitpic thead th{font-weight:800; font-size:13px}
-table.unitpic th.agehd{background:#f5c518; color:#111; font-size:15px; font-weight:900; width:28%}
+table.unitpic thead th{font-weight:800; font-size:clamp(8px, 2.3vw, 12px)}
+table.unitpic th.agehd{background:#f5c518; color:#111; font-weight:900; font-size:clamp(9px, 2.5vw, 13px)}
 table.unitpic th.u05{background:#b8d4ef; color:#111}
 table.unitpic th.u1{background:#f7e7a0; color:#111}
 table.unitpic th.u2{background:#7ec8e8; color:#111}
 table.unitpic th.u3{background:#f5b8c8; color:#111}
-table.unitpic td.lab{text-align:left; padding-left:8px; font-weight:700; background:#fafafa; font-size:12px}
+table.unitpic td.lab{
+  text-align:left; padding-left:3px; padding-right:1px;
+  font-weight:700; background:#fafafa;
+  font-size:clamp(7px, 2.0vw, 11px);
+  white-space:normal;
+}
 table.unitpic td.c05{background:#d6e8f7}
 table.unitpic td.c1{background:#fbf3c8}
 table.unitpic td.c2{background:#b7e0f2}
 table.unitpic td.c3{background:#f8d0db}
-table.unitpic tr.mat td{color:#c62828; font-weight:900; font-size:14px}
-table.unitpic tr.mat td.lab{color:#c62828; background:#fff5f5}
-#exportRoot{background:#fff; padding:0}
+table.unitpic td.num{
+  font-variant-numeric:tabular-nums;
+  letter-spacing:-0.045em;
+  white-space:nowrap;
+  font-size:clamp(7px, 2.1vw, 12px);
+  overflow:hidden;
+}
+table.unitpic tr.mat td{color:#c62828; font-weight:900}
+table.unitpic tr.mat td.lab{color:#c62828; background:#fff5f5; letter-spacing:0; white-space:normal}
+table.unitpic tr.mat td.num{font-size:clamp(6.5px, 2.0vw, 11.5px); letter-spacing:-0.055em}
+#exportRoot{background:#fff; padding:0; overflow:hidden; width:100%; max-width:100%}
+.chart-img{aspect-ratio:1026/845}
+body.theme-cib .chart-img{aspect-ratio:1029/846}
+@media (max-width:400px){
+  .wrap{padding-left:8px; padding-right:8px}
+  .card{padding:12px 8px}
+  table.unitpic td.num{font-size:7px; letter-spacing:-0.05em}
+  table.unitpic tr.mat td.num{font-size:6.5px; letter-spacing:-0.06em}
+  table.unitpic td.lab{font-size:7px}
+  table.unitpic thead th{font-size:8px}
+  table.unitpic th.agehd{font-size:9.5px}
+}
 @media (min-width:600px){
   .premium-grid{grid-template-columns:repeat(4,1fr)}
   .p-item.main{grid-column:auto}
-  table.unitpic{font-size:14px}
-  table.unitpic th.agehd{font-size:16px}
+  table.unitpic{font-size:13px}
+  table.unitpic th.agehd{font-size:15px}
+  table.unitpic thead th{font-size:13px}
+  table.unitpic td.lab{font-size:12px}
+  table.unitpic td.num{font-size:13px; letter-spacing:0}
+  table.unitpic tr.mat td.num{font-size:13px; letter-spacing:0}
+  table.unitpic th, table.unitpic td{padding:8px 4px}
 }
 </style>
 </head>
@@ -153,6 +215,13 @@ table.unitpic tr.mat td.lab{color:#c62828; background:#fff5f5}
 </header>
 
 <div class="wrap">
+  <div class="cs-term" id="csTerm">
+    <button type="button" data-term="10">10年</button>
+    <button type="button" data-term="20" class="active">20年</button>
+    <button type="button" data-term="30">30年</button>
+  </div>
+</div>
+
   <div class="card">
     <h2><span class="num">1</span>選擇商品</h2>
     <div class="seg" id="prodSeg">
@@ -162,8 +231,16 @@ table.unitpic tr.mat td.lab{color:#c62828; background:#fff5f5}
     <p class="hint" id="prodHint">男性專屬｜豪愛守護防癌終身健康保險</p>
   </div>
 
-  <div class="card sticky-age" id="stickyAge">
+  <div class="card" id="ageCard">
     <h2><span class="num">2</span>保險年齡／年期／保額</h2>
+
+<div class="compact-sticky" id="compactSticky">
+  <div class="cs-age">
+    <button type="button" id="csMinus" aria-label="減一歲">−</button>
+    <input type="number" id="csAge" min="0" max="65" value="49" inputmode="numeric">
+    <button type="button" id="csPlus" aria-label="加一歲">＋</button>
+    <span class="cs-lab" id="csSex">歲／男</span>
+  </div>
     <label class="field"><span>輸入年齡或生日（二擇一）</span>
       <input type="text" id="ageOrBirth" placeholder="例：29　或　1998/03/27　或　87/03/27" value="49" autocomplete="off">
     </label>
@@ -223,6 +300,10 @@ table.unitpic tr.mat td.lab{color:#c62828; background:#fff5f5}
         <h3>單位試算表</h3>
         <div class="unit-frame">
           <table class="unitpic" id="unitTable">
+            <colgroup>
+              <col class="c-lab">
+              <col class="c-u"><col class="c-u"><col class="c-u"><col class="c-u">
+            </colgroup>
             <thead>
               <tr>
                 <th class="agehd" id="unitAgeHd">49歲/男</th>
@@ -324,6 +405,19 @@ function calcInsuranceAge(birthdayISO, asOfISO){
 function fmt(n){ if(n==null||isNaN(n)) return '—'; return Math.round(n).toLocaleString('zh-TW'); }
 function moneyWan(wan,pct){ return Math.round(wan*10000*(pct/100)); }
 
+function fmtWan(n){
+  if(n==null||isNaN(n)) return '—';
+  const v=Math.round(n);
+  // mobile-friendly: show as 萬 with up to 2 decimals when >= 1萬
+  if(v >= 10000){
+    const wan=v/10000;
+    const s = (Math.round(wan*100)/100).toLocaleString('zh-TW',{maximumFractionDigits:2});
+    return s+'萬';
+  }
+  return v.toLocaleString('zh-TW');
+}
+
+
 function parseAgeOrBirth(raw){
   const s=(raw||'').trim();
   if(!s) return {ok:false, err:'請輸入年齡或生日'};
@@ -379,6 +473,8 @@ function setAgeUI(age){
   document.getElementById('ageInput').value=age;
   document.getElementById('ageSlider').value=age;
   document.getElementById('insAge').textContent=age+' 歲';
+  const cs=document.getElementById('csAge');
+  if(cs && document.activeElement!==cs) cs.value=age;
 }
 function rateOf(age, term){
   if(age==null||age<0||age>65) return null;
@@ -390,36 +486,50 @@ function renderUnitTable(){
   const rate=rateOf(age, term);
   document.getElementById('unitAgeHd').textContent = (age!=null?age:'—')+'歲/'+m.sex;
   document.getElementById('unitTag').textContent = term+' 年期';
+  const csSex=document.getElementById('csSex');
+  if(csSex) csSex.textContent='歲／'+m.sex;
+  const csAge=document.getElementById('csAge');
+  if(csAge && document.activeElement!==csAge) csAge.value = age;
+  document.querySelectorAll('#csTerm button').forEach(b=>{
+    const t=+b.dataset.term;
+    const max={10:65,20:55,30:45};
+    b.disabled=!(age!=null && age<=max[t]);
+    b.classList.toggle('active', t===term && !b.disabled);
+  });
+
   const units=[50,100,200,300];
   const cls=['c05','c1','c2','c3'];
-  const cell = (vals) => vals.map((v,i)=>`<td class="${cls[i]}">${v}</td>`).join('');
+  const cell = (vals, isNum) => vals.map((v,i)=>`<td class="${cls[i]}${isNum?' num':''}">${v}</td>`).join('');
+  // compact first-col labels for mobile
+  const bonusShort = state.prod==='CIA' ? '男性癌症加成(第6年)' : '婦科癌症加成(第6年)';
+  const illShort = '頭部創傷/燒燙傷';
   let rows;
   if(rate==null){
     rows = [
-      ['保額', units.map(u=>u+'萬')],
-      ['重度癌症', ['—','—','—','—']],
-      [m.bonusLab, ['—','—','—','—']],
-      [m.illLab, ['—','—','—','—']],
-      ['滿期金', ['請改年期','請改年期','請改年期','請改年期'], true],
-      ['年存', ['—','—','—','—']],
-      ['平均一個月', ['—','—','—','—']]
+      ['保額', units.map(u=>u+'萬'), false],
+      ['重度癌症', ['—','—','—','—'], true],
+      [bonusShort, ['—','—','—','—'], true],
+      [illShort, ['—','—','—','—'], true],
+      ['滿期金', ['—','—','—','—'], true, true],
+      ['年存', ['—','—','—','—'], true],
+      ['平均一個月', ['—','—','—','—'], true]
     ];
   } else {
     const annuals=units.map(u=>rate*u);
     const mats=annuals.map(a=>Math.round(a*term*1.06));
     const months=annuals.map(a=>Math.round(a/12));
     rows = [
-      ['保額', units.map(u=>u+'萬')],
-      ['重度癌症', units.map(u=>u+'萬')],
-      [m.bonusLab, units.map(u=>(u*1.5)%1===0?(u*1.5)+'萬':(u*1.5)+'萬')],
-      [m.illLab, units.map(u=>(u*0.1)+'萬')],
-      ['滿期金', mats.map(fmt), true],
-      ['年存', annuals.map(a=>fmt(a))],
-      ['平均一個月', months.map(fmt)]
+      ['保額', units.map(u=>u+'萬'), false],
+      ['重度癌症', units.map(u=>u+'萬'), false],
+      [bonusShort, units.map(u=>(u*1.5)+'萬'), false],
+      [illShort, units.map(u=>(u*0.1)+'萬'), false],
+      ['滿期金', mats.map(fmt), true, true],
+      ['年存', annuals.map(a=>fmt(a)), true],
+      ['平均一個月', months.map(fmt), true]
     ];
   }
-  document.getElementById('unitBody').innerHTML = rows.map(([lab,vals,isMat])=>{
-    return `<tr${isMat?' class="mat"':''}><td class="lab">${lab}</td>${cell(vals)}</tr>`;
+  document.getElementById('unitBody').innerHTML = rows.map(([lab,vals,isNum,isMat])=>{
+    return `<tr${isMat?' class="mat"':''}><td class="lab">${lab}</td>${cell(vals, !!isNum || lab==='保額' || lab.includes('加成') || lab.includes('創傷') || lab==='重度癌症')}</tr>`;
   }).join('');
 }
 
@@ -553,13 +663,21 @@ async function downloadExport(){
     const img=document.getElementById('chartImg');
     if(!img.complete) await new Promise(r=>{ img.onload=r; img.onerror=r; });
     const root=document.getElementById('exportRoot');
-    const canvas=await html2canvas(root, {
-      backgroundColor:'#ffffff',
-      scale:2,
-      useCORS:true,
-      logging:false,
-      scrollX:0, scrollY:0
-    });
+    const prev={width:root.style.width,maxWidth:root.style.maxWidth,margin:root.style.margin};
+    root.style.width='640px'; root.style.maxWidth='640px'; root.style.margin='0 auto';
+    let canvas;
+    try{
+      canvas=await html2canvas(root, {
+        backgroundColor:'#ffffff',
+        scale:2,
+        useCORS:true,
+        logging:false,
+        scrollX:0, scrollY:0,
+        windowWidth:640
+      });
+    }finally{
+      root.style.width=prev.width; root.style.maxWidth=prev.maxWidth; root.style.margin=prev.margin;
+    }
     const a=document.createElement('a');
     const m=META[state.prod];
     a.download=`${state.prod}_${state.age}歲${m.sex}_${state.term}年期.png`;
@@ -573,6 +691,15 @@ async function downloadExport(){
   }
 }
 document.getElementById('btnDownload').addEventListener('click', downloadExport);
+
+
+document.getElementById('csMinus').addEventListener('click', ()=>setDirectAge(state.age-1));
+document.getElementById('csPlus').addEventListener('click', ()=>setDirectAge(state.age+1));
+document.getElementById('csAge').addEventListener('change', e=>setDirectAge(+e.target.value));
+document.getElementById('csTerm').addEventListener('click', e=>{
+  const b=e.target.closest('button[data-term]'); if(!b||b.disabled) return;
+  state.term=+b.dataset.term; refreshAll();
+});
 
 setTheme();
 applyAgeOrBirthInput();
