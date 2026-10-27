@@ -244,6 +244,23 @@ body.theme-cib{--accent:#c2185b; --accent-soft:#fce4ec}
 }
 .body-fig img{width:100%; max-width:420px; height:auto; display:block; margin:0 auto}
 .body-fig.with-gpt img{max-width:100%}
+
+.body-stage{position:relative; width:100%; max-width:420px; margin:0 auto}
+.body-fig.with-gpt .body-stage{max-width:100%}
+.body-stage > img{width:100%; height:auto; display:block}
+.body-cards{position:absolute; inset:0; pointer-events:none}
+.body-card{
+  position:absolute; border-radius:14px; border:2.5px solid transparent;
+  box-sizing:border-box; transition:border-color .18s, box-shadow .18s, background .18s;
+}
+.body-card.on{
+  border-color:var(--cancer-accent,#1565c0);
+  box-shadow:0 0 0 3px color-mix(in srgb, var(--cancer-accent,#1565c0) 28%, transparent),
+             0 6px 18px color-mix(in srgb, var(--cancer-accent,#1565c0) 25%, transparent);
+  background:color-mix(in srgb, var(--cancer-accent,#1565c0) 08%, transparent);
+}
+.body-title-hit{position:absolute; pointer-events:none}
+
 body.theme-cib{--cancer-accent:#c2185b}
 body.theme-cia{--cancer-accent:#1565c0}
 .cancer-side{display:flex; flex-direction:column; gap:10px; min-height:0}
@@ -353,7 +370,10 @@ body.theme-cia{--cancer-accent:#1565c0}
       <p class="cancer-note" id="cancerNote">特定癌症另給加成10%～50%（第2年起）；其餘：初期／輕度10%、重度100%。</p>
       <div class="cancer-grid">
         <div class="body-fig" id="bodyFig">
-          <img id="bodyImg" src="assets/body-male.png" alt="特定癌症人體圖">
+          <div class="body-stage" id="bodyStage">
+            <img id="bodyImg" src="assets/body-male.png" alt="特定癌症人體圖">
+            <div class="body-cards" id="bodyCards" aria-hidden="true"></div>
+          </div>
         </div>
         <div class="cancer-side">
           <div class="chip-box">
@@ -485,21 +505,14 @@ const SPECIFIC_CANCERS = {
       {id:'c18', name:'結腸惡性腫瘤', short:'結腸癌', icd:'C18', callout:'colo'},
       {id:'c19', name:'直腸乙狀結腸連接處惡性腫瘤', short:'直腸乙狀結腸癌', icd:'C19', callout:'colo'},
       {id:'c20', name:'直腸惡性腫瘤', short:'直腸癌', icd:'C20', callout:'colo'},
-      {id:'c21', name:'肛門及肛(門)管惡性腫瘤', short:'肛門癌', icd:'C21', callout:'colo'},
-      {id:'c60', name:'陰莖惡性腫瘤', short:'陰莖癌', icd:'C60', callout:'penis'},
+      {id:'c21', name:'肛門及肛(門)管惡性腫瘤', short:'肛門癌', icd:'C21', callout:'anus'},
+      {id:'c60', name:'陰莖惡性腫瘤', short:'陰莖癌', icd:'C60', callout:'penile'},
       {id:'c61', name:'攝護腺惡性腫瘤', short:'攝護腺癌', icd:'C61', callout:'prostate'},
       {id:'c62', name:'睪丸之惡性腫瘤', short:'睪丸癌', icd:'C62', callout:'testis'},
-      {id:'c63', name:'其他及未明示男性生殖器官之惡性腫瘤', short:'其他男性生殖器癌', icd:'C63', callout:'mgential'},
+      {id:'c63', name:'其他及未明示男性生殖器官之惡性腫瘤', short:'其他男性生殖器癌', icd:'C63', callout:'penile'},
       {id:'c67', name:'膀胱惡性腫瘤', short:'膀胱癌', icd:'C67', callout:'bladder'}
     ],
-    callouts: [
-      {id:'colo', side:'left', organ:'大腸・直腸・肛門', label:'結腸／直腸／肛門惡性腫瘤', tip:[0.50,0.68]},
-      {id:'bladder', side:'left', organ:'膀胱', label:'膀胱惡性腫瘤', tip:[0.50,0.78]},
-      {id:'penis', side:'left', organ:'陰莖', label:'陰莖惡性腫瘤', tip:[0.50,0.86]},
-      {id:'prostate', side:'right', organ:'攝護腺', label:'攝護腺惡性腫瘤', tip:[0.50,0.82]},
-      {id:'testis', side:'right', organ:'睪丸', label:'睪丸惡性腫瘤', tip:[0.50,0.90]},
-      {id:'mgential', side:'right', organ:'其他男性生殖器', label:'其他男性生殖器官惡性腫瘤', tip:[0.52,0.84]}
-    ]
+    callouts: [{"id": "colo", "organ": "結腸・直腸", "icd": "C18–C20", "box": {"left": 4.328, "top": 23.895, "width": 25.414, "height": 11.395}, "items": ["c18", "c19", "c20"]}, {"id": "bladder", "organ": "膀胱", "icd": "C67", "box": {"left": 4.42, "top": 42.541, "width": 25.322, "height": 11.464}, "items": ["c67"]}, {"id": "testis", "organ": "睪丸", "icd": "C62", "box": {"left": 4.328, "top": 61.188, "width": 25.506, "height": 11.395}, "items": ["c62"]}, {"id": "anus", "organ": "肛門", "icd": "C21", "box": {"left": 70.166, "top": 24.724, "width": 25.506, "height": 11.326}, "items": ["c21"]}, {"id": "prostate", "organ": "攝護腺", "icd": "C61", "box": {"left": 70.166, "top": 43.301, "width": 25.414, "height": 11.326}, "items": ["c61"]}, {"id": "penile", "organ": "陰莖・其他", "icd": "C60・C63", "box": {"left": 70.166, "top": 61.878, "width": 25.506, "height": 11.326}, "items": ["c60", "c63"]}]
   },
   CIB: {
     product: '真馨守護',
@@ -512,26 +525,16 @@ const SPECIFIC_CANCERS = {
       {id:'c43', name:'皮膚惡性黑色素瘤', short:'惡性黑色素瘤', icd:'C43', callout:'skin'},
       {id:'c44', name:'皮膚之其他及未明示惡性腫瘤', short:'其他皮膚惡性腫瘤', icd:'C44', callout:'skin'},
       {id:'c50', name:'乳房惡性腫瘤', short:'乳癌', icd:'C50', callout:'breast'},
-      {id:'c51', name:'外陰惡性腫瘤', short:'外陰癌', icd:'C51', callout:'vulva'},
-      {id:'c52', name:'陰道惡性腫瘤', short:'陰道癌', icd:'C52', callout:'vagina'},
+      {id:'c51', name:'外陰惡性腫瘤', short:'外陰癌', icd:'C51', callout:'pelvic'},
+      {id:'c52', name:'陰道惡性腫瘤', short:'陰道癌', icd:'C52', callout:'pelvic'},
       {id:'c53', name:'子宮頸惡性腫瘤', short:'子宮頸癌', icd:'C53', callout:'cervix'},
       {id:'c54', name:'子宮體惡性腫瘤', short:'子宮體癌', icd:'C54', callout:'uterus'},
       {id:'c55', name:'未明示部位子宮惡性腫瘤', short:'子宮惡性腫瘤', icd:'C55', callout:'uterus'},
       {id:'c56', name:'卵巢惡性腫瘤', short:'卵巢癌', icd:'C56', callout:'ovary'},
-      {id:'c57', name:'其他及未明示女性生殖器官之惡性腫瘤', short:'其他女性生殖器癌', icd:'C57', callout:'fgential'},
-      {id:'c58', name:'胎盤惡性腫瘤', short:'胎盤癌', icd:'C58', callout:'placenta'}
+      {id:'c57', name:'其他及未明示女性生殖器官之惡性腫瘤', short:'其他女性生殖器癌', icd:'C57', callout:'pelvic'},
+      {id:'c58', name:'胎盤惡性腫瘤', short:'胎盤癌', icd:'C58', callout:'pelvic'}
     ],
-    callouts: [
-      {id:'breast', side:'left', organ:'乳房', label:'乳房惡性腫瘤', tip:[0.38,0.40]},
-      {id:'cervix', side:'left', organ:'子宮頸', label:'子宮頸惡性腫瘤', tip:[0.50,0.74]},
-      {id:'vagina', side:'left', organ:'陰道', label:'陰道惡性腫瘤', tip:[0.50,0.82]},
-      {id:'vulva', side:'left', organ:'外陰', label:'外陰惡性腫瘤', tip:[0.50,0.88]},
-      {id:'placenta', side:'left', organ:'胎盤', label:'胎盤惡性腫瘤', tip:[0.50,0.68]},
-      {id:'skin', side:'right', organ:'皮膚', label:'皮膚惡性腫瘤／黑色素瘤', tip:[0.62,0.28]},
-      {id:'uterus', side:'right', organ:'子宮', label:'子宮體／子宮惡性腫瘤', tip:[0.50,0.70]},
-      {id:'ovary', side:'right', organ:'卵巢', label:'卵巢惡性腫瘤', tip:[0.42,0.72]},
-      {id:'fgential', side:'right', organ:'其他女性生殖器', label:'其他女性生殖器官惡性腫瘤', tip:[0.55,0.78]}
-    ]
+    callouts: [{"id": "breast", "organ": "乳房", "icd": "C50", "box": {"left": 4.492, "top": 14.258, "width": 25.488, "height": 10.938}, "items": ["c50"]}, {"id": "ovary", "organ": "卵巢", "icd": "C56", "box": {"left": 4.004, "top": 34.505, "width": 24.023, "height": 10.938}, "items": ["c56"]}, {"id": "uterus", "organ": "子宮體・未明示", "icd": "C54・C55", "box": {"left": 4.004, "top": 55.469, "width": 23.438, "height": 10.938}, "items": ["c54", "c55"]}, {"id": "cervix", "organ": "子宮頸", "icd": "C53", "box": {"left": 69.531, "top": 14.193, "width": 26.465, "height": 10.938}, "items": ["c53"]}, {"id": "skin", "organ": "皮膚", "icd": "C43・C44", "box": {"left": 72.754, "top": 32.031, "width": 23.047, "height": 10.872}, "items": ["c43", "c44"]}, {"id": "pelvic", "organ": "外陰・陰道・胎盤", "icd": "C51–C58", "box": {"left": 72.07, "top": 56.25, "width": 23.926, "height": 11.003}, "items": ["c51", "c52", "c57", "c58"]}]
   }
 };
 const SPECIFIC_BONUS = [
@@ -873,12 +876,31 @@ function renderCancerDetail(item){
     '<div class="detail-years">'+cells+'</div>'+
     '<p class="detail-src">'+b.source+'</p>';
 }
+function highlightBodyCard(calloutId){
+  document.querySelectorAll('.body-card').forEach(function(el){
+    el.classList.toggle('on', !!calloutId && el.dataset.id===calloutId);
+  });
+}
+function renderBodyCards(b, useGpt){
+  const box=document.getElementById('bodyCards');
+  if(!box) return;
+  if(!useGpt || !b.callouts || !b.callouts.length){
+    box.innerHTML='';
+    return;
+  }
+  box.innerHTML=b.callouts.map(function(c){
+    const bx=c.box||{};
+    return '<div class="body-card" data-id="'+c.id+'" style="left:'+bx.left+'%;top:'+bx.top+
+      '%;width:'+bx.width+'%;height:'+bx.height+'%"></div>';
+  }).join('');
+}
 function selectCancer(id){
   selectedCancerId=id;
   const b=specificBundle();
   const item=b.items.find(x=>x.id===id)||null;
   document.querySelectorAll('.chip').forEach(ch=>ch.classList.toggle('active', ch.dataset.id===id));
   renderCancerDetail(item);
+  highlightBodyCard(item ? item.callout : null);
 }
 function setBodyImage(b){
   const img=document.getElementById('bodyImg');
@@ -891,11 +913,15 @@ function setBodyImage(b){
     img.src=gpt;
     img.alt=b.product+'特定癌症圖';
     fig.classList.add('with-gpt');
+    renderBodyCards(b, true);
+    const cur=b.items.find(x=>x.id===selectedCancerId);
+    highlightBodyCard(cur ? cur.callout : null);
   };
   probe.onerror=function(){
     img.src=fallback;
     img.alt=b.product+'特定癌症圖';
     fig.classList.remove('with-gpt');
+    renderBodyCards(b, false);
   };
   probe.src=gpt;
 }
