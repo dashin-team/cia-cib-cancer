@@ -775,6 +775,9 @@ function clientNameTrim(){
   return (state.clientName||'').trim();
 }
 
+function clientHonorific(){
+  return state.prod==='CIB' ? '小姐' : '先生';
+}
 function renderClientBanner(){
   const el=document.getElementById('clientBanner');
   const name=clientNameTrim();
@@ -783,7 +786,7 @@ function renderClientBanner(){
     el.textContent='';
     return;
   }
-  el.textContent = `${name} 先生/小姐 專屬試算`;
+  el.textContent = `${name} ${clientHonorific()} 專屬試算`;
   el.classList.add('show');
 }
 
@@ -1102,7 +1105,7 @@ async function downloadExport(){
     if(name){
       const t1=document.createElement('div');
       t1.style.cssText='font-size:22px;font-weight:900;margin-bottom:4px';
-      t1.textContent=`${name} 先生/小姐 專屬試算`;
+      t1.textContent=`${name} ${clientHonorific()} 專屬試算`;
       const t2=document.createElement('div');
       t2.style.cssText='font-size:17px;font-weight:800;color:#334b57';
       t2.textContent=bits.join('｜');
