@@ -1,60 +1,54 @@
 {
   "w": 1024,
-  "h": 1536,
-  "title": {
-    "left": 17.09,
-    "top": 0.716,
-    "width": 65.234,
-    "height": 5.339
-  },
+  "h": 1440,
   "cards": [
     {
       "id": "colo",
       "organ": "結腸癌",
-      "left": 1.855,
-      "top": 30.339,
-      "width": 24.902,
-      "height": 6.836
+      "left": 1.758,
+      "top": 24.792,
+      "width": 24.609,
+      "height": 7.847
     },
     {
       "id": "bladder",
       "organ": "膀胱癌",
-      "left": 1.66,
-      "top": 48.763,
-      "width": 25.098,
-      "height": 6.901
+      "left": 1.758,
+      "top": 44.444,
+      "width": 24.609,
+      "height": 7.917
     },
     {
       "id": "testis",
       "organ": "睪丸癌",
-      "left": 1.562,
-      "top": 63.672,
-      "width": 25.195,
-      "height": 6.836
+      "left": 1.758,
+      "top": 60.208,
+      "width": 24.609,
+      "height": 7.986
     },
     {
       "id": "rect",
       "organ": "直腸乙狀結腸癌",
-      "left": 73.242,
-      "top": 37.044,
-      "width": 25.195,
-      "height": 6.836
+      "left": 73.535,
+      "top": 31.944,
+      "width": 24.512,
+      "height": 7.847
     },
     {
       "id": "prostate",
       "organ": "攝護腺癌",
-      "left": 73.242,
-      "top": 50.781,
-      "width": 25.195,
-      "height": 6.771
+      "left": 73.535,
+      "top": 46.528,
+      "width": 24.414,
+      "height": 7.917
     },
     {
       "id": "penile",
       "organ": "陰莖癌・其他",
-      "left": 73.34,
-      "top": 63.607,
-      "width": 25.098,
-      "height": 6.901
+      "left": 73.535,
+      "top": 60.278,
+      "width": 24.512,
+      "height": 7.917
     }
   ]
 }

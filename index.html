@@ -47,7 +47,7 @@ a{color:inherit; text-decoration:none}
     grid-template-areas:"ctrl cancer" "main main";
     align-items:start;
   }
-  .controls{grid-area:ctrl; position:sticky; top:12px}
+  .controls{grid-area:ctrl; position:static}
   .cancer-sec{grid-area:cancer}
   .maincol{grid-area:main}
 }
@@ -123,14 +123,14 @@ body.theme-cib .btn{background:#880e4f}
 .chart-stage{position:relative; width:100%; line-height:0; height:fit-content; min-height:0; container-type:inline-size; container-name:chart}
 .chart-stage > img.base{width:100%; height:auto; display:block; vertical-align:top}
 .client-banner{
-  display:none; margin:0 0 12px; padding:0 18px; min-height:48px;
+  display:none; margin:0; padding:0 18px; min-height:0;
   border-radius:14px; font-size:18px; font-weight:900; color:#0d47a1;
   line-height:1; letter-spacing:.02em;
   align-items:center; justify-content:center; text-align:center;
   background:linear-gradient(135deg,#e3f2fd 0%,#bbdefb 55%,#90caf9 100%);
   box-shadow:0 4px 14px rgba(21,101,192,.18), inset 0 1px 0 rgba(255,255,255,.65);
 }
-.client-banner.show{display:flex}
+.client-banner.show{display:flex; margin:0 0 12px; min-height:48px}
 body.theme-cib .client-banner{
   color:#880e4f;
   background:linear-gradient(135deg,#fce4ec 0%,#f8bbd0 55%,#f48fb1 100%);
@@ -147,7 +147,7 @@ body.theme-cib .client-banner{
 .ov .yen{font-size:.78em; margin-left:1px}
 .ov.ov-title{
   /* Banner cy≈9.2% of chart; title ends ~58%; keep right margin inside banner */
-  left:61%; top:9.2%; right:auto; bottom:auto;
+  left:61%; top:9.94%; right:auto; bottom:auto;
   transform:translateY(-50%) !important; /* override .ov translate(-50%,-50%) */
   color:#0d2b6b; background:#fff; border:1.5px solid rgba(255,255,255,.95);
   font-size:clamp(9px, 1.4cqw, 14px); font-weight:900;
@@ -166,12 +166,12 @@ body.theme-cib .ov.ov-title{color:#6a1b9a; background:#fff; border-color:#fff}
 .ov-blue{color:#1565c0}
 .ov-purple{color:#6a1b9a}
 .ov-green{color:#2e7d32}
-/* positions as % of 1026x845 chart — centered on erased digit boxes */
-.ov-c1a{left:28.2%; top:27.9%; font-size:clamp(10px, 2.15cqw, 24px); max-width:8.5%}
-.ov-c1b{left:28.1%; top:34.4%; font-size:clamp(10px, 2.15cqw, 24px); max-width:9.5%}
-.ov-c2{left:55.5%; top:32.2%; font-size:clamp(9px, 2.05cqw, 22px); max-width:15%; white-space:nowrap; line-height:1.12}
-.ov-c3{left:87.9%; top:35.6%; font-size:clamp(10px, 2.15cqw, 24px); max-width:13%}
-.ov-c4{left:23.8%; top:68.6%; font-size:clamp(10px, 2.15cqw, 24px); max-width:14%}
+/* positions as % of 1026x782 chart — centered on erased digit boxes */
+.ov-c1a{left:28.2%; top:30.15%; font-size:clamp(10px, 2.15cqw, 24px); max-width:8.5%}
+.ov-c1b{left:28.1%; top:37.17%; font-size:clamp(10px, 2.15cqw, 24px); max-width:9.5%}
+.ov-c2{left:55.5%; top:34.79%; font-size:clamp(9px, 2.05cqw, 22px); max-width:15%; white-space:nowrap; line-height:1.12}
+.ov-c3{left:87.9%; top:38.47%; font-size:clamp(10px, 2.15cqw, 24px); max-width:13%}
+.ov-c4{left:23.8%; top:74.13%; font-size:clamp(10px, 2.15cqw, 24px); max-width:14%}
 .ov.compact{letter-spacing:-0.02em}
 .ov.compact .yen{font-size:.75em}
 
@@ -258,8 +258,10 @@ body.theme-cib{--accent:#c2185b; --accent-soft:#fce4ec}
 .body-stage > img{width:100%; height:auto; display:block}
 .body-cards{position:absolute; inset:0; pointer-events:none}
 .body-card{
-  position:absolute; border-radius:14px; border:2.5px solid transparent;
+  position:absolute; border-radius:16px; border:2.5px solid transparent;
   box-sizing:border-box; transition:border-color .18s, box-shadow .18s, background .18s;
+  pointer-events:auto; cursor:pointer;
+  padding:0; margin:0; background:transparent; appearance:none; -webkit-appearance:none;
 }
 .body-card.on{
   border-color:var(--cancer-accent,#1565c0);
@@ -552,7 +554,7 @@ const SPECIFIC_CANCERS = {
         intro:'泌尿系統常見惡性腫瘤，血尿為重要警訊。',
         cost:'自費免疫約 每次5～15萬', costSrc:'亞東醫院腫瘤科說明'}
     ],
-    callouts: [{"id": "colo", "organ": "結腸癌", "box": {"left": 1.855, "top": 30.339, "width": 24.902, "height": 6.836}, "items": ["c18"]}, {"id": "bladder", "organ": "膀胱癌", "box": {"left": 1.66, "top": 48.763, "width": 25.098, "height": 6.901}, "items": ["c67"]}, {"id": "testis", "organ": "睪丸癌", "box": {"left": 1.562, "top": 63.672, "width": 25.195, "height": 6.836}, "items": ["c62"]}, {"id": "rect", "organ": "直腸乙狀結腸癌", "box": {"left": 73.242, "top": 37.044, "width": 25.195, "height": 6.836}, "items": ["c19", "c20", "c21"]}, {"id": "prostate", "organ": "攝護腺癌", "box": {"left": 73.242, "top": 50.781, "width": 25.195, "height": 6.771}, "items": ["c61"]}, {"id": "penile", "organ": "陰莖癌・其他", "box": {"left": 73.34, "top": 63.607, "width": 25.098, "height": 6.901}, "items": ["c60", "c63"]}]
+    callouts: [{"id": "colo", "organ": "結腸癌", "box": {"left": 1.758, "top": 24.792, "width": 24.609, "height": 7.847}, "items": ["c18"]}, {"id": "bladder", "organ": "膀胱癌", "box": {"left": 1.758, "top": 44.444, "width": 24.609, "height": 7.917}, "items": ["c67"]}, {"id": "testis", "organ": "睪丸癌", "box": {"left": 1.758, "top": 60.208, "width": 24.609, "height": 7.986}, "items": ["c62"]}, {"id": "rect", "organ": "直腸乙狀結腸癌", "box": {"left": 73.535, "top": 31.944, "width": 24.512, "height": 7.847}, "items": ["c19", "c20", "c21"]}, {"id": "prostate", "organ": "攝護腺癌", "box": {"left": 73.535, "top": 46.528, "width": 24.414, "height": 7.917}, "items": ["c61"]}, {"id": "penile", "organ": "陰莖癌・其他", "box": {"left": 73.535, "top": 60.278, "width": 24.512, "height": 7.917}, "items": ["c60", "c63"]}]
   },
   CIB: {
     product: '真馨守護', code: 'CIB', count: 11,
@@ -605,7 +607,7 @@ const SPECIFIC_CANCERS = {
         intro:'與妊娠相關的罕見惡性腫瘤。',
         cost:'自費標靶／免疫約 每月10～30萬', costSrc:'亞東醫院：免疫每次約5～15萬'}
     ],
-    callouts: [{"id": "breast", "organ": "乳癌", "box": {"left": 4.688, "top": 12.109, "width": 25.0, "height": 11.328}, "items": ["c50"]}, {"id": "ovary", "organ": "卵巢癌", "box": {"left": 4.492, "top": 47.917, "width": 23.73, "height": 9.701}, "items": ["c56"]}, {"id": "pelvic", "organ": "外陰・陰道・胎盤癌", "box": {"left": 4.395, "top": 66.146, "width": 25.098, "height": 10.938}, "items": ["c51", "c52", "c57", "c58"]}, {"id": "skin", "organ": "皮膚癌", "box": {"left": 70.508, "top": 20.378, "width": 25.098, "height": 11.328}, "items": ["c43", "c44"]}, {"id": "uterus", "organ": "子宮體癌", "box": {"left": 71.973, "top": 44.336, "width": 23.828, "height": 10.091}, "items": ["c54", "c55"]}, {"id": "cervix", "organ": "子宮頸癌", "box": {"left": 70.312, "top": 61.458, "width": 25.488, "height": 10.938}, "items": ["c53"]}]
+    callouts: [{"id": "breast", "organ": "乳癌", "box": {"left": 3.711, "top": 2.045, "width": 26.953, "height": 11.468}, "items": ["c50"]}, {"id": "ovary", "organ": "卵巢癌", "box": {"left": 3.516, "top": 42.221, "width": 25.586, "height": 9.642}, "items": ["c56"]}, {"id": "pelvic", "organ": "外陰・陰道・胎盤癌", "box": {"left": 3.32, "top": 62.6, "width": 27.246, "height": 11.103}, "items": ["c51", "c52", "c57", "c58"]}, {"id": "skin", "organ": "皮膚癌", "box": {"left": 69.531, "top": 11.322, "width": 27.051, "height": 11.468}, "items": ["c43", "c44"]}, {"id": "uterus", "organ": "子宮體癌", "box": {"left": 71.191, "top": 38.13, "width": 25.488, "height": 10.153}, "items": ["c54", "c55"]}, {"id": "cervix", "organ": "子宮頸癌", "box": {"left": 69.434, "top": 57.341, "width": 27.246, "height": 11.03}, "items": ["c53"]}]
   }
 };
 const SPECIFIC_BONUS = [
@@ -974,13 +976,22 @@ function renderBodyCards(b, useGpt){
   if(!box) return;
   if(!useGpt || !b.callouts || !b.callouts.length){
     box.innerHTML='';
+    box.onclick=null;
     return;
   }
   box.innerHTML=b.callouts.map(function(c){
     const bx=c.box||{};
-    return '<div class="body-card" data-id="'+c.id+'" style="left:'+bx.left+'%;top:'+bx.top+
-      '%;width:'+bx.width+'%;height:'+bx.height+'%"></div>';
+    const first=(c.items&&c.items[0])||'';
+    return '<button type="button" class="body-card" data-id="'+c.id+'" data-first="'+first+
+      '" aria-label="'+(c.organ||c.id)+'" style="left:'+bx.left+'%;top:'+bx.top+
+      '%;width:'+bx.width+'%;height:'+bx.height+'%"></button>';
   }).join('');
+  box.onclick=function(e){
+    const hit=e.target.closest('.body-card');
+    if(!hit) return;
+    const first=hit.dataset.first;
+    if(first) selectCancer(first);
+  };
 }
 function selectCancer(id){
   selectedCancerId=id;
@@ -1181,14 +1192,7 @@ document.getElementById('clientName').addEventListener('input', e=>{
 });
 document.getElementById('btnDownload').addEventListener('click', downloadExport);
 
-function updateStickyFit(){
-  const el=document.getElementById('controls');
-  if(!el) return;
-  const desktop=window.matchMedia('(min-width:1024px)').matches;
-  const fits=el.offsetHeight < window.innerHeight - 24;
-  el.style.position = (desktop && fits) ? 'sticky' : 'static';
-}
-window.addEventListener('resize', ()=>{ updateStickyFit(); scheduleFitOverlays(); });
+window.addEventListener('resize', ()=>{ scheduleFitOverlays(); });
 
 document.getElementById('unitViewSeg').addEventListener('click', (e)=>{
   const btn=e.target.closest('button[data-unit-view]');
@@ -1214,7 +1218,6 @@ document.getElementById('ageInput').value='49';
 setMode('age');
 setTheme();
 refreshAll();
-setTimeout(updateStickyFit,0);
 setTimeout(scheduleFitOverlays, 0);
 
 window.state=state;
