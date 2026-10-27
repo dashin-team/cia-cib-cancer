@@ -166,12 +166,12 @@ body.theme-cib .ov.ov-title{color:#6a1b9a; background:#fff; border-color:#fff}
 .ov-blue{color:#1565c0}
 .ov-purple{color:#6a1b9a}
 .ov-green{color:#2e7d32}
-/* positions as % of chart — centered in inset solid-fill amount boxes */
-.ov-c1a{left:28.3%; top:26.7%; font-size:clamp(9px, 2.0cqw, 20px); max-width:8.0%}
-.ov-c1b{left:28.2%; top:32.9%; font-size:clamp(8px, 1.9cqw, 18px); max-width:7.8%}
-.ov-c2{left:56.8%; top:32.9%; font-size:clamp(8px, 1.85cqw, 18px); max-width:13.5%; white-space:nowrap; line-height:1.1}
-.ov-c3{left:87.5%; top:34.7%; font-size:clamp(9px, 2.0cqw, 20px); max-width:9.5%}
-.ov-c4{left:23.3%; top:68.3%; font-size:clamp(9px, 2.0cqw, 20px); max-width:12.5%}
+/* positions as % of 1026x845 chart — centered on erased digit boxes */
+.ov-c1a{left:28.2%; top:27.9%; font-size:clamp(10px, 2.15cqw, 24px); max-width:8.5%}
+.ov-c1b{left:28.1%; top:34.4%; font-size:clamp(10px, 2.15cqw, 24px); max-width:9.5%}
+.ov-c2{left:55.5%; top:32.2%; font-size:clamp(9px, 2.05cqw, 22px); max-width:15%; white-space:nowrap; line-height:1.12}
+.ov-c3{left:87.9%; top:35.6%; font-size:clamp(10px, 2.15cqw, 24px); max-width:13%}
+.ov-c4{left:23.8%; top:68.6%; font-size:clamp(10px, 2.15cqw, 24px); max-width:14%}
 .ov.compact{letter-spacing:-0.02em}
 .ov.compact .yen{font-size:.75em}
 
@@ -504,8 +504,8 @@ const UNIT_VIEWS={
   low:{units:[50,100,200,300], cls:['c05','c1','c2','c3'], th:[['u05','半單位'],['u1','1單位'],['u2','2單位'],['u3','3單位']]},
   high:{units:[400,500], cls:['c4','c5'], th:[['u4','4單位'],['u5','5單位']]}
 };
-const OVERLAY_MAX_PCT={ovC1a:8.0, ovC1b:7.8, ovC2:13.5, ovC3:9.5, ovC4:12.5};
-const OVERLAY_BASE_CQW={ovC1a:2.0, ovC1b:1.9, ovC2:1.85, ovC3:2.0, ovC4:2.0};
+const OVERLAY_MAX_PCT={ovC1a:8.5, ovC1b:9.5, ovC2:15.0, ovC3:13.0, ovC4:14.0};
+const OVERLAY_BASE_CQW={ovC1a:2.15, ovC1b:2.15, ovC2:2.05, ovC3:2.15, ovC4:2.15};
 
 /** 特定癌症：僅條款附表一。加成％依保單年度（第十五條），非依癌別。 */
 const SPECIFIC_CANCERS = {
@@ -712,28 +712,25 @@ function fitOverlay(el, maxPct, root){
   const W = chartImageWidth(stage);
   if(!W) return;
   const maxPx = Math.max(4, W * (maxPct/100));
-  const baseCqw = OVERLAY_BASE_CQW[el.id] || 2.0;
-  const fsCap = el.id==='ovC2' ? 20 : 22;
-  const softFloor = Math.max(7, W * 0.0075);
+  const baseCqw = OVERLAY_BASE_CQW[el.id] || 2.1;
+  const fsCap = el.id==='ovC2' ? 22 : 24;
+  const softFloor = Math.max(7, W * 0.008);
   let fs = Math.min(fsCap, Math.max(softFloor, W * (baseCqw/100)));
   el.style.maxWidth = maxPx + 'px';
   el.style.letterSpacing = '';
-  el.style.transform = 'translate(-50%, -50%)';
-  // keep each amount inside its row / card fill height
-  const maxH = el.id==='ovC2' ? stage.clientHeight * 0.095
-    : (el.id==='ovC1a' || el.id==='ovC1b') ? stage.clientHeight * 0.048
-    : stage.clientHeight * 0.06;
-  for(let i=0;i<56;i++){
+  const maxH = el.id==='ovC2' ? stage.clientHeight * 0.12 : stage.clientHeight * 0.065;
+  for(let i=0;i<48;i++){
     el.style.fontSize = fs + 'px';
     if(el.scrollWidth <= maxPx + 0.5 && el.scrollHeight <= maxH + 0.5) break;
-    fs *= 0.90;
+    fs *= 0.92;
     if(fs < softFloor){
-      el.style.letterSpacing = '-0.05em';
+      el.style.letterSpacing = '-0.04em';
     }
     if(fs < 6){
       fs = 6;
       el.style.fontSize = fs + 'px';
       el.style.letterSpacing = '-0.08em';
+      // last resort: scaleX to force fit without layout overflow
       if(el.scrollWidth > maxPx + 0.5){
         const sx = maxPx / el.scrollWidth;
         el.style.transform = 'translate(-50%, -50%) scaleX('+sx.toFixed(4)+')';
@@ -741,6 +738,7 @@ function fitOverlay(el, maxPct, root){
       break;
     }
   }
+  // reset scale if not needed
   if(el.scrollWidth <= maxPx + 0.5){
     el.style.transform = 'translate(-50%, -50%)';
   }
