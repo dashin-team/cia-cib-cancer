@@ -123,12 +123,19 @@ body.theme-cib .btn{background:#880e4f}
 .chart-stage{position:relative; width:100%; line-height:0; height:fit-content; min-height:0; container-type:inline-size; container-name:chart}
 .chart-stage > img.base{width:100%; height:auto; display:block; vertical-align:top}
 .client-banner{
-  display:none; margin:0 0 10px; padding:10px 14px; border-radius:10px;
-  background:var(--accent-soft); color:var(--accent); font-size:18px; font-weight:900;
-  line-height:1.35;
+  display:none; margin:0 0 12px; padding:0 18px; min-height:48px;
+  border-radius:14px; font-size:18px; font-weight:900; color:#0d47a1;
+  line-height:1; letter-spacing:.02em;
+  align-items:center; justify-content:center; text-align:center;
+  background:linear-gradient(135deg,#e3f2fd 0%,#bbdefb 55%,#90caf9 100%);
+  box-shadow:0 4px 14px rgba(21,101,192,.18), inset 0 1px 0 rgba(255,255,255,.65);
 }
-.client-banner.show{display:block}
-body.theme-cib .client-banner{background:#fce4ec; color:#c2185b}
+.client-banner.show{display:flex}
+body.theme-cib .client-banner{
+  color:#880e4f;
+  background:linear-gradient(135deg,#fce4ec 0%,#f8bbd0 55%,#f48fb1 100%);
+  box-shadow:0 4px 14px rgba(194,24,91,.18), inset 0 1px 0 rgba(255,255,255,.65);
+}
 .ov{
   position:absolute; transform:translate(-50%, -50%);
   font-family:"Microsoft JhengHei","Noto Sans TC","PingFang TC",sans-serif;
@@ -286,6 +293,7 @@ body.theme-cia{--cancer-accent:#1565c0}
 .detail-year .da{display:block; font-size:10.5px; font-weight:800; color:var(--ink); font-variant-numeric:tabular-nums; letter-spacing:-.02em}
 .detail-src{font-size:10px; color:#9aa6ad; line-height:1.3; margin:auto 0 0}
 
+.detail-cause{font-size:12.5px; font-weight:800; color:#455a64; line-height:1.4; margin:2px 0 6px}
 .detail-intro{font-size:13px; font-weight:700; color:var(--ink); line-height:1.4; margin:0 0 6px}
 .detail-cost{font-size:12.5px; font-weight:800; color:var(--cancer-accent,#1565c0); margin:0 0 2px; line-height:1.35}
 .detail-cost-src{font-size:10px; color:#9aa6ad; margin:0 0 8px; line-height:1.3}
@@ -502,82 +510,98 @@ const OVERLAY_BASE_CQW={ovC1a:2.15, ovC1b:2.15, ovC2:2.05, ovC3:2.15, ovC4:2.15}
 /** 特定癌症：僅條款附表一。加成％依保單年度（第十五條），非依癌別。 */
 const SPECIFIC_CANCERS = {
   CIA: {
-    product: '豪愛守護',
-    code: 'CIA',
-    count: 9,
+    product: '豪愛守護', code: 'CIA', count: 9,
     title: '豪愛守護 CIA 特定癌症（9項）',
     body: 'assets/body-male.png', gptBody: 'gpt/body-male-gpt.png',
     source: 'CIA條款附表一／第十五條',
     items: [
       {id:'c18', short:'結腸癌', callout:'colo',
+        cause:'飲食低纖、紅肉加工肉、肥胖、家族史', causeSrc:'國健署',
         intro:'大腸常見惡性腫瘤，早期常無明顯症狀。',
         cost:'自費標靶約 每月10～30萬', costSrc:'公開藥價整理（癌思停／爾必得舒等）'},
       {id:'c19', short:'直腸乙狀結腸癌', callout:'rect',
+        cause:'飲食低纖、紅肉加工肉、肥胖、家族史', causeSrc:'國健署',
         intro:'直腸與乙狀結腸交接處的惡性腫瘤。',
         cost:'自費標靶約 每月10～30萬', costSrc:'公開藥價整理（癌思停／爾必得舒等）'},
       {id:'c20', short:'直腸癌', callout:'rect',
+        cause:'飲食低纖、紅肉加工肉、肥胖、缺乏運動', causeSrc:'國健署',
         intro:'靠近肛門的大腸惡性腫瘤，可影響排便。',
         cost:'自費標靶約 每月10～30萬', costSrc:'公開藥價整理（癌思停／爾必得舒等）'},
       {id:'c21', short:'肛門癌', callout:'rect',
+        cause:'HPV感染、吸菸、免疫抑制', causeSrc:'ACS／醫院HPV衛教',
         intro:'肛門及肛管的惡性腫瘤，相對少見。',
         cost:'自費標靶／免疫約 每月10～30萬', costSrc:'亞東醫院：免疫每次約5～15萬'},
       {id:'c60', short:'陰莖癌', callout:'penile',
+        cause:'HPV、包皮衛生不良、吸菸', causeSrc:'台灣男性學暨性醫學醫學會',
         intro:'陰莖皮膚或黏膜的惡性腫瘤，相對少見。',
         cost:'自費標靶／免疫約 每月10～30萬', costSrc:'亞東醫院：免疫每次約5～15萬'},
       {id:'c61', short:'攝護腺癌', callout:'prostate',
+        cause:'年齡、家族史、高脂飲食', causeSrc:'衛福部／慈濟醫院衛教',
         intro:'男性常見癌症，早期常無明顯症狀。',
         cost:'新一代口服荷爾蒙自費約 每月10萬', costSrc:'臺大泌尿部／楓城泌尿學會衛教'},
       {id:'c62', short:'睪丸癌', callout:'testis',
+        cause:'隱睪、家族史、年輕男性', causeSrc:'NCI／睪丸癌基金會',
         intro:'好發於年輕男性的睪丸惡性腫瘤。',
         cost:'自費標靶／免疫約 每月10～30萬', costSrc:'亞東醫院：免疫每次約5～15萬'},
       {id:'c63', short:'其他男性生殖器癌', callout:'penile',
+        cause:'HPV、衛生不良、慢性發炎', causeSrc:'台灣泌尿科醫學會指引',
         intro:'其他及未明示男性生殖器官惡性腫瘤。',
         cost:'自費標靶／免疫約 每月10～30萬', costSrc:'亞東醫院：免疫每次約5～15萬'},
       {id:'c67', short:'膀胱癌', callout:'bladder',
+        cause:'吸菸、化學染劑暴露、慢性發炎', causeSrc:'大林慈濟醫院衛教',
         intro:'泌尿系統常見惡性腫瘤，血尿為重要警訊。',
         cost:'自費免疫約 每次5～15萬', costSrc:'亞東醫院腫瘤科說明'}
     ],
     callouts: [{"id": "colo", "organ": "結腸癌", "box": {"left": 1.855, "top": 30.339, "width": 24.902, "height": 6.836}, "items": ["c18"]}, {"id": "bladder", "organ": "膀胱癌", "box": {"left": 1.66, "top": 48.763, "width": 25.098, "height": 6.901}, "items": ["c67"]}, {"id": "testis", "organ": "睪丸癌", "box": {"left": 1.562, "top": 63.672, "width": 25.195, "height": 6.836}, "items": ["c62"]}, {"id": "rect", "organ": "直腸乙狀結腸癌", "box": {"left": 73.242, "top": 37.044, "width": 25.195, "height": 6.836}, "items": ["c19", "c20", "c21"]}, {"id": "prostate", "organ": "攝護腺癌", "box": {"left": 73.242, "top": 50.781, "width": 25.195, "height": 6.771}, "items": ["c61"]}, {"id": "penile", "organ": "陰莖癌・其他", "box": {"left": 73.34, "top": 63.607, "width": 25.098, "height": 6.901}, "items": ["c60", "c63"]}]
   },
   CIB: {
-    product: '真馨守護',
-    code: 'CIB',
-    count: 11,
+    product: '真馨守護', code: 'CIB', count: 11,
     title: '真馨守護 CIB 特定癌症（11項）',
     body: 'assets/body-female.png', gptBody: 'gpt/body-female-gpt.png',
     source: 'CIB條款附表一／第十五條',
     items: [
       {id:'c43', short:'惡性黑色素瘤', callout:'skin',
+        cause:'紫外線、曬傷、多痣、家族史', causeSrc:'Skin Cancer Foundation／WHO',
         intro:'惡性度較高的皮膚色素細胞癌。',
         cost:'自費免疫約 每月18～25萬', costSrc:'公開整理（免疫檢查點抑制劑月費）'},
       {id:'c44', short:'其他皮膚惡性腫瘤', callout:'skin',
+        cause:'長期日曬、紫外線暴露', causeSrc:'WHO紫外線說明',
         intro:'皮膚其他及未明示之惡性腫瘤。',
         cost:'自費標靶／免疫約 每月10～30萬', costSrc:'亞東醫院：免疫每次約5～15萬'},
       {id:'c50', short:'乳癌', callout:'breast',
+        cause:'家族史、停經後肥胖、未生育', causeSrc:'衛福部／林口長庚',
         intro:'台灣女性發生率最高的癌症。',
         cost:'自費標靶／新藥約 每月10～20萬', costSrc:'中央社／病友案例（轉移新藥月費約20萬）'},
       {id:'c51', short:'外陰癌', callout:'pelvic',
+        cause:'HPV感染、吸菸、慢性刺激', causeSrc:'醫院HPV六癌衛教',
         intro:'外陰部位的惡性腫瘤，相對少見。',
         cost:'自費標靶／免疫約 每月10～30萬', costSrc:'亞東醫院：免疫每次約5～15萬'},
       {id:'c52', short:'陰道癌', callout:'pelvic',
+        cause:'HPV感染、子宮頸癌病史', causeSrc:'醫院HPV六癌衛教',
         intro:'陰道黏膜的惡性腫瘤，相對少見。',
         cost:'自費標靶／免疫約 每月10～30萬', costSrc:'亞東醫院：免疫每次約5～15萬'},
       {id:'c53', short:'子宮頸癌', callout:'cervix',
+        cause:'HPV持續感染、過早性行為、吸菸', causeSrc:'衛福部／國健署',
         intro:'可透過抹片與疫苗預防的婦癌。',
         cost:'自費標靶／免疫約 每月10～30萬', costSrc:'亞東醫院：免疫每次約5～15萬'},
       {id:'c54', short:'子宮體癌', callout:'uterus',
+        cause:'肥胖、糖尿病、雌激素暴露', causeSrc:'國健署',
         intro:'多為子宮內膜癌，常見於停經前後。',
         cost:'部分化療／標靶須自費，一年可逾百萬', costSrc:'TVBS／癌症希望基金會病友調查'},
       {id:'c55', short:'子宮惡性腫瘤', callout:'uterus',
+        cause:'肥胖、月經異常、婦癌家族史', causeSrc:'國健署',
         intro:'未明示部位的子宮惡性腫瘤。',
         cost:'部分化療／標靶須自費，一年可逾百萬', costSrc:'TVBS／癌症希望基金會病友調查'},
       {id:'c56', short:'卵巢癌', callout:'ovary',
+        cause:'家族史、未生育、肥胖', causeSrc:'郭綜合醫院／林口長庚',
         intro:'早期症狀不明顯，常較晚才發現。',
         cost:'PARP抑制劑自費約 每月十餘萬', costSrc:'《康健》癌症專題／鄭文芳醫師'},
       {id:'c57', short:'其他女性生殖器癌', callout:'pelvic',
+        cause:'HPV感染、慢性發炎', causeSrc:'醫院HPV相關衛教',
         intro:'其他及未明示女性生殖器官惡性腫瘤。',
         cost:'自費標靶／免疫約 每月10～30萬', costSrc:'亞東醫院：免疫每次約5～15萬'},
       {id:'c58', short:'胎盤癌', callout:'pelvic',
+        cause:'葡萄胎病史、高齡懷孕', causeSrc:'ACS妊娠滋養細胞腫瘤',
         intro:'與妊娠相關的罕見惡性腫瘤。',
         cost:'自費標靶／免疫約 每月10～30萬', costSrc:'亞東醫院：免疫每次約5～15萬'}
     ],
@@ -906,6 +930,12 @@ function moneyOfPct(pct){
   const wan=state.amount||100;
   return Math.round(wan*10000 * (pct/100));
 }
+function fmtWan(yuan){
+  if(yuan==null||isNaN(yuan)) return '—';
+  const wan=yuan/10000;
+  const r=Math.round(wan*10)/10;
+  return (Number.isInteger(r) ? String(r) : r.toFixed(1)) + '萬';
+}
 function renderCancerDetail(item){
   const box=document.getElementById('cancerDetail');
   const b=specificBundle();
@@ -917,16 +947,19 @@ function renderCancerDetail(item){
     const totalPct=100+s.pct;
     const short=s.year.includes('6')?'第6年起':s.year.replace('保單年度','');
     return '<div class="detail-year"><span class="dy">'+short+'</span><span class="dp">'+totalPct+
-      '%</span><span class="da">'+fmt(moneyOfPct(totalPct))+'</span></div>';
+      '%</span><span class="da">'+fmtWan(moneyOfPct(totalPct))+'</span></div>';
   }).join('');
+  const cause=item.cause ? '<p class="detail-cause">常見原因：'+item.cause+'</p>' : '';
   const intro=item.intro ? '<p class="detail-intro">'+item.intro+'</p>' : '';
-  const cost=item.cost
-    ? '<p class="detail-cost">約略費用：'+item.cost+'</p>'+(item.costSrc?'<p class="detail-cost-src">'+item.costSrc+'</p>':'')
-    : '';
+  const cost=item.cost ? '<p class="detail-cost">約略費用：'+item.cost+'</p>' : '';
+  const srcBits=[item.causeSrc, item.costSrc].filter(Boolean);
+  const src=srcBits.length ? '<p class="detail-cost-src">'+srcBits.join('；')+'</p>' : '';
   box.innerHTML=
     '<div class="detail-name">'+item.short+'</div>'+
+    cause+
     intro+
     cost+
+    src+
     '<p class="detail-one">保額 '+state.amount+'萬 · 重度100%＋加成10%～50%</p>'+
     '<div class="detail-years">'+cells+'</div>'+
     '<p class="detail-src">'+b.source+'</p>';
@@ -1104,7 +1137,8 @@ async function downloadExport(){
     const bits=[`${META[state.prod].pill}`, `${state.age??'—'}歲`, `${state.term}年期`, `保額${state.amount}萬`, `年繳${prem}`];
     if(name){
       const t1=document.createElement('div');
-      t1.style.cssText='font-size:22px;font-weight:900;margin-bottom:4px';
+      const isCib=state.prod==='CIB';
+      t1.style.cssText='font-size:20px;font-weight:900;margin-bottom:8px;padding:0 18px;min-height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;text-align:center;line-height:1;letter-spacing:.02em;color:'+(isCib?'#880e4f':'#0d47a1')+';background:'+(isCib?'linear-gradient(135deg,#fce4ec 0%,#f8bbd0 55%,#f48fb1 100%)':'linear-gradient(135deg,#e3f2fd 0%,#bbdefb 55%,#90caf9 100%)')+';box-shadow:'+(isCib?'0 4px 14px rgba(194,24,91,.18)':'0 4px 14px rgba(21,101,192,.18)');
       t1.textContent=`${name} ${clientHonorific()} 專屬試算`;
       const t2=document.createElement('div');
       t2.style.cssText='font-size:17px;font-weight:800;color:#334b57';
